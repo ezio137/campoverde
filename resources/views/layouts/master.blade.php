@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>DevOOPS v2</title>
+    <title>Campo Verde</title>
     <meta name="description" content="description">
     <meta name="author" content="DevOOPS">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {!! HTML::style('/css/vendor.css') !!}
     <link href="plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
     <link href="plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
     <link href="plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
@@ -51,7 +52,7 @@
     <div class="container-fluid expanded-panel">
         <div class="row">
             <div id="logo" class="col-xs-12 col-sm-2">
-                <a href="index_v1.html">DevOOPS v2</a>
+                <a href="index_v1.html">Campo Verde</a>
             </div>
             <div id="top-panel" class="col-xs-12 col-sm-10">
                 <div class="row">
@@ -147,8 +148,17 @@
     <div class="row">
         <div id="sidebar-left" class="col-xs-2 col-sm-2">
             <ul class="nav main-menu">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle active">
+                        <i class="fa fa-book"></i>
+                        <soan>Cont&aacute;bil</soan>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/contas">Contas</a></li>
+                    </ul>
+                </li>
                 <li>
-                    <a href="ajax/dashboard.html" class="active ajax-link">
+                    <a href="ajax/dashboard.html" class="ajax-link">
                         <i class="fa fa-dashboard"></i>
                         <span class="hidden-xs">Dashboard</span>
                     </a>
@@ -349,7 +359,6 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <!--<script src="http://code.jquery.com/jquery.js"></script>-->
 <script src="js/vendor.js"></script>
-<script src="plugins/jquery/jquery.min.js"></script>
 <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="plugins/justified-gallery/jquery.justifiedGallery.min.js"></script>
