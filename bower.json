@@ -1,0 +1,15 @@
+{
+  "name": "campoverde",
+  "version": "0.1",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

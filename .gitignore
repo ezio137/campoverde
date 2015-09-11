@@ -3,3 +3,9 @@
 Homestead.yaml
 Homestead.json
 .env
+.idea
+/resources/assets/vendor/bower_components
+/public/img
+/public/css
+/public/js
+composer.lock
