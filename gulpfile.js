@@ -15,12 +15,14 @@ elixir(function (mix) {
     mix.sass('app.scss');
 
     mix.styles([
-        'bootstrap/dist/css/bootstrap.css'
+        'bootstrap/dist/css/bootstrap.css',
+        'select2/dist/css/select2.css'
     ], 'public/css/vendor.css', 'resources/assets/vendor/bower_components');
 
     mix.scripts([
         'jquery/dist/jquery.js',
-        'bootstrap/dist/js/bootstrap.js'
+        'bootstrap/dist/js/bootstrap.js',
+        'select2/dist/js/select2.js'
     ], 'public/js/vendor.js', 'resources/assets/vendor/bower_components');
 
     mix.copy('resources/assets/css/style_v1.css', 'public/css');

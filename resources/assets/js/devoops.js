@@ -3580,6 +3580,7 @@ $(document).ready(function () {
         ajax_url = 'ajax/dashboard.html';
     }
     //LoadAjaxContent(ajax_url);
+    $('.preloader').hide();
     $('.main-menu').on('click', 'a', function (e) {
         var parents = $(this).parents('li');
         var li = $(this).closest('li.dropdown');

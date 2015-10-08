@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Conta;
 use App\Http\Requests;
+use App\Services\ImportacaoService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class ContasController extends Controller
 {
@@ -14,7 +18,9 @@ class ContasController extends Controller
      */
     public function index()
     {
-        //
+        $contas = Conta::orderBy('codigo_completo')->get();
+
+        return view('contas_contabil.index', compact('contas'));
     }
 
     /**
@@ -24,7 +30,11 @@ class ContasController extends Controller
      */
     public function create()
     {
-        //
+        $contasOptions = Conta::contasOptions();
+
+        $conta = null;
+
+        return view('contas_contabil.create', compact('contasOptions', 'conta'));
     }
 
     /**
@@ -35,7 +45,11 @@ class ContasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, Conta::$rules);
+
+        Conta::create($request->all());
+
+        return Redirect::route('contas_contabil.index');
     }
 
     /**
@@ -46,7 +60,9 @@ class ContasController extends Controller
      */
     public function show($id)
     {
-        //
+        $conta = Conta::findOrFail($id);
+
+        return view('contas_contabil.edit', compact('conta'));
     }
 
     /**
@@ -57,7 +73,11 @@ class ContasController extends Controller
      */
     public function edit($id)
     {
-        //
+        $conta = Conta::findOrFail($id);
+
+        $contasOptions = Conta::contasOptions($conta->id);
+
+        return view('contas_contabil.edit', compact('conta', 'contasOptions'));
     }
 
     /**
@@ -69,7 +89,13 @@ class ContasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $conta = Conta::findOrFail($id);
+
+        $this->validate($request, Conta::$rules);
+
+        $conta->update($request->all());
+
+        return Redirect::route('contas_contabil.index');
     }
 
     /**
@@ -80,6 +106,28 @@ class ContasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Conta::destroy($id);
+
+        return Redirect::route('contas_contabil.index');
+    }
+
+    public function importacaoForm()
+    {
+        return view('contas_contabil.importacao');
+    }
+
+    public function importacao(Request $request)
+    {
+        $arquivo = $request->file('arquivo');
+
+        $filename = Carbon::now()->format('Y-m-d_H-i-s') . '_' . $arquivo->getClientOriginalName();
+
+        $arquivo->move('../storage/importacao', $filename);
+
+        $path = storage_path('importacao/' . $filename);
+
+        ImportacaoService::importacao($path);
+
+        return Redirect::route('contas_contabil.index');
     }
 }

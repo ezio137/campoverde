@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('home');
 });
+
+Route::get('contas_contabil/importacao', 'ContasController@importacaoForm');
+Route::post('contas_contabil/importacao', 'ContasController@importacao');
+Route::resource('contas_contabil', 'ContasController');
