@@ -20,6 +20,11 @@ class Conta extends Model
 
         Conta::saving(function ($conta) {
             $conta->codigo_completo = ($conta->contaPai ? $conta->contaPai->codigo_completo . '.' : '') . $conta->codigo;
+            $listaCodigoCompleto = explode('.', $conta->codigo_completo);
+            $listaCodigoCompleto = array_map(function ($x) {
+                return str_pad($x, 3, '0', STR_PAD_LEFT);
+            }, $listaCodigoCompleto);
+            $conta->codigo_completo_ordenavel = implode('.', $listaCodigoCompleto);
         });
     }
 

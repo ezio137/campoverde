@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Conta;
 use App\Http\Requests;
-use App\Services\ImportacaoService;
+use App\Jobs\ImportarContas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -18,7 +18,7 @@ class ContasController extends Controller
      */
     public function index()
     {
-        $contas = Conta::orderBy('codigo_completo')->get();
+        $contas = Conta::orderBy('codigo_completo_ordenavel')->get();
 
         return view('contas_contabil.index', compact('contas'));
     }
@@ -126,7 +126,7 @@ class ContasController extends Controller
 
         $path = storage_path('importacao/' . $filename);
 
-        ImportacaoService::importacao($path);
+        $this->dispatch(new ImportarContas($path));
 
         return Redirect::route('contas_contabil.index');
     }

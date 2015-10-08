@@ -17,6 +17,7 @@ class CreateContasContabilTable extends Migration
             $table->string('nome');
             $table->integer('codigo');
             $table->string('codigo_completo');
+            $table->string('codigo_completo_ordenavel');
             $table->unsignedInteger('conta_pai_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
