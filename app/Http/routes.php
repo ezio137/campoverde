@@ -17,4 +17,6 @@ Route::get('/', function () {
 
 Route::get('contas_contabil/importacao', 'ContasController@importacaoForm');
 Route::post('contas_contabil/importacao', 'ContasController@importacao');
+Route::get('contas_contabil/importacao_saldos', 'ContasController@importacaoSaldosForm');
+Route::post('contas_contabil/importacao_saldos', 'ContasController@importacaoSaldos');
 Route::resource('contas_contabil', 'ContasController');

@@ -4,7 +4,10 @@
     <div class="row">
         <div class="col-xs-12">
             <a href="/contas_contabil/create" class="btn btn-primary"><i class="fa fa-plus"></i> Nova conta</a>
-            <a href="/contas_contabil/importacao" class="btn btn-primary"><i class="fa fa-upload"></i> Importa&ccedil;&atilde;o</a>
+            <a href="/contas_contabil/importacao" class="btn btn-primary"><i class="fa fa-upload"></i> Importa&ccedil;&atilde;o
+                Contas</a>
+            <a href="/contas_contabil/importacao_saldos" class="btn btn-primary"><i class="fa fa-upload"></i> Importa&ccedil;&atilde;o
+                Saldos</a>
         </div>
     </div>
 

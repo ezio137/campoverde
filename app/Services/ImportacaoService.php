@@ -1,6 +1,8 @@
 <?php namespace App\Services;
 
 use App\Conta;
+use App\SaldoConta;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class ImportacaoService
@@ -66,5 +68,50 @@ class ImportacaoService
             ]);
         }
         return $contaPai;
+    }
+
+    public static function importacaoSaldos($path)
+    {
+        SaldoConta::where('id', '>', 0)->forceDelete();
+
+        $file = fopen($path, 'r');
+
+        while (!feof($file)) {
+            $row = fgetcsv($file, 0, "\t");
+            $lista[] = $row;
+
+            if (sizeof($row) > 1 && preg_match('/^\d\d\/\d\d\d\d/', $row[1])) {
+                array_shift($row);
+                $meses = array_map(function ($mes) {
+                    return Carbon::createFromDate(substr($mes, 3, 4), substr($mes, 0, 2))->lastOfMonth();
+                }, $row);
+            }
+
+            if (preg_match('/^([\d\.]+)\s+(.*)/', $row[0], $matches)) {
+                $codigoCompleto = $matches[1];
+                $listaCodigoCompleto = explode('.', $codigoCompleto);
+
+                $listaCodigoCompleto = array_map(function ($x) {
+                    return intval($x);
+                }, $listaCodigoCompleto);
+
+                $codigoCompleto = implode('.', $listaCodigoCompleto);
+                $conta = Conta::where('codigo_completo', $codigoCompleto)->first();
+
+                if ($conta) {
+                    Log::info('importando conta ' . $conta->nome . ' saldo: ');
+                    array_shift($row);
+                    foreach ($meses as $key => $mes) {
+                        SaldoConta::create([
+                            'conta_contabil_id' => $conta->id,
+                            'mes' => $mes,
+                            'saldo' => $row[$key]
+                        ]);
+                    }
+                } else {
+                    Log::info('conta nao encontrada: ' . $codigoCompleto);
+                }
+            }
+        }
     }
 }

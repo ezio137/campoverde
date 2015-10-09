@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Conta;
 use App\Http\Requests;
 use App\Jobs\ImportarContas;
+use App\Jobs\ImportarSaldosContas;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -127,6 +128,26 @@ class ContasController extends Controller
         $path = storage_path('importacao/' . $filename);
 
         $this->dispatch(new ImportarContas($path));
+
+        return Redirect::route('contas_contabil.index');
+    }
+
+    public function importacaoSaldosForm()
+    {
+        return view('contas_contabil.importacao_saldos');
+    }
+
+    public function importacaoSaldos(Request $request)
+    {
+        $arquivo = $request->file('arquivo');
+
+        $filename = Carbon::now()->format('Y-m-d_H-i-s') . '_' . $arquivo->getClientOriginalName();
+
+        $arquivo->move('../storage/importacao', $filename);
+
+        $path = storage_path('importacao/' . $filename);
+
+        $this->dispatch(new ImportarSaldosContas($path));
 
         return Redirect::route('contas_contabil.index');
     }
