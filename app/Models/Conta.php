@@ -39,4 +39,9 @@ class Conta extends Model
     {
         return $this->belongsTo('App\Conta', 'conta_pai_id');
     }
+
+    public function nivel()
+    {
+        return sizeof(explode('.', $this->codigo_completo));
+    }
 }

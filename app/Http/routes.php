@@ -20,3 +20,6 @@ Route::post('contas_contabil/importacao', 'ContasController@importacao');
 Route::get('contas_contabil/importacao_saldos', 'ContasController@importacaoSaldosForm');
 Route::post('contas_contabil/importacao_saldos', 'ContasController@importacaoSaldos');
 Route::resource('contas_contabil', 'ContasController');
+
+Route::get('balanco_patrimonial', 'DemonstracoesController@balancoPatrimonial');
+Route::any('atualizar_balanco_patrimonial', 'DemonstracoesController@atualizarBalancoPatrimonial');

@@ -1,6 +1,7 @@
 <?php namespace App\Services;
 
 use App\Conta;
+use App\Data;
 use App\SaldoConta;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -73,6 +74,7 @@ class ImportacaoService
     public static function importacaoSaldos($path)
     {
         SaldoConta::where('id', '>', 0)->forceDelete();
+        Data::where('id', '>', 0)->forceDelete();
 
         $file = fopen($path, 'r');
 
@@ -85,6 +87,13 @@ class ImportacaoService
                 $meses = array_map(function ($mes) {
                     return Carbon::createFromDate(substr($mes, 3, 4), substr($mes, 0, 2))->lastOfMonth();
                 }, $row);
+
+                $datas = [];
+                foreach ($meses as $mes) {
+                    Log::info('criando mes...' . $mes);
+                    $data = Data::create(['data' => $mes]);
+                    $datas[] = $data;
+                }
             }
 
             if (preg_match('/^([\d\.]+)\s+(.*)/', $row[0], $matches)) {
@@ -99,13 +108,13 @@ class ImportacaoService
                 $conta = Conta::where('codigo_completo', $codigoCompleto)->first();
 
                 if ($conta) {
-                    Log::info('importando conta ' . $conta->nome . ' saldo: ');
+                    Log::info('importando conta ' . $conta->nome);
                     array_shift($row);
-                    foreach ($meses as $key => $mes) {
+                    foreach ($datas as $key => $data) {
                         SaldoConta::create([
                             'conta_contabil_id' => $conta->id,
-                            'mes' => $mes,
-                            'saldo' => $row[$key]
+                            'data_id' => $data->id,
+                            'saldo' => str_replace('.', '', $row[$key])
                         ]);
                     }
                 } else {
