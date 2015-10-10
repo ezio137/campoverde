@@ -23,3 +23,5 @@ Route::resource('contas_contabil', 'ContasController');
 
 Route::get('balanco_patrimonial', 'DemonstracoesController@balancoPatrimonial');
 Route::any('atualizar_balanco_patrimonial', 'DemonstracoesController@atualizarBalancoPatrimonial');
+
+Route::resource('favoritos_balanco_patrimonial', 'FavoritosBalancoPatrimonialController');

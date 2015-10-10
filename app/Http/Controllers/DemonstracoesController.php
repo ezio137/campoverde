@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Conta;
 use App\Data;
+use App\FavoritoBalancoPatrimonial;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +16,7 @@ class DemonstracoesController extends Controller
         $contasOptions = Conta::contasOptions();
         $mesesOptions = Data::mesesOptions();
 
-        $contasFavoritasOptions = [];
+        $contasFavoritasOptions = collect([0 => 'Nenhum'])->all() + FavoritoBalancoPatrimonial::lists('nome', 'id')->all();
         $mesesFavoritosOptions = [];
 
         return view('demonstracoes.balanco_patrimonial', compact(
@@ -35,6 +36,11 @@ class DemonstracoesController extends Controller
         if ($request->has('remove-conta')) {
             $contaId = $request->input('remove-conta');
             $request->session()->put('contas', array_diff($request->session()->get('contas'), [$contaId]));
+        }
+        if ($request->has('contas_favoritas')) {
+            $codigos = FavoritoBalancoPatrimonial::find($request->input('contas_favoritas'))->itens()->lists('conta_codigo_completo');
+            $contasIds = Conta::whereIn('codigo_completo', $codigos)->lists('id')->all();
+            $request->session()->put('contas', $contasIds);
         }
         $contasIds = $request->session()->get('contas');
 
@@ -60,6 +66,9 @@ class DemonstracoesController extends Controller
             ->join('saldos_conta_contabil as scc', 'cc.id', '=', 'scc.conta_contabil_id')
             ->whereIn('cc_filtro.id', $contasIds)
             ->whereIn('scc.data_id', $mesesIds)
+            ->whereNull('cc_filtro.deleted_at')
+            ->whereNull('cc.deleted_at')
+            ->whereNull('scc.deleted_at')
             ->groupBy('cc_filtro.id', 'scc.data_id')
             ->get();
         $resultado = collect($resultado);
@@ -68,6 +77,8 @@ class DemonstracoesController extends Controller
             ->select(DB::raw('substr(cc.codigo_completo, 1, 1) as tipo_conta'), 'scc.data_id', DB::raw('sum(scc.saldo) as saldo'))
             ->join('saldos_conta_contabil as scc', 'cc.id', '=', 'scc.conta_contabil_id')
             ->whereIn('scc.data_id', $mesesIds)
+            ->whereNull('cc.deleted_at')
+            ->whereNull('scc.deleted_at')
             ->groupBy(DB::raw('substr(cc.codigo_completo, 1, 1)'), 'scc.data_id')
             ->get();
         $resultadoTotais = collect($resultadoTotais);

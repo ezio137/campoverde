@@ -36,8 +36,10 @@
                     <fieldset>
                         <legend>Favoritos</legend>
                         {{ csrf_field() }}
-                        <div class="row">
-                            @include('layouts.forms.select', ['atributo' => 'contas_favoritas', 'label' => 'Conta', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $contasFavoritasOptions])
+                        <div class="row form-group-inline">
+                            @include('layouts.forms.select', ['atributo' => 'contas_favoritas', 'label' => 'Conta', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $contasFavoritasOptions, 'inline' => 'true'])
+                            <a href="/favoritos_balanco_patrimonial/create" class="btn btn-primary btn-sm"><i
+                                        class="fa fa-save"></i> Salvar favorito</a>
                         </div>
                         <div class="row">
                             @include('layouts.forms.select', ['atributo' => 'meses_favoritos', 'label' => 'Mês', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $mesesFavoritosOptions])
@@ -87,6 +89,12 @@
             $('#mes').change(function () {
                 $('#conteudo-demonstracao').load('/atualizar_balanco_patrimonial', {
                     'mes': $('#mes').val(),
+                    '_token': $('[name=_token]').val()
+                })
+            });
+            $('#contas_favoritas').change(function () {
+                $('#conteudo-demonstracao').load('/atualizar_balanco_patrimonial', {
+                    'contas_favoritas': $('#contas_favoritas').val(),
                     '_token': $('[name=_token]').val()
                 })
             });
