@@ -25,3 +25,4 @@ Route::get('balanco_patrimonial', 'DemonstracoesController@balancoPatrimonial');
 Route::any('atualizar_balanco_patrimonial', 'DemonstracoesController@atualizarBalancoPatrimonial');
 
 Route::resource('favoritos_balanco_patrimonial', 'FavoritosBalancoPatrimonialController');
+Route::resource('classificacoes_contas', 'ClassificacoesContasController');

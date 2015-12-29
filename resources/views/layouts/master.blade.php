@@ -150,11 +150,22 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle active">
                         <i class="fa fa-book"></i>
-                        <soan>Cont&aacute;bil</soan>
+                        <span>Cont&aacute;bil</span>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="/contas_contabil">Contas</a></li>
-                        <li><a href="/balanco_patrimonial">Balan&ccedil;o Patrimonial</a></li>
+                        <li><a href="/classificacoes_contas">Classifica&ccedil;&otilde;es</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle active">
+                                <i class="fa fa-book"></i>
+                                <span>Balan&ccedil;o Patrimonial</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/balanco_patrimonial">Balan&ccedil;o Patrimonial (Contas)</a></li>
+                                <li><a href="/balanco_patrimonial_classificacoes">Balan&ccedil;o Patrimonial (Classifica&ccedil;&otilde;es)</a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -182,7 +193,21 @@
             </div>
             <div id="ajax-content">
                 <div class="row">
-                    <div id="breadcrumb" class="col-md-12"></div>
+                    <div id="breadcrumb" class="col-xs-12">
+                        <a href="#" class="show-sidebar">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                        <ol class="breadcrumb pull-left">
+                            @yield('breadcrumb')
+                        </ol>
+                        <div id="social" class="pull-right">
+                            {{--<a href="#"><i class="fa fa-google-plus"></i></a>--}}
+                            {{--<a href="#"><i class="fa fa-facebook"></i></a>--}}
+                            {{--<a href="#"><i class="fa fa-twitter"></i></a>--}}
+                            {{--<a href="#"><i class="fa fa-linkedin"></i></a>--}}
+                            {{--<a href="#"><i class="fa fa-youtube"></i></a>--}}
+                        </div>
+                    </div>
                 </div>
                 @yield('content')
             </div>

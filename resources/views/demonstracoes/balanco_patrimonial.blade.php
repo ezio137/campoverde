@@ -2,7 +2,31 @@
 
 @extends('layouts.master')
 
+@section('breadcrumb')
+    <li><a href="#">Cont&aacute;bil</a></li>
+    <li><a href="#">Balan&ccedil;o Patrimonial</a></li>
+@stop
+
 @section('content')
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box ui-draggable ui-droppable">
+                <div class="box-header">
+                    <div class="box-name"></div>
+                    <div class="box-icons"></div>
+                    <div class="no-move"></div>
+                </div>
+                <div class="box-content">
+                    <div class="row">
+                        <h2 class="text-center">Balan&ccedil;o Patrimonial</h2>
+                    </div>
+                    <div class="row" id="conteudo-demonstracao">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-xs-12 col-sm-6">
             <div class="box ui-draggable ui-droppable">
@@ -45,25 +69,6 @@
                             @include('layouts.forms.select', ['atributo' => 'meses_favoritos', 'label' => 'Mês', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $mesesFavoritosOptions])
                         </div>
                     </fieldset>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="box ui-draggable ui-droppable">
-                <div class="box-header">
-                    <div class="box-name"></div>
-                    <div class="box-icons"></div>
-                    <div class="no-move"></div>
-                </div>
-                <div class="box-content">
-                    <div class="row">
-                        <h2 class="text-center">Balan&ccedil;o Patrimonial</h2>
-                    </div>
-                    <div class="row" id="conteudo-demonstracao">
-                    </div>
                 </div>
             </div>
         </div>

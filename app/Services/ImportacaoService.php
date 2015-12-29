@@ -73,8 +73,8 @@ class ImportacaoService
 
     public static function importacaoSaldos($path)
     {
-        SaldoConta::where('id', '>', 0)->forceDelete();
-        Data::where('id', '>', 0)->forceDelete();
+//        SaldoConta::where('id', '>', 0)->forceDelete();
+//        Data::where('id', '>', 0)->forceDelete();
 
         $file = fopen($path, 'r');
 
