@@ -8,5 +8,6 @@ Homestead.json
 /public/img
 /public/css
 /public/js
+/public/vendor
 composer.lock
 storage/importacao
