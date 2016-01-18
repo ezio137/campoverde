@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col-xs-12">
-            <a href="/classificacoes_contas/create" class="btn btn-primary"><i class="fa fa-plus"></i> Nova classifica&ccedil;&atilde;o</a>
+            <a href="/lancamentos/create" class="btn btn-primary"><i class="fa fa-plus"></i> Novo lan&ccedil;amento</a>
         </div>
     </div>
 
@@ -12,18 +12,18 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Nome</th>
+                    <th>Data</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($tipos as $tipo)
+                @foreach($lancamentos as $lancamento)
                     <tr>
-                        <td>{!! link_to_route('classificacoes_contas.edit', $tipo->nome, ['id' => $tipo->id]) !!}</td>
+                        <td>{!! link_to_route('favorecidos.edit', $lancamento->data, ['id' => $lancamento->id]) !!}</td>
                         <td>
-                            {!! Form::open(['route' => ['classificacoes_contas.destroy', $tipo->id], 'method' => 'DELETE', 'id' => "delete-form-$tipo->id"]) !!}
+                            {!! Form::open(['route' => ['favorecidos.destroy', $lancamento->id], 'method' => 'DELETE', 'id' => "delete-form-$lancamento->id"]) !!}
                             <button type="button" class="btn-link btn-delete-confirmation"
-                                    data-delete-item-id="{{ $tipo->id }}"><i class="fa fa-trash-o"></i></button>
+                                    data-delete-item-id="{{ $lancamento->id }}"><i class="fa fa-trash-o"></i></button>
                             {!! Form::close() !!}
                         </td>
                     </tr>

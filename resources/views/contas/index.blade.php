@@ -3,16 +3,16 @@
 @section('content')
     <div class="row">
         <div class="col-xs-12">
-            <a href="/contas_contabil/create" class="btn btn-primary"><i class="fa fa-plus"></i> Nova conta</a>
-            <a href="/contas_contabil/importacao" class="btn btn-primary"><i class="fa fa-upload"></i> Importa&ccedil;&atilde;o
+            <a href="/contas/create" class="btn btn-primary"><i class="fa fa-plus"></i> Nova conta</a>
+            <a href="/contas/importacao" class="btn btn-primary"><i class="fa fa-upload"></i> Importa&ccedil;&atilde;o
                 Contas</a>
-            <a href="/contas_contabil/importacao_saldos" class="btn btn-primary"><i class="fa fa-upload"></i> Importa&ccedil;&atilde;o
+            <a href="/contas/importacao_saldos" class="btn btn-primary"><i class="fa fa-upload"></i> Importa&ccedil;&atilde;o
                 Saldos</a>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-xs-12">
+    <div class="box">
+        <div class="box-body table-responsive no-padding">
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -24,10 +24,11 @@
                 <tbody>
                 @foreach($contas as $conta)
                     <tr>
-                        <td>{!! link_to_route('contas_contabil.edit', $conta->codigo_completo, ['id' => $conta->id]) !!}</td>
-                        <td>{!! link_to_route('contas_contabil.edit', $conta->nome, ['id' => $conta->id]) !!}</td>
+                        <td>{!! link_to_route('contas.lancamentos', $conta->codigo_completo, ['id' => $conta->id]) !!}</td>
+                        <td>{!! link_to_route('contas.lancamentos', $conta->nome, ['id' => $conta->id]) !!}</td>
                         <td>
-                            {!! Form::open(['route' => ['contas_contabil.destroy', $conta->id], 'method' => 'DELETE', 'id' => "delete-form-$conta->id"]) !!}
+                            {!! Form::open(['route' => ['contas.destroy', $conta->id], 'method' => 'DELETE', 'id' => "delete-form-$conta->id"]) !!}
+                            <a href="/contas/{{ $conta->id }}/edit"><i class="fa fa-pencil"></i></a>
                             <button type="button" class="btn-link btn-delete-confirmation"
                                     data-delete-item-id="{{ $conta->id }}"><i class="fa fa-trash-o"></i></button>
                             {!! Form::close() !!}

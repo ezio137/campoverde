@@ -21,7 +21,8 @@ class ContasController extends Controller
     {
         $contas = Conta::orderBy('codigo_completo_ordenavel')->get();
 
-        return view('contas_contabil.index', compact('contas'));
+        return view('contas.index', compact('contas'))
+            ->with('pageHeader', 'Contas');
     }
 
     /**
@@ -35,7 +36,8 @@ class ContasController extends Controller
 
         $conta = null;
 
-        return view('contas_contabil.create', compact('contasOptions', 'conta'));
+        return view('contas.create', compact('contasOptions', 'conta'))
+            ->with('pageHeader', 'Contas');
     }
 
     /**
@@ -50,7 +52,7 @@ class ContasController extends Controller
 
         Conta::create($request->all());
 
-        return Redirect::route('contas_contabil.index');
+        return Redirect::route('contas.index');
     }
 
     /**
@@ -63,7 +65,8 @@ class ContasController extends Controller
     {
         $conta = Conta::findOrFail($id);
 
-        return view('contas_contabil.edit', compact('conta'));
+        return view('contas.edit', compact('conta'))
+            ->with('pageHeader', 'Contas');
     }
 
     /**
@@ -78,7 +81,8 @@ class ContasController extends Controller
 
         $contasOptions = Conta::contasOptions($conta->id);
 
-        return view('contas_contabil.edit', compact('conta', 'contasOptions'));
+        return view('contas.edit', compact('conta', 'contasOptions'))
+            ->with('pageHeader', 'Contas');
     }
 
     /**
@@ -96,7 +100,7 @@ class ContasController extends Controller
 
         $conta->update($request->all());
 
-        return Redirect::route('contas_contabil.index');
+        return Redirect::route('contas.index');
     }
 
     /**
@@ -109,12 +113,13 @@ class ContasController extends Controller
     {
         Conta::destroy($id);
 
-        return Redirect::route('contas_contabil.index');
+        return Redirect::route('contas.index');
     }
 
     public function importacaoForm()
     {
-        return view('contas_contabil.importacao');
+        return view('contas.importacao')
+            ->with('pageHeader', 'Contas');
     }
 
     public function importacao(Request $request)
@@ -129,12 +134,13 @@ class ContasController extends Controller
 
         $this->dispatch(new ImportarContas($path));
 
-        return Redirect::route('contas_contabil.index');
+        return Redirect::route('contas.index');
     }
 
     public function importacaoSaldosForm()
     {
-        return view('contas_contabil.importacao_saldos');
+        return view('contas.importacao_saldos')
+            ->with('pageHeader', 'Contas');
     }
 
     public function importacaoSaldos(Request $request)
@@ -149,6 +155,6 @@ class ContasController extends Controller
 
         $this->dispatch(new ImportarSaldosContas($path));
 
-        return Redirect::route('contas_contabil.index');
+        return Redirect::route('contas.index');
     }
 }

@@ -11,7 +11,6 @@ class Conta extends Model
     use SoftDeletes;
 
     public static $rules = [];
-    protected $table = 'contas_contabil';
     protected $fillable = ['codigo', 'nome', 'codigo_completo', 'conta_pai_id'];
 
     public static function boot()
@@ -31,7 +30,7 @@ class Conta extends Model
     public static function contasOptions($contaAtualId = 0)
     {
         $contaInicial = collect([0 => 'Nenhum']);
-        $contas = self::select('id', DB::raw('concat(codigo_completo, " - ", nome) as codigoNome'))->where('id', '<>', $contaAtualId)->lists('codigoNome', 'id');
+        $contas = self::select('id', DB::raw('concat(codigo_completo, " - ", nome) as codigoNome'))->where('id', '<>', $contaAtualId)->orderBy('codigo_completo_ordenavel')->lists('codigoNome', 'id');
         return $contaInicial->all() + $contas->all();
     }
 

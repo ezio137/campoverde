@@ -10,7 +10,7 @@
                     <div class="no-move"></div>
                 </div>
                 <div class="box-content">
-                    {!! Form::open(['url' => '/contas_contabil/importacao', 'class' => 'form-horizontal', 'files' => 'true']) !!}
+                    {!! Form::open(['url' => '/contas/importacao', 'class' => 'form-horizontal', 'files' => 'true']) !!}
                     <div class="form-group">
                         {!! Form::label('arquivo', 'Arquivo', ['class' => 'col-sm-3 control-label']) !!}
                         <div class="col-sm-3">

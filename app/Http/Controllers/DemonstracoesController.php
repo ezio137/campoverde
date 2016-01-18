@@ -60,9 +60,9 @@ class DemonstracoesController extends Controller
         $contasPassivo = $this->contas('2', $contasIds);
         $contasPL = $this->contas('3', $contasIds);
 
-        $resultado = DB::table('contas_contabil as cc_filtro')
+        $resultado = DB::table('contas as cc_filtro')
             ->select('cc_filtro.id as conta_id', 'scc.data_id', DB::raw('sum(scc.saldo) as saldo'))
-            ->join('contas_contabil as cc', 'cc.codigo_completo', 'like', DB::raw("concat(cc_filtro.codigo_completo, '%')"))
+            ->join('contas as cc', 'cc.codigo_completo', 'like', DB::raw("concat(cc_filtro.codigo_completo, '%')"))
             ->join('saldos_conta_contabil as scc', 'cc.id', '=', 'scc.conta_contabil_id')
             ->whereIn('cc_filtro.id', $contasIds)
             ->whereIn('scc.data_id', $mesesIds)
@@ -73,7 +73,7 @@ class DemonstracoesController extends Controller
             ->get();
         $resultado = collect($resultado);
 
-        $resultadoTotais = DB::table('contas_contabil as cc')
+        $resultadoTotais = DB::table('contas as cc')
             ->select(DB::raw('substr(cc.codigo_completo, 1, 1) as tipo_conta'), 'scc.data_id', DB::raw('sum(scc.saldo) as saldo'))
             ->join('saldos_conta_contabil as scc', 'cc.id', '=', 'scc.conta_contabil_id')
             ->whereIn('scc.data_id', $mesesIds)

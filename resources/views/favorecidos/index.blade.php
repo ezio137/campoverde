@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col-xs-12">
-            <a href="/classificacoes_contas/create" class="btn btn-primary"><i class="fa fa-plus"></i> Nova classifica&ccedil;&atilde;o</a>
+            <a href="/favorecidos/create" class="btn btn-primary"><i class="fa fa-plus"></i> Novo favorecido</a>
         </div>
     </div>
 
@@ -17,13 +17,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($tipos as $tipo)
+                @foreach($favorecidos as $favorecido)
                     <tr>
-                        <td>{!! link_to_route('classificacoes_contas.edit', $tipo->nome, ['id' => $tipo->id]) !!}</td>
+                        <td>{!! link_to_route('favorecidos.edit', $favorecido->nome, ['id' => $favorecido->id]) !!}</td>
                         <td>
-                            {!! Form::open(['route' => ['classificacoes_contas.destroy', $tipo->id], 'method' => 'DELETE', 'id' => "delete-form-$tipo->id"]) !!}
+                            {!! Form::open(['route' => ['favorecidos.destroy', $favorecido->id], 'method' => 'DELETE', 'id' => "delete-form-$favorecido->id"]) !!}
                             <button type="button" class="btn-link btn-delete-confirmation"
-                                    data-delete-item-id="{{ $tipo->id }}"><i class="fa fa-trash-o"></i></button>
+                                    data-delete-item-id="{{ $favorecido->id }}"><i class="fa fa-trash-o"></i></button>
                             {!! Form::close() !!}
                         </td>
                     </tr>

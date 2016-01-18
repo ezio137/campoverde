@@ -32,8 +32,10 @@
         <ul class="sidebar-menu">
             <li class="header">CONT&Aacute;BIL</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="/contas_contabil"><i class="fa fa-book"></i> <span>Contas</span></a></li>
+            <li class="active"><a href="/contas"><i class="fa fa-book"></i> <span>Contas</span></a></li>
             <li><a href="/classificacoes_contas"><i class="fa fa-book"></i> <span>Classifica&ccedil;&otilde;es</span></a></li>
+            <li><a href="/favorecidos"><i class="fa fa-user"></i> <span>Favorecidos</span></a></li>
+            <li><a href="/lancamentos"><i class="fa fa-user"></i> <span>Lan&ccedil;amentos</span></a></li>
             <li class="treeview">
                 <a href="#"><i class="fa fa-book"></i> <span>Balan&ccedil;o Patrimonial</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">

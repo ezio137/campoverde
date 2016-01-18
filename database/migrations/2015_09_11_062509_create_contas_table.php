@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateContasContabilTable extends Migration
+class CreateContasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateContasContabilTable extends Migration
      */
     public function up()
     {
-        Schema::create('contas_contabil', function (Blueprint $table) {
+        Schema::create('contas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome');
             $table->integer('codigo');
@@ -22,7 +22,7 @@ class CreateContasContabilTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-//            $table->foreign('conta_pai_id')->references('id')->on('contas_contabil');
+//            $table->foreign('conta_pai_id')->references('id')->on('contas');
         });
     }
 
@@ -33,6 +33,6 @@ class CreateContasContabilTable extends Migration
      */
     public function down()
     {
-        Schema::drop('contas_contabil');
+        Schema::drop('contas');
     }
 }

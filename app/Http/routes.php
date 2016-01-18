@@ -15,11 +15,14 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('contas_contabil/importacao', 'ContasController@importacaoForm');
-Route::post('contas_contabil/importacao', 'ContasController@importacao');
-Route::get('contas_contabil/importacao_saldos', 'ContasController@importacaoSaldosForm');
-Route::post('contas_contabil/importacao_saldos', 'ContasController@importacaoSaldos');
-Route::resource('contas_contabil', 'ContasController');
+Route::get('contas/importacao', 'ContasController@importacaoForm');
+Route::post('contas/importacao', 'ContasController@importacao');
+Route::get('contas/importacao_saldos', 'ContasController@importacaoSaldosForm');
+Route::post('contas/importacao_saldos', 'ContasController@importacaoSaldos');
+Route::get('contas/{id}/lancamentos', ['as' => 'contas.lancamentos', 'uses' => 'LancamentosController@index']);
+Route::resource('contas', 'ContasController');
+Route::resource('favorecidos', 'FavorecidosController');
+Route::resource('lancamentos', 'LancamentosController');
 
 Route::get('balanco_patrimonial', 'DemonstracoesController@balancoPatrimonial');
 Route::any('atualizar_balanco_patrimonial', 'DemonstracoesController@atualizarBalancoPatrimonial');
