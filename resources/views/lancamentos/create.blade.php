@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-xs-12 col-sm-8">
             <div class="box box-success">
-                {!! Form::open(['route' => 'lancamentos.store', 'class' => 'form-horizontal']) !!}
+                {!! Form::open(['route' => ['contas.lancamentos.store', $conta->id], 'class' => 'form-horizontal']) !!}
                     @include('lancamentos.partials.form')
                 {!! Form::close() !!}
             </div>

@@ -11,7 +11,7 @@ class Conta extends Model
     use SoftDeletes;
 
     public static $rules = [];
-    protected $fillable = ['codigo', 'nome', 'codigo_completo', 'conta_pai_id'];
+    protected $fillable = ['codigo', 'nome', 'codigo_completo', 'conta_pai_id', 'saldo'];
 
     public static function boot()
     {
@@ -29,9 +29,15 @@ class Conta extends Model
 
     public static function contasOptions($contaAtualId = 0)
     {
-        $contaInicial = collect([0 => 'Nenhum']);
-        $contas = self::select('id', DB::raw('concat(codigo_completo, " - ", nome) as codigoNome'))->where('id', '<>', $contaAtualId)->orderBy('codigo_completo_ordenavel')->lists('codigoNome', 'id');
-        return $contaInicial->all() + $contas->all();
+        $contas = self::select('id', DB::raw('concat(codigo_completo, " ", nome) as nome'))->where('id', '<>', $contaAtualId)->orderBy('codigo_completo_ordenavel')->pluck('nome', 'id');
+        return $contas->all();
+    }
+
+    public static function contasOptionsNenhum($contaAtualId = 0)
+    {
+        $contaInicial = [0 => 'Nenhum'];
+        $contas = self::contasOptions($contaAtualId);
+        return $contaInicial + $contas;
     }
 
     public function contaPai()
@@ -42,5 +48,20 @@ class Conta extends Model
     public function nivel()
     {
         return sizeof(explode('.', $this->codigo_completo));
+    }
+
+    public function getCodigoNomeAttribute()
+    {
+        return "$this->codigo_completo $this->nome";
+    }
+
+    public function getAumentaComDebitoAttribute()
+    {
+        return starts_with($this->codigo_completo, '1') || starts_with($this->codigo_completo, '5');
+    }
+
+    public function getAumentaComCreditoAttribute()
+    {
+        return starts_with($this->codigo_completo, '2') || starts_with($this->codigo_completo, '3') || starts_with($this->codigo_completo, '4');
     }
 }

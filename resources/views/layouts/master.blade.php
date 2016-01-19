@@ -18,6 +18,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Google Fonts -->
   <link href='https://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'>
+  <!-- Select2 -->
+  <link rel="stylesheet" href="/vendor/select2/select2.css">
+  <!-- Bootstrap Datepicker -->
+  <link rel="stylesheet" href="/vendor/bootstrap-datepicker/bootstrap-datepicker.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/vendor/admin-lte/AdminLTE.css">
   <link rel="stylesheet" href="/css/styles.css">
@@ -105,6 +109,10 @@ desired effect
 <script src="/vendor/jquery/jquery.js"></script>
 <!-- Bootstrap 3.3.5 -->
 <script src="/vendor/bootstrap/bootstrap.js"></script>
+<!-- Select2 -->
+<script src="/vendor/select2/select2.js"></script>
+<!-- Bootstrap Datepicker -->
+<script src="/vendor/bootstrap-datepicker/bootstrap-datepicker.js"></script>
 <!-- AdminLTE App -->
 <script src="/vendor/admin-lte/app.js"></script>
 

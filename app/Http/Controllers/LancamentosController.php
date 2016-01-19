@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Conta;
+use App\Favorecido;
 use App\Lancamento;
 use App\Http\Requests;
+use App\Services\TextHelper;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class LancamentosController extends Controller
@@ -16,13 +19,12 @@ class LancamentosController extends Controller
      *
      * @return Response
      */
-    public function index(Conta $id)
+    public function index(Conta $conta)
     {
-        dd($id);
-        $lancamentos = Lancamento::orderBy('data')->get();
+        $lancamentos = Lancamento::where('conta_credito_id', $conta->id)->orWhere('conta_debito_id', $conta->id)->orderBy('data')->get();
 
         return view('lancamentos.index', compact('lancamentos', 'conta'))
-            ->with('pageHeader', "Lançamentos - $id->nome");
+            ->with('pageHeader', "Lançamentos - $conta->codigo_completo $conta->nome");
     }
 
     /**
@@ -30,12 +32,15 @@ class LancamentosController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(Conta $conta, $tipo)
     {
-        $conta = null;
+        $favorecidosOptions = Favorecido::orderBy('nome')->pluck('nome', 'id');
+        $contasOptions = Conta::contasOptions($conta->id);
 
-        return view('lancamentos.create', compact('lancamento'))
-            ->with('pageHeader', 'Lançamentos');
+        $exibirTipo = TextHelper::exibirTipoLancamento($tipo);
+
+        return view('lancamentos.create', compact('conta', 'tipo', 'favorecidosOptions', 'contasOptions'))
+            ->with('pageHeader', "$exibirTipo em $conta->codigo_nome");
     }
 
     /**
@@ -44,13 +49,21 @@ class LancamentosController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Conta $conta)
     {
         $this->validate($request, Lancamento::$rules);
 
-        Lancamento::create($request->all());
+        $lancamento = Lancamento::create($request->all());
+        $contaCredito = $lancamento->contaCredito;
+        $contaDebito = $lancamento->contaDebito;
+        $contaCredito->aumentaComCredito
+            ? $contaCredito->update(['saldo' => $contaCredito->saldo + $lancamento->valor])
+            : $contaCredito->update(['saldo' => $contaCredito->saldo - $lancamento->valor]);
+        $contaDebito->aumentaComDebito
+            ? $contaDebito->update(['saldo' => $contaDebito->saldo + $lancamento->valor])
+            : $contaDebito->update(['saldo' => $contaDebito->saldo - $lancamento->valor]);
 
-        return Redirect::route('lancamentos.index');
+        return Redirect::route('contas.lancamentos', ['conta' => $conta->id]);
     }
 
     /**

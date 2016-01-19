@@ -3,10 +3,10 @@
 @section('content')
     <div class="row">
         <div class="col-xs-12">
-            <a href="/contas/create" class="btn btn-primary"><i class="fa fa-plus"></i> Nova conta</a>
-            <a href="/contas/importacao" class="btn btn-primary"><i class="fa fa-upload"></i> Importa&ccedil;&atilde;o
+            <a href="/contas/create" class="btn btn-success"><i class="fa fa-plus"></i> Nova conta</a>
+            <a href="/contas/importacao" class="btn btn-success"><i class="fa fa-upload"></i> Importa&ccedil;&atilde;o
                 Contas</a>
-            <a href="/contas/importacao_saldos" class="btn btn-primary"><i class="fa fa-upload"></i> Importa&ccedil;&atilde;o
+            <a href="/contas/importacao_saldos" class="btn btn-success"><i class="fa fa-upload"></i> Importa&ccedil;&atilde;o
                 Saldos</a>
         </div>
     </div>
@@ -18,6 +18,7 @@
                 <tr>
                     <th>C&oacute;digo</th>
                     <th>Nome</th>
+                    <th>Saldo</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -26,6 +27,7 @@
                     <tr>
                         <td>{!! link_to_route('contas.lancamentos', $conta->codigo_completo, ['id' => $conta->id]) !!}</td>
                         <td>{!! link_to_route('contas.lancamentos', $conta->nome, ['id' => $conta->id]) !!}</td>
+                        <td>{!! link_to_route('contas.lancamentos', $conta->saldo, ['id' => $conta->id]) !!}</td>
                         <td>
                             {!! Form::open(['route' => ['contas.destroy', $conta->id], 'method' => 'DELETE', 'id' => "delete-form-$conta->id"]) !!}
                             <a href="/contas/{{ $conta->id }}/edit"><i class="fa fa-pencil"></i></a>

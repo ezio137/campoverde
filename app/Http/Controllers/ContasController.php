@@ -32,7 +32,7 @@ class ContasController extends Controller
      */
     public function create()
     {
-        $contasOptions = Conta::contasOptions();
+        $contasOptions = Conta::contasOptionsNenhum();
 
         $conta = null;
 
@@ -79,7 +79,7 @@ class ContasController extends Controller
     {
         $conta = Conta::findOrFail($id);
 
-        $contasOptions = Conta::contasOptions($conta->id);
+        $contasOptions = Conta::contasOptionsNenhum($conta->id);
 
         return view('contas.edit', compact('conta', 'contasOptions'))
             ->with('pageHeader', 'Contas');

@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col-xs-12">
-            <a href="/favorecidos/create" class="btn btn-primary"><i class="fa fa-plus"></i> Novo favorecido</a>
+            <a href="/favorecidos/create" class="btn btn-success"><i class="fa fa-plus"></i> Novo favorecido</a>
         </div>
     </div>
 

@@ -19,6 +19,7 @@ class CreateContasTable extends Migration
             $table->string('codigo_completo');
             $table->string('codigo_completo_ordenavel');
             $table->unsignedInteger('conta_pai_id')->nullable();
+            $table->decimal('saldo');
             $table->timestamps();
             $table->softDeletes();
 

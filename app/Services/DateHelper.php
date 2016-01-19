@@ -15,4 +15,26 @@ class DateHelper
             return null;
         }
     }
+
+    public static function extrairData($value)
+    {
+        if ($value instanceof Carbon)
+            return $value;
+        elseif ($value <> '')
+            return Carbon::createFromFormat('d/m/Y', $value);
+        else
+            return null;
+    }
+
+    public static function exibirData($value)
+    {
+        if ($value instanceof Carbon) {
+            return $value;
+        } elseif ($value <> '') {
+            $value = preg_replace('/\s.*/', '', $value);  // removendo informacoes de hora caso existam
+            return Carbon::createFromFormat('Y-m-d', $value)->format('d/m/Y');
+        } else {
+            return null;
+        }
+    }
 }
