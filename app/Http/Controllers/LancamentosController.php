@@ -23,7 +23,10 @@ class LancamentosController extends Controller
     {
         $lancamentos = Lancamento::where('conta_credito_id', $conta->id)->orWhere('conta_debito_id', $conta->id)->orderBy('data')->get();
 
-        return view('lancamentos.index', compact('lancamentos', 'conta'))
+        $operacaoAumento = $conta->aumentaComCredito ? 'credito' : 'debito';
+        $operacaoReducao = $conta->aumentaComCredito ? 'debito' : 'credito';
+
+        return view('lancamentos.index', compact('lancamentos', 'conta', 'operacaoAumento', 'operacaoReducao'))
             ->with('pageHeader', "Lançamentos - $conta->codigo_completo $conta->nome");
     }
 

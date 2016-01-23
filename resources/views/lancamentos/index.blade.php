@@ -6,8 +6,8 @@
     @if($conta->id)
         <div class="row">
             <div class="col-xs-12">
-                <a href="/contas/{{ $conta->id }}/lancamentos/create/credito" class="btn btn-success"><i class="fa fa-plus"></i> Novo cr&eacute;dito</a>
-                <a href="/contas/{{ $conta->id }}/lancamentos/create/debito" class="btn btn-success"><i class="fa fa-plus"></i> Novo d&eacute;bito</a>
+                <a href="/contas/{{ $conta->id }}/lancamentos/create/{{ $operacaoAumento }}" class="btn btn-success"><i class="fa fa-plus"></i> Novo aumento</a>
+                <a href="/contas/{{ $conta->id }}/lancamentos/create/{{ $operacaoReducao }}" class="btn btn-success"><i class="fa fa-plus"></i> Nova redu&ccedil;&atilde;o</a>
             </div>
         </div>
     @endif
