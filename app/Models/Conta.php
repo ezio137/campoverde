@@ -18,6 +18,10 @@ class Conta extends Model
         parent::boot();
 
         Conta::saving(function ($conta) {
+            if (!$conta->codigo) {
+                $conta->codigo = Conta::where('conta_pai_id', $conta->conta_pai_id)->max('codigo') + 1;
+            }
+
             $conta->codigo_completo = ($conta->contaPai ? $conta->contaPai->codigo_completo . '.' : '') . $conta->codigo;
             $listaCodigoCompleto = explode('.', $conta->codigo_completo);
             $listaCodigoCompleto = array_map(function ($x) {
