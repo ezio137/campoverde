@@ -13,5 +13,6 @@ class LimpaTabelas extends Seeder
     {
         DB::table('contas')->delete();
         DB::table('favorecidos')->delete();
+        DB::table('users')->delete();
     }
 }

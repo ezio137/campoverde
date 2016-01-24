@@ -17,6 +17,7 @@
         </a>
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
+            @if(Auth::check())
             <ul class="nav navbar-nav">
                 <!-- Messages: style can be found in dropdown.less-->
                 <li class="dropdown messages-menu">
@@ -120,7 +121,7 @@
                         <!-- The user image in the navbar-->
                         <img src="/img/user2-160x160.jpg" class="user-image" alt="User Image">
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                        <span class="hidden-xs">Ezio Fagan</span>
+                        <span class="hidden-xs">{{ Auth::user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
@@ -128,7 +129,7 @@
                             <img src="/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                             <p>
-                                Ezio Fagan - Web Developer
+                                {{ Auth::user()->name }} - Web Developer
                                 <small>Member since Nov. 2012</small>
                             </p>
                         </li>
@@ -153,7 +154,7 @@
                                 <a href="#" class="btn btn-default btn-flat">Perfil</a>
                             </div>
                             <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat">Sair</a>
+                                <a href="/logout" class="btn btn-default btn-flat">Sair</a>
                             </div>
                         </li>
                     </ul>
@@ -163,6 +164,7 @@
                     <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
                 </li>
             </ul>
+            @endif
         </div>
     </nav>
 </header>

@@ -64,7 +64,9 @@ desired effect
   <!-- Main Header -->
   @include('layouts.partials.header')
   <!-- Left side column. contains the logo and sidebar -->
+  @if(Auth::check())
   @include('layouts.partials.sidebar')
+  @endif
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -95,7 +97,9 @@ desired effect
   @include('layouts.partials.footer')
 
   <!-- Control Sidebar -->
+  @if(Auth::check())
   @include('layouts.partials.right-sidebar')
+  @endif
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
