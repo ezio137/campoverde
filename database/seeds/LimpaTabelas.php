@@ -11,6 +11,7 @@ class LimpaTabelas extends Seeder
      */
     public function run()
     {
+        DB::table('lancamentos')->delete();
         DB::table('contas')->delete();
         DB::table('favorecidos')->delete();
         DB::table('users')->delete();

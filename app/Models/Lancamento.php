@@ -50,4 +50,9 @@ class Lancamento extends Model
             return false;
         }
     }
+
+    public function saldoConta($tipo)
+    {
+        return $this->contaCredito()->saldo($this->data);
+    }
 }

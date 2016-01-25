@@ -26,7 +26,9 @@ class LancamentosController extends Controller
         $operacaoAumento = $conta->aumentaComCredito ? 'credito' : 'debito';
         $operacaoReducao = $conta->aumentaComCredito ? 'debito' : 'credito';
 
-        return view('lancamentos.index', compact('lancamentos', 'conta', 'operacaoAumento', 'operacaoReducao'))
+        $saldo = 0.0;
+
+        return view('lancamentos.index', compact('lancamentos', 'conta', 'operacaoAumento', 'operacaoReducao', 'saldo'))
             ->with('pageHeader', "Lançamentos - $conta->codigo_completo $conta->nome");
     }
 
@@ -40,7 +42,11 @@ class LancamentosController extends Controller
         $favorecidosOptions = Favorecido::orderBy('nome')->pluck('nome', 'id');
         $contasOptions = Conta::contasOptions($conta->id);
 
-        $exibirTipo = TextHelper::exibirTipoLancamento($tipo);
+        if (($tipo == 'credito' && $conta->aumentaComCredito) || ($tipo == 'debito' && $conta->aumentaComDebito)) {
+            $exibirTipo = 'Aumento';
+        } else {
+            $exibirTipo = 'Redução';
+        }
 
         return view('lancamentos.create', compact('conta', 'tipo', 'favorecidosOptions', 'contasOptions'))
             ->with('pageHeader', "$exibirTipo em $conta->codigo_nome");

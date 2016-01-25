@@ -26,7 +26,8 @@
     <script type="application/javascript">
         $(function(){
             $('#data').datepicker({
-                format: "dd/mm/yyyy"
+                format: "dd/mm/yyyy",
+                autoclose: true
             });
             $('#favorecido_id').select2();
             $('#conta_id').select2();

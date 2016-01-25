@@ -1,4 +1,5 @@
-@injects('App\DateHelper', 'dateHelper')
+@inject('dateHelper', 'App\Services\DateHelper')
+@inject('numberHelper', 'App\Services\NumberHelper')
 
 @extends('layouts.master')
 
@@ -22,17 +23,26 @@
                     <th>Conta</th>
                     <th>Aumento</th>
                     <th>Redu&ccedil;&atilde;o</th>
+                    <th>Saldo</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($lancamentos as $lancamento)
+                    <?php
+                            if($lancamento->aumentaConta($conta->id)) {
+                                $saldo += $lancamento->valor;
+                            } else {
+                                $saldo -= $lancamento->valor;
+                            }
+                    ?>
                     <tr>
                         <td>{!! link_to_route('lancamentos.edit', $lancamento->data, ['id' => $lancamento->id]) !!}</td>
                         <td>{!! link_to_route('lancamentos.edit', $lancamento->favorecido->nome, ['id' => $lancamento->id]) !!}</td>
                         <td>{!! link_to_route('lancamentos.edit', $conta->id == $lancamento->conta_credito_id ? $lancamento->contaDebito->codigoNome : $lancamento->contaCredito->codigoNome, ['id' => $lancamento->id]) !!}</td>
                         <td>@if($lancamento->aumentaConta($conta->id)) {!! link_to_route('lancamentos.edit', $lancamento->valor, ['id' => $lancamento->id]) !!} @endif</td>
                         <td>@if(!$lancamento->aumentaConta($conta->id)) {!! link_to_route('lancamentos.edit', $lancamento->valor, ['id' => $lancamento->id]) !!} @endif</td>
+                        <td>{{ $numberHelper::exibirDecimal($saldo) }}</td>
                         <td>
                             {!! Form::open(['route' => ['lancamentos.destroy', $lancamento->id], 'method' => 'DELETE', 'id' => "delete-form-$lancamento->id"]) !!}
                             <button type="button" class="btn-link btn-delete-confirmation"
