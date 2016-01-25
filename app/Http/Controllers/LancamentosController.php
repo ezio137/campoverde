@@ -95,12 +95,25 @@ class LancamentosController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(Conta $conta, Lancamento $lancamento)
     {
-        $lancamento = Lancamento::findOrFail($id);
+        $favorecidosOptions = Favorecido::orderBy('nome')->pluck('nome', 'id');
+        $contasOptions = Conta::contasOptions($conta->id);
 
-        return view('lancamentos.edit', compact('lancamento'))
-            ->with('pageHeader', 'Lançamentos');
+        if ($lancamento->conta_credito_id == $conta->id) {
+            $tipo = 'credito';
+        } else {
+            $tipo = 'debito';
+        }
+
+        if (($lancamento->conta_credito_id == $conta->id && $conta->aumentaComCredito) || ($lancamento->conta_debito_id == $conta->id && $conta->aumentaComDebito)) {
+            $exibirTipo = 'Aumento';
+        } else {
+            $exibirTipo = 'Redução';
+        }
+
+        return view('lancamentos.edit', compact('lancamento', 'favorecidosOptions', 'contasOptions', 'tipo', 'conta'))
+            ->with('pageHeader', "$exibirTipo em $conta->codigo_nome");
     }
 
     /**
@@ -110,15 +123,23 @@ class LancamentosController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Conta $conta, Lancamento $lancamento)
     {
-        $lancamento = Lancamento::findOrFail($id);
+        $valorAntigo = $lancamento->valor;
 
         $this->validate($request, Lancamento::$rules);
 
         $lancamento->update($request->all());
+        $contaCredito = $lancamento->contaCredito;
+        $contaDebito = $lancamento->contaDebito;
+        $contaCredito->aumentaComCredito
+            ? $contaCredito->update(['saldo' => $contaCredito->saldo + $lancamento->valor - $valorAntigo])
+            : $contaCredito->update(['saldo' => $contaCredito->saldo - $lancamento->valor + $valorAntigo]);
+        $contaDebito->aumentaComDebito
+            ? $contaDebito->update(['saldo' => $contaDebito->saldo + $lancamento->valor - $valorAntigo])
+            : $contaDebito->update(['saldo' => $contaDebito->saldo - $lancamento->valor + $valorAntigo]);
 
-        return Redirect::route('lancamentos.index');
+        return Redirect::route('contas.lancamentos', ['conta' => $conta->id]);
     }
 
     /**
@@ -127,10 +148,19 @@ class LancamentosController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Lancamento $lancamento)
     {
-        Lancamento::destroy($id);
+        $valor = $lancamento->valor;
+        $contaCredito = $lancamento->contaCredito;
+        $contaDebito = $lancamento->contaDebito;
+        $lancamento->delete();
+        $contaCredito->aumentaComCredito
+            ? $contaCredito->update(['saldo' => $contaCredito->saldo - $valor])
+            : $contaCredito->update(['saldo' => $contaCredito->saldo + $valor]);
+        $contaDebito->aumentaComDebito
+            ? $contaDebito->update(['saldo' => $contaDebito->saldo - $valor])
+            : $contaDebito->update(['saldo' => $contaDebito->saldo + $valor]);
 
-        return Redirect::route('lancamentos.index');
+        return Redirect::route('contas.lancamentos', ['conta' => $lancamento->conta_id]);
     }
 }
