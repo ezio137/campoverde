@@ -21,6 +21,7 @@ class CreateLancamentosTable extends Migration
             $table->unsignedInteger('conta_debito_id');
             $table->decimal('valor');
             $table->string('memorando')->nullable();
+            $table->string('status_reconciliacao', 1)->nullable();
             $table->timestamps();
             $table->softDeletes();
 

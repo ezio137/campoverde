@@ -29,7 +29,9 @@
                 format: "dd/mm/yyyy",
                 autoclose: true
             });
-            $('#favorecido_id').select2();
+            $('#favorecido_id').select2({
+                tags: true
+            });
             $('#conta_id').select2();
         });
     </script>

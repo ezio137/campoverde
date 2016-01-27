@@ -29,6 +29,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('contas/{conta}/lancamentos/{lancamento}', ['as' => 'contas.lancamentos.edit', 'uses' => 'LancamentosController@edit']);
     Route::put('contas/{conta}/lancamentos/{lancamento}', ['as' => 'contas.lancamentos.update', 'uses' => 'LancamentosController@update']);
     Route::resource('contas', 'ContasController');
+    Route::get('favorecidos/list', 'FavorecidosController@lists');
     Route::resource('favorecidos', 'FavorecidosController');
     Route::resource('lancamentos', 'LancamentosController');
 

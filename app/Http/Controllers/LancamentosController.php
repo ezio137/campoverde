@@ -60,6 +60,11 @@ class LancamentosController extends Controller
      */
     public function store(Request $request, Conta $conta)
     {
+        if (!$this->isInteger($request->input('favorecido_id'))) {
+            $favorecido = Favorecido::create(['nome' => $request->input('favorecido_id')]);
+            $request->merge(['favorecido_id' => $favorecido->id]);
+        }
+
         $this->validate($request, Lancamento::$rules);
 
         $lancamento = Lancamento::create($request->all());
@@ -126,18 +131,26 @@ class LancamentosController extends Controller
     public function update(Request $request, Conta $conta, Lancamento $lancamento)
     {
         $valorAntigo = $lancamento->valor;
+        $contaCreditoAntiga = $lancamento->contaCredito;
+        $contaDebitoAntiga = $lancamento->contaDebito;
 
         $this->validate($request, Lancamento::$rules);
 
         $lancamento->update($request->all());
-        $contaCredito = $lancamento->contaCredito;
-        $contaDebito = $lancamento->contaDebito;
+        $contaCredito = Conta::find($lancamento->conta_credito_id);
+        $contaDebito = Conta::find($lancamento->conta_debito_id);
+        $contaCreditoAntiga->aumentaComCredito
+            ? $contaCreditoAntiga->update(['saldo' => $contaCreditoAntiga->saldo - $valorAntigo])
+            : $contaCreditoAntiga->update(['saldo' => $contaCreditoAntiga->saldo + $valorAntigo]);
+        $contaDebitoAntiga->aumentaComDebito
+            ? $contaDebitoAntiga->update(['saldo' => $contaDebitoAntiga->saldo - $valorAntigo])
+            : $contaDebitoAntiga->update(['saldo' => $contaDebitoAntiga->saldo + $valorAntigo]);
         $contaCredito->aumentaComCredito
-            ? $contaCredito->update(['saldo' => $contaCredito->saldo + $lancamento->valor - $valorAntigo])
-            : $contaCredito->update(['saldo' => $contaCredito->saldo - $lancamento->valor + $valorAntigo]);
+            ? $contaCredito->update(['saldo' => $contaCredito->saldo + $lancamento->valor])
+            : $contaCredito->update(['saldo' => $contaCredito->saldo - $lancamento->valor]);
         $contaDebito->aumentaComDebito
-            ? $contaDebito->update(['saldo' => $contaDebito->saldo + $lancamento->valor - $valorAntigo])
-            : $contaDebito->update(['saldo' => $contaDebito->saldo - $lancamento->valor + $valorAntigo]);
+            ? $contaDebito->update(['saldo' => $contaDebito->saldo + $lancamento->valor])
+            : $contaDebito->update(['saldo' => $contaDebito->saldo - $lancamento->valor]);
 
         return Redirect::route('contas.lancamentos', ['conta' => $conta->id]);
     }
@@ -162,5 +175,10 @@ class LancamentosController extends Controller
             : $contaDebito->update(['saldo' => $contaDebito->saldo + $valor]);
 
         return Redirect::route('contas.lancamentos', ['conta' => $lancamento->conta_id]);
+    }
+
+    private function isInteger($value)
+    {
+        return (string)(int)$value == $value;
     }
 }

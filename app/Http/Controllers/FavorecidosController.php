@@ -6,6 +6,7 @@ use App\Favorecido;
 use App\Http\Requests;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class FavorecidosController extends Controller
@@ -108,5 +109,13 @@ class FavorecidosController extends Controller
         Favorecido::destroy($id);
 
         return Redirect::route('favorecidos.index');
+    }
+
+    public function lists(Request $request)
+    {
+        $novo = collect(['id' => 0, 'text' => $request->input('term')]);
+        $lista = Favorecido::orderBy('nome')->select(DB::raw('nome as text'), 'id')->get();
+
+        return array_merge([$novo->all()], $lista->all());
     }
 }
