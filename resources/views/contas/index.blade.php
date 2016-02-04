@@ -13,7 +13,7 @@
 
     <div class="box">
         <div class="box-body table-responsive no-padding">
-            <table class="table table-hover">
+            <table class="table table-hover table-condensed small">
                 <thead>
                 <tr>
                     <th>C&oacute;digo</th>

@@ -15,6 +15,49 @@ class Lancamento extends Model
     protected $fillable = ['favorecido_id', 'documento', 'valor', 'data', 'memorando', 'conta_credito_id', 'conta_debito_id'];
     protected $dates = ['deleted_at', 'data'];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        Lancamento::created(function($lancamento){
+            $contaCredito = $lancamento->contaCredito;
+            $contaDebito = $lancamento->contaDebito;
+
+            $contaCredito->aumentaComCredito
+                ? $contaCredito->update(['saldo' => $contaCredito->saldo + $lancamento->valor])
+                : $contaCredito->update(['saldo' => $contaCredito->saldo - $lancamento->valor]);
+            $contaDebito->aumentaComDebito
+                ? $contaDebito->update(['saldo' => $contaDebito->saldo + $lancamento->valor])
+                : $contaDebito->update(['saldo' => $contaDebito->saldo - $lancamento->valor]);
+
+        });
+
+        Lancamento::updating(function($lancamento){
+            $original = $lancamento->getOriginal();
+            $valorAntigo = $original['valor'];
+            $contaCreditoAntiga = Conta::find($original['conta_credito_id']);
+            $contaDebitoAntiga = Conta::find($original['conta_debito_id']);
+
+            $contaCreditoAntiga->aumentaComCredito
+                ? $contaCreditoAntiga->update(['saldo' => $contaCreditoAntiga->saldo - $valorAntigo])
+                : $contaCreditoAntiga->update(['saldo' => $contaCreditoAntiga->saldo + $valorAntigo]);
+            $contaDebitoAntiga->aumentaComDebito
+                ? $contaDebitoAntiga->update(['saldo' => $contaDebitoAntiga->saldo - $valorAntigo])
+                : $contaDebitoAntiga->update(['saldo' => $contaDebitoAntiga->saldo + $valorAntigo]);
+
+            $contaCredito = Conta::find($lancamento->conta_credito_id);
+            $contaDebito = Conta::find($lancamento->conta_debito_id);
+
+            $contaCredito->aumentaComCredito
+                ? $contaCredito->update(['saldo' => $contaCredito->saldo + $lancamento->valor])
+                : $contaCredito->update(['saldo' => $contaCredito->saldo - $lancamento->valor]);
+            $contaDebito->aumentaComDebito
+                ? $contaDebito->update(['saldo' => $contaDebito->saldo + $lancamento->valor])
+                : $contaDebito->update(['saldo' => $contaDebito->saldo - $lancamento->valor]);
+
+        });
+    }
+
     public function contaCredito()
     {
         return $this->belongsTo('App\Conta', 'conta_credito_id');
