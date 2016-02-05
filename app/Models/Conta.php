@@ -68,4 +68,14 @@ class Conta extends Model
     {
         return starts_with($this->codigo_completo, '2') || starts_with($this->codigo_completo, '3') || starts_with($this->codigo_completo, '4');
     }
+
+    public function lancamentosCredito()
+    {
+        return $this->hasMany('App\Lancamento', 'conta_credito_id');
+    }
+
+    public function lancamentosDebito()
+    {
+        return $this->hasMany('App\Lancamento', 'conta_debito_id');
+    }
 }

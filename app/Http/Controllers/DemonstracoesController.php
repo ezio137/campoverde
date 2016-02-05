@@ -6,6 +6,9 @@ use App\Conta;
 use App\Data;
 use App\FavoritoBalancoPatrimonial;
 use App\Http\Requests;
+use App\Lancamento;
+use App\SaldoConta;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,6 +16,32 @@ class DemonstracoesController extends Controller
 {
     public function balancoPatrimonial(Request $request)
     {
+        // Preparando a tabela de datas
+        DB::table('datas')->delete();
+        $resultDatas = DB::table('lancamentos')->select(DB::raw("date_format(last_day(data), '%Y-%m-%d') data"))->distinct()->pluck('data');
+        $arrayDatas = array_map(function($data){
+            return ['data' => $data];
+        }, $resultDatas);
+        Data::insert($arrayDatas);
+
+        // Preparando a tabela de saldos
+        DB::table('saldos_conta')->delete();
+        $contas = Conta::all();
+        $datas = Data::all();
+        foreach ($datas as $data) {
+            foreach ($contas as $conta) {
+//                if ($conta->codigo_completo == '1.1.1.2.1')
+//                    dd(new Carbon($conta->lancamentosDebito->first()->getAttributes()['data']));
+//                    dd($conta->lancamentosDebito->where('data', '<=', $data->data));
+                $saldoCreditos = Lancamento::where('conta_credito_id', $conta->id)->where('data', '<=', $data->data)->sum('valor');
+                $saldoDebitos = Lancamento::where('conta_debito_id', $conta->id)->where('data', '<=', $data->data)->sum('valor');
+                $conta->aumentaComCredito
+                    ? $saldo = $saldoCreditos - $saldoDebitos
+                    : $saldo = $saldoDebitos - $saldoCreditos;
+                SaldoConta::create(['conta_id' => $conta->id, 'data_id' => $data->id, 'saldo' => $saldo]);
+            }
+        }
+
         $contasOptions = Conta::contasOptions();
         $mesesOptions = Data::mesesOptions();
 
@@ -63,7 +92,7 @@ class DemonstracoesController extends Controller
         $resultado = DB::table('contas as cc_filtro')
             ->select('cc_filtro.id as conta_id', 'scc.data_id', DB::raw('sum(scc.saldo) as saldo'))
             ->join('contas as cc', 'cc.codigo_completo', 'like', DB::raw("concat(cc_filtro.codigo_completo, '%')"))
-            ->join('saldos_conta_contabil as scc', 'cc.id', '=', 'scc.conta_contabil_id')
+            ->join('saldos_conta as scc', 'cc.id', '=', 'scc.conta_id')
             ->whereIn('cc_filtro.id', $contasIds)
             ->whereIn('scc.data_id', $mesesIds)
             ->whereNull('cc_filtro.deleted_at')
@@ -75,7 +104,7 @@ class DemonstracoesController extends Controller
 
         $resultadoTotais = DB::table('contas as cc')
             ->select(DB::raw('substr(cc.codigo_completo, 1, 1) as tipo_conta'), 'scc.data_id', DB::raw('sum(scc.saldo) as saldo'))
-            ->join('saldos_conta_contabil as scc', 'cc.id', '=', 'scc.conta_contabil_id')
+            ->join('saldos_conta as scc', 'cc.id', '=', 'scc.conta_id')
             ->whereIn('scc.data_id', $mesesIds)
             ->whereNull('cc.deleted_at')
             ->whereNull('scc.deleted_at')

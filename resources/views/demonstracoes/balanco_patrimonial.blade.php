@@ -10,13 +10,8 @@
 @section('content')
     <div class="row">
         <div class="col-xs-12">
-            <div class="box ui-draggable ui-droppable">
-                <div class="box-header">
-                    <div class="box-name"></div>
-                    <div class="box-icons"></div>
-                    <div class="no-move"></div>
-                </div>
-                <div class="box-content">
+            <div class="box box-success">
+                <div class="box-body">
                     <div class="row">
                         <h2 class="text-center">Balan&ccedil;o Patrimonial</h2>
                     </div>
@@ -29,13 +24,8 @@
 
     <div class="row">
         <div class="col-xs-12 col-sm-6">
-            <div class="box ui-draggable ui-droppable">
-                <div class="box-header">
-                    <div class="box-name"></div>
-                    <div class="box-icons"></div>
-                    <div class="no-move"></div>
-                </div>
-                <div class="box-content">
+            <div class="box box-success">
+                <div class="box-body">
                     <fieldset>
                         <legend>Incluir</legend>
                         {{ csrf_field() }}
@@ -50,13 +40,8 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-6">
-            <div class="box ui-draggable ui-droppable">
-                <div class="box-header">
-                    <div class="box-name"></div>
-                    <div class="box-icons"></div>
-                    <div class="no-move"></div>
-                </div>
-                <div class="box-content">
+            <div class="box box-success">
+                <div class="box-body">
                     <fieldset>
                         <legend>Favoritos</legend>
                         {{ csrf_field() }}

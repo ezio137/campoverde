@@ -10,8 +10,7 @@
                 <tr class="meses">
                     <th>&nbsp;</th>
                     @foreach($meses as $mes)
-                        <th>{{ $dateHelper::exibirDataMes($mes->data) }} <i class="fa fa-close red hidden"
-                                                                            data-id="{{ $mes->id }}"></i></th>
+                        <th>{{ $dateHelper::exibirDataMes($mes->data) }} <i class="fa fa-close red hidden" data-id="{{ $mes->id }}"></i></th>
                     @endforeach
                 </tr>
                 </thead>
@@ -21,8 +20,7 @@
                 </tr>
                 @foreach($contasAtivo as $conta)
                     <tr class="contas">
-                        <td style="padding-left: {{ $conta->nivel() * 10 }}px">{{ $conta->nome }} <i
-                                    class="fa fa-close red hidden" data-id="{{ $conta->id }}"></i></td>
+                        <td style="padding-left: {{ $conta->nivel() * 10 }}px">{{ $conta->nome }} <i class="fa fa-close red hidden" data-id="{{ $conta->id }}"></i></td>
                         @foreach($meses as $mes)
                             <td class="valor">{{ $numberHelper::exibirDecimal($resultado->where('conta_id', $conta->id)->where('data_id', $mes->id)->first()->saldo) }}</td>
                         @endforeach

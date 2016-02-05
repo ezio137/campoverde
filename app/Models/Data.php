@@ -13,10 +13,11 @@ class Data extends Model
     public $rules = [];
     protected $table = 'datas';
     protected $fillable = ['data'];
+    protected $dates = ['data'];
 
     public static function mesesOptions()
     {
-        $mesesOptions = Data::lists('data', 'id')->all();
+        $mesesOptions = Data::orderBy('data')->lists('data', 'id')->all();
         return array_map(function ($mes) {
             return DateHelper::exibirDataMes($mes);
         }, $mesesOptions);

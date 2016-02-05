@@ -19,7 +19,7 @@ class CreateLancamentosTable extends Migration
             $table->string('documento');
             $table->unsignedInteger('conta_credito_id');
             $table->unsignedInteger('conta_debito_id');
-            $table->decimal('valor');
+            $table->decimal('valor', 15);
             $table->string('memorando')->nullable();
             $table->string('status_reconciliacao', 1)->nullable();
             $table->timestamps();

@@ -2600,14 +2600,6 @@ ul.DTTT_dropdown.dropdown-menu > li:hover > a {
     margin-bottom: 30px;
 }
 
-#conteudo-demonstracao td, th {
-    padding-right: 10px;
-}
-
-#conteudo-demonstracao td.valor, th.valor {
-    text-align: right;
-}
-
 .red {
     color: red;
 }

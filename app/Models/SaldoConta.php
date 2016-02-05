@@ -10,6 +10,6 @@ class SaldoConta extends Model
     use SoftDeletes;
 
     public $rules = [];
-    protected $table = 'saldos_conta_contabil';
-    protected $fillable = ['conta_contabil_id', 'data_id', 'saldo'];
+    protected $table = 'saldos_conta';
+    protected $fillable = ['conta_id', 'data_id', 'saldo'];
 }

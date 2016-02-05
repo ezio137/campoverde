@@ -1,3 +1,5 @@
+@inject('numberHelper', 'App\Services\NumberHelper')
+
 @extends('layouts.master')
 
 @section('content')
@@ -11,34 +13,36 @@
         </div>
     </div>
 
-    <div class="box">
-        <div class="box-body table-responsive no-padding">
-            <table class="table table-hover table-condensed small">
-                <thead>
-                <tr>
-                    <th>C&oacute;digo</th>
-                    <th>Nome</th>
-                    <th>Saldo</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($contas as $conta)
+    <div class="row" id="lista-contas">
+        <div class="box">
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover table-condensed small">
+                    <thead>
                     <tr>
-                        <td>{!! link_to_route('contas.lancamentos', $conta->codigo_completo, ['id' => $conta->id]) !!}</td>
-                        <td>{!! link_to_route('contas.lancamentos', $conta->nome, ['id' => $conta->id]) !!}</td>
-                        <td>{!! link_to_route('contas.lancamentos', $conta->saldo, ['id' => $conta->id]) !!}</td>
-                        <td>
-                            {!! Form::open(['route' => ['contas.destroy', $conta->id], 'method' => 'DELETE', 'id' => "delete-form-$conta->id"]) !!}
-                            <a href="/contas/{{ $conta->id }}/edit"><i class="fa fa-pencil"></i></a>
-                            <button type="button" class="btn-link btn-delete-confirmation"
-                                    data-delete-item-id="{{ $conta->id }}"><i class="fa fa-trash-o"></i></button>
-                            {!! Form::close() !!}
-                        </td>
+                        <th>C&oacute;digo</th>
+                        <th>Nome</th>
+                        <th>Saldo</th>
+                        <th></th>
                     </tr>
-                @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    @foreach($contas as $conta)
+                        <tr>
+                            <td>{!! link_to_route('contas.lancamentos', $conta->codigo_completo, ['id' => $conta->id]) !!}</td>
+                            <td>{!! link_to_route('contas.lancamentos', $conta->nome, ['id' => $conta->id]) !!}</td>
+                            <td class="valor">{!! link_to_route('contas.lancamentos', $numberHelper::exibirDecimal($conta->saldo), ['id' => $conta->id]) !!}</td>
+                            <td>
+                                {!! Form::open(['route' => ['contas.destroy', $conta->id], 'method' => 'DELETE', 'id' => "delete-form-$conta->id"]) !!}
+                                <a href="/contas/{{ $conta->id }}/edit"><i class="fa fa-pencil"></i></a>
+                                <button type="button" class="btn-link btn-delete-confirmation"
+                                        data-delete-item-id="{{ $conta->id }}"><i class="fa fa-trash-o"></i></button>
+                                {!! Form::close() !!}
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 @stop
