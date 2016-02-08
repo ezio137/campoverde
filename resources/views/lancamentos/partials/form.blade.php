@@ -1,8 +1,6 @@
 <div class="box-body">
-    @include('layouts.forms.text', ['atributo' => 'data', 'label' => 'Data', 'larguraAtributo' => 5, 'larguraLabel' => 2])
-    @include('layouts.forms.text', ['atributo' => 'documento', 'label' => 'Documento', 'larguraAtributo' => 5, 'larguraLabel' => 2])
-    @include('layouts.forms.text', ['atributo' => 'valor', 'label' => 'Valor', 'larguraAtributo' => 5, 'larguraLabel' => 2])
-    @include('layouts.forms.text', ['atributo' => 'memorando', 'label' => 'Memorando', 'larguraAtributo' => 5, 'larguraLabel' => 2])
+    @include('layouts.forms.text', ['atributo' => 'data', 'label' => 'Data', 'larguraAtributo' => 3, 'larguraLabel' => 2])
+    @include('layouts.forms.text', ['atributo' => 'valor', 'label' => 'Valor', 'larguraAtributo' => 3, 'larguraLabel' => 2])
     @include('layouts.forms.select', ['atributo' => 'favorecido_id', 'label' => 'Favorecido', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $favorecidosOptions])
     @if($tipo == 'credito')
         @include('layouts.forms.select', ['atributo' => 'conta_debito_id', 'label' => 'Conta', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $contasOptions])
@@ -12,6 +10,8 @@
         @include('layouts.forms.select', ['atributo' => 'conta_credito_id', 'label' => 'Conta', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $contasOptions])
         <input type="hidden" name="conta_debito_id" value="{{ $conta->id }}">
     @endif
+    @include('layouts.forms.text', ['atributo' => 'memorando', 'label' => 'Memorando', 'larguraAtributo' => 8, 'larguraLabel' => 2])
+    @include('layouts.forms.text', ['atributo' => 'documento', 'label' => 'Documento', 'larguraAtributo' => 3, 'larguraLabel' => 2])
 </div>
 <div class="box-footer">
     <div class="form-group">

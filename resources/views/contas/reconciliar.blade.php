@@ -7,9 +7,7 @@
     @if($conta->id)
         <div class="row">
             <div class="col-xs-12">
-                <a href="/contas/{{ $conta->id }}/lancamentos/create/{{ $operacaoAumento }}" class="btn btn-success"><i class="fa fa-plus"></i> Novo aumento</a>
-                <a href="/contas/{{ $conta->id }}/lancamentos/create/{{ $operacaoReducao }}" class="btn btn-success"><i class="fa fa-plus"></i> Nova redu&ccedil;&atilde;o</a>
-                <a href="/contas/{{ $conta->id }}/reconciliar" class="btn btn-success"><i class="fa fa-check"></i> Reconciliar</a>
+
             </div>
         </div>
     @endif
@@ -19,6 +17,7 @@
             <table class="table table-hover table-condensed table-striped small">
                 <thead>
                 <tr>
+                    <th></th>
                     <th>Data</th>
                     <th>Favorecido</th>
                     <th>Conta</th>
@@ -38,6 +37,7 @@
                             }
                     ?>
                     <tr>
+                        <td>{!! Form::checkbox('lancamentos') !!}</td>
                         <td>{!! link_to_route('contas.lancamentos.edit', $lancamento->data, ['conta' => $conta->id, 'lancamento' => $lancamento->id]) !!}</td>
                         <td>{!! link_to_route('contas.lancamentos.edit', $lancamento->favorecido->nome, ['conta' => $conta->id, 'lancamento' => $lancamento->id]) !!}</td>
                         <td>{!! link_to_route('contas.lancamentos', $conta->id == $lancamento->conta_credito_id ? $lancamento->contaDebito->codigoNome : $lancamento->contaCredito->codigoNome, ['conta' => $conta->id == $lancamento->conta_credito_id ? $lancamento->conta_debito_id : $lancamento->conta_credito_id]) !!}</td>

@@ -21,6 +21,7 @@ class FavorecidosController extends Controller
         $favorecidos = Favorecido::orderBy('nome')->get();
 
         return view('favorecidos.index', compact('favorecidos'))
+            ->with('modulo', 'Contábil')
             ->with('pageHeader', 'Favorecidos');
     }
 
@@ -34,6 +35,7 @@ class FavorecidosController extends Controller
         $conta = null;
 
         return view('favorecidos.create', compact('favorecido'))
+            ->with('modulo', 'Contábil')
             ->with('pageHeader', 'Favorecidos');
     }
 
@@ -63,6 +65,7 @@ class FavorecidosController extends Controller
         $favorecido = Favorecido::findOrFail($id);
 
         return view('favorecidos.edit', compact('favorecido'))
+            ->with('modulo', 'Contábil')
             ->with('pageHeader', 'Favorecidos');
     }
 
@@ -77,6 +80,7 @@ class FavorecidosController extends Controller
         $favorecido = Favorecido::findOrFail($id);
 
         return view('favorecidos.edit', compact('favorecido'))
+            ->with('modulo', 'Contábil')
             ->with('pageHeader', 'Favorecidos');
     }
 

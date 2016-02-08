@@ -22,6 +22,7 @@ class ContasController extends Controller
         $contas = Conta::orderBy('codigo_completo_ordenavel')->get();
 
         return view('contas.index', compact('contas'))
+            ->with('modulo', 'Contábil')
             ->with('pageHeader', 'Contas');
     }
 
@@ -37,6 +38,7 @@ class ContasController extends Controller
         $conta = null;
 
         return view('contas.create', compact('contasOptions', 'conta'))
+            ->with('modulo', 'Contábil')
             ->with('pageHeader', 'Contas');
     }
 
@@ -66,6 +68,7 @@ class ContasController extends Controller
         $conta = Conta::findOrFail($id);
 
         return view('contas.edit', compact('conta'))
+            ->with('modulo', 'Contábil')
             ->with('pageHeader', 'Contas');
     }
 
@@ -82,6 +85,7 @@ class ContasController extends Controller
         $contasOptions = Conta::contasOptionsNenhum($conta->id);
 
         return view('contas.edit', compact('conta', 'contasOptions'))
+            ->with('modulo', 'Contábil')
             ->with('pageHeader', 'Contas');
     }
 
@@ -140,6 +144,7 @@ class ContasController extends Controller
     public function importacaoSaldosForm()
     {
         return view('contas.importacao_saldos')
+            ->with('modulo', 'Contábil')
             ->with('pageHeader', 'Contas');
     }
 

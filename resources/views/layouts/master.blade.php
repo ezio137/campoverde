@@ -58,7 +58,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-green-light sidebar-mini">
+<body class="hold-transition skin-green-light sidebar-mini fixed">
 <div class="wrapper">
 
   <!-- Main Header -->
@@ -77,8 +77,8 @@ desired effect
         <small>{{ isset($pageDescription) ? $pageDescription : '' }}</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-        <li class="active">Here</li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> {{ isset($modulo) ? $modulo : '' }}</a></li>
+        <li class="active">{{ isset($pageHeader) ? $pageHeader : '' }}</li>
       </ol>
     </section>
 

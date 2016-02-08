@@ -29,6 +29,7 @@ class LancamentosController extends Controller
         $saldo = 0.0;
 
         return view('lancamentos.index', compact('lancamentos', 'conta', 'operacaoAumento', 'operacaoReducao', 'saldo'))
+            ->with('modulo', 'Contábil')
             ->with('pageHeader', "Lançamentos - $conta->codigo_completo $conta->nome");
     }
 
@@ -49,6 +50,7 @@ class LancamentosController extends Controller
         }
 
         return view('lancamentos.create', compact('conta', 'tipo', 'favorecidosOptions', 'contasOptions'))
+            ->with('modulo', 'Contábil')
             ->with('pageHeader', "$exibirTipo em $conta->codigo_nome");
     }
 
@@ -83,6 +85,7 @@ class LancamentosController extends Controller
         $lancamento = Lancamento::findOrFail($id);
 
         return view('lancamentos.edit', compact('lancamento'))
+            ->with('modulo', 'Contábil')
             ->with('pageHeader', 'Lançamentos');
     }
 
@@ -110,6 +113,7 @@ class LancamentosController extends Controller
         }
 
         return view('lancamentos.edit', compact('lancamento', 'favorecidosOptions', 'contasOptions', 'tipo', 'conta'))
+            ->with('modulo', 'Contábil')
             ->with('pageHeader', "$exibirTipo em $conta->codigo_nome");
     }
 
@@ -155,5 +159,16 @@ class LancamentosController extends Controller
     private function isInteger($value)
     {
         return (string)(int)$value == $value;
+    }
+
+    public function getReconciliar(Conta $conta)
+    {
+        $lancamentos = Lancamento::where('conta_credito_id', $conta->id)->orWhere('conta_debito_id', $conta->id)->orderBy('data')->get();
+
+        $saldo = 0.0;
+
+        return view('contas.reconciliar', compact('lancamentos', 'conta', 'saldo'))
+            ->with('modulo', 'Contábil')
+            ->with('pageHeader', "Reconciliar - $conta->codigo_completo $conta->nome");
     }
 }

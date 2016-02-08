@@ -28,6 +28,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::post('contas/{conta}/lancamentos/create', ['as' => 'contas.lancamentos.store', 'uses' => 'LancamentosController@store']);
     Route::get('contas/{conta}/lancamentos/{lancamento}', ['as' => 'contas.lancamentos.edit', 'uses' => 'LancamentosController@edit']);
     Route::put('contas/{conta}/lancamentos/{lancamento}', ['as' => 'contas.lancamentos.update', 'uses' => 'LancamentosController@update']);
+    Route::get('contas/{conta}/reconciliar', ['as' => 'contas.reconciliar', 'uses' => 'LancamentosController@getReconciliar']);
     Route::resource('contas', 'ContasController');
     Route::get('favorecidos/list', 'FavorecidosController@lists');
     Route::resource('favorecidos', 'FavorecidosController');

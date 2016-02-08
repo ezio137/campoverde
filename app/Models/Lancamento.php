@@ -12,7 +12,7 @@ class Lancamento extends Model
     use SoftDeletes;
 
     public static $rules = [];
-    protected $fillable = ['favorecido_id', 'documento', 'valor', 'data', 'memorando', 'conta_credito_id', 'conta_debito_id'];
+    protected $fillable = ['favorecido_id', 'documento', 'valor', 'data', 'memorando', 'conta_credito_id', 'conta_debito_id', 'reconciliado'];
     protected $dates = ['deleted_at', 'data'];
 
     public static function boot()

@@ -17,6 +17,7 @@ class CreateLancamentosTable extends Migration
             $table->date('data');
             $table->unsignedInteger('favorecido_id');
             $table->string('documento');
+            $table->string('reconciliado')->nullable();
             $table->unsignedInteger('conta_credito_id');
             $table->unsignedInteger('conta_debito_id');
             $table->decimal('valor', 15);
