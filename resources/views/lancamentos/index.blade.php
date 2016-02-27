@@ -4,16 +4,6 @@
 @extends('layouts.master')
 
 @section('content')
-    @if($conta->id)
-        <div class="row">
-            <div class="col-xs-12">
-                <a href="/contas/{{ $conta->id }}/lancamentos/create/{{ $operacaoAumento }}" class="btn btn-success"><i class="fa fa-plus"></i> Novo aumento</a>
-                <a href="/contas/{{ $conta->id }}/lancamentos/create/{{ $operacaoReducao }}" class="btn btn-success"><i class="fa fa-plus"></i> Nova redu&ccedil;&atilde;o</a>
-                <a href="/contas/{{ $conta->id }}/reconciliar" class="btn btn-success"><i class="fa fa-check"></i> Reconciliar</a>
-            </div>
-        </div>
-    @endif
-
     <div class="box">
         <div class="box-body table-responsive no-padding">
             <table class="table table-hover table-condensed table-striped small">
@@ -56,4 +46,12 @@
             </table>
         </div>
     </div>
+@stop
+
+@section('botoes-footer')
+    @if($conta->id)
+        <a href="/contas/{{ $conta->id }}/lancamentos/create/{{ $operacaoAumento }}" class="btn btn-success"><i class="fa fa-plus"></i> Novo aumento</a>
+        <a href="/contas/{{ $conta->id }}/lancamentos/create/{{ $operacaoReducao }}" class="btn btn-success"><i class="fa fa-plus"></i> Nova redu&ccedil;&atilde;o</a>
+        <a href="/contas/{{ $conta->id }}/reconciliar" class="btn btn-success"><i class="fa fa-check"></i> Reconciliar</a>
+    @endif
 @stop

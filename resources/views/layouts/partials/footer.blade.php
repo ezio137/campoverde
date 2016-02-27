@@ -2,8 +2,8 @@
 <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-        Anything you want
+        <strong>Copyright &copy; 2016 <a href="#">Fagan</a>.</strong> Todos os direitos reservados.
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2016 <a href="#">Fagan</a>.</strong> Todos os direitos reservados.
+    @yield('botoes-footer')
 </footer>

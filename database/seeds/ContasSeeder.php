@@ -12,11 +12,16 @@ class ContasSeeder extends Seeder
      */
     public function run()
     {
-        $ativo   = Conta::create(['nome' => 'Ativo']);
-        $passivo = Conta::create(['nome' => 'Passivo']);
-        $pl      = Conta::create(['nome' => 'Patrimônio Líquido']);
-        $receita = Conta::create(['nome' => 'Receita']);
-        $despesa = Conta::create(['nome' => 'Despesa']);
+        //$auxiliares = Conta::create(['nome' => 'Auxiliares', 'codigo' => 0]);
+        $ativo      = Conta::create(['nome' => 'Ativo']);
+        $passivo    = Conta::create(['nome' => 'Passivo']);
+        $pl         = Conta::create(['nome' => 'Patrimônio Líquido']);
+        $receita    = Conta::create(['nome' => 'Receita']);
+        $despesa    = Conta::create(['nome' => 'Despesa']);
+
+        // 0
+        // 0.1
+        //Conta::create(['nome' => 'Divisão', 'conta_pai_id' => $auxiliares->id]);
 
         // 1
         // 1.1
@@ -25,7 +30,8 @@ class ContasSeeder extends Seeder
         // 1.1.1
         $disponivel = Conta::create(['nome' => 'Disponível', 'conta_pai_id' => $ativoCirculante->id]);
         $caixa = Conta::create(['nome' => 'Caixa', 'conta_pai_id' => $disponivel->id]);
-        Conta::create(['nome' => 'FA / CA', 'conta_pai_id' => $caixa->id]);
+        Conta::create(['nome' => 'FA / CA (dinheiro)', 'conta_pai_id' => $caixa->id]);
+        Conta::create(['nome' => 'FA / CA (cheque)', 'conta_pai_id' => $caixa->id]);
 
         $bancos = Conta::create(['nome' => 'Bancos', 'conta_pai_id' => $disponivel->id]);
         Conta::create(['nome' => 'EZ / CR', 'conta_pai_id' => $bancos->id]);

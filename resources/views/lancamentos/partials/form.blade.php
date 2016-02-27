@@ -12,6 +12,7 @@
     @endif
     @include('layouts.forms.text', ['atributo' => 'memorando', 'label' => 'Memorando', 'larguraAtributo' => 8, 'larguraLabel' => 2])
     @include('layouts.forms.text', ['atributo' => 'documento', 'label' => 'Documento', 'larguraAtributo' => 3, 'larguraLabel' => 2])
+    @include('layouts.forms.file', ['atributo' => 'anexo', 'label' => 'Anexo', 'larguraAtributo' => 3, 'larguraLabel' => 2])
 </div>
 <div class="box-footer">
     <div class="form-group">

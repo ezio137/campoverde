@@ -3,16 +3,6 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="row">
-        <div class="col-xs-12">
-            <a href="/contas/create" class="btn btn-success"><i class="fa fa-plus"></i> Nova conta</a>
-            <a href="/contas/importacao" class="btn btn-success"><i class="fa fa-upload"></i> Importa&ccedil;&atilde;o
-                Contas</a>
-            <a href="/contas/importacao_saldos" class="btn btn-success"><i class="fa fa-upload"></i> Importa&ccedil;&atilde;o
-                Saldos</a>
-        </div>
-    </div>
-
     <div id="lista-contas">
         <div class="box">
             <div class="box-body table-responsive no-padding">
@@ -45,4 +35,12 @@
             </div>
         </div>
     </div>
+@stop
+
+@section('botoes-footer')
+    <a href="/contas/create" class="btn btn-success"><i class="fa fa-plus"></i> Nova conta</a>
+    {{--<a href="/contas/importacao" class="btn btn-success"><i class="fa fa-upload"></i> Importa&ccedil;&atilde;o--}}
+        {{--Contas</a>--}}
+    {{--<a href="/contas/importacao_saldos" class="btn btn-success"><i class="fa fa-upload"></i> Importa&ccedil;&atilde;o--}}
+        {{--Saldos</a>--}}
 @stop
