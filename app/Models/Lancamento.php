@@ -32,7 +32,7 @@ class Lancamento extends Model
 
         });
 
-        Lancamento::deleted(function($lancamento){
+        Lancamento::deleting(function($lancamento){
             $contaCredito = $lancamento->contaCredito;
             $contaDebito = $lancamento->contaDebito;
 

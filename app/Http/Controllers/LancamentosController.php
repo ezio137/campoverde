@@ -140,11 +140,13 @@ class LancamentosController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function destroy(Lancamento $lancamento)
+    public function destroy($id, Request $request)
     {
+        $lancamento = Lancamento::find($id);
         $lancamento->delete();
 
-        return Redirect::route('contas.lancamentos', ['conta' => $lancamento->conta_id]);
+        $contaId = $request->input('contaId');
+        return Redirect::route('contas.lancamentos', ['conta' => $contaId]);
     }
 
     private function isInteger($value)

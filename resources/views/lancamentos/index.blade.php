@@ -36,6 +36,7 @@
                         <td>{{ $numberHelper::exibirDecimal($saldo) }}</td>
                         <td>
                             {!! Form::open(['route' => ['lancamentos.destroy', $lancamento->id], 'method' => 'DELETE', 'id' => "delete-form-$lancamento->id"]) !!}
+                            {!! Form::hidden('contaId', $conta->id) !!}
                             <button type="button" class="btn-link btn-delete-confirmation"
                                     data-delete-item-id="{{ $lancamento->id }}"><i class="fa fa-trash-o"></i></button>
                             {!! Form::close() !!}
