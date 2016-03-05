@@ -142,16 +142,7 @@ class LancamentosController extends Controller
      */
     public function destroy(Lancamento $lancamento)
     {
-        $valor = $lancamento->valor;
-        $contaCredito = $lancamento->contaCredito;
-        $contaDebito = $lancamento->contaDebito;
         $lancamento->delete();
-        $contaCredito->aumentaComCredito
-            ? $contaCredito->update(['saldo' => $contaCredito->saldo - $valor])
-            : $contaCredito->update(['saldo' => $contaCredito->saldo + $valor]);
-        $contaDebito->aumentaComDebito
-            ? $contaDebito->update(['saldo' => $contaDebito->saldo - $valor])
-            : $contaDebito->update(['saldo' => $contaDebito->saldo + $valor]);
 
         return Redirect::route('contas.lancamentos', ['conta' => $lancamento->conta_id]);
     }

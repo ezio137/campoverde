@@ -32,6 +32,19 @@ class Lancamento extends Model
 
         });
 
+        Lancamento::deleted(function($lancamento){
+            $contaCredito = $lancamento->contaCredito;
+            $contaDebito = $lancamento->contaDebito;
+
+            $contaCredito->aumentaComCredito
+                ? $contaCredito->update(['saldo' => $contaCredito->saldo - $lancamento->valor])
+                : $contaCredito->update(['saldo' => $contaCredito->saldo + $lancamento->valor]);
+            $contaDebito->aumentaComDebito
+                ? $contaDebito->update(['saldo' => $contaDebito->saldo - $lancamento->valor])
+                : $contaDebito->update(['saldo' => $contaDebito->saldo + $lancamento->valor]);
+
+        });
+
         Lancamento::updating(function($lancamento){
             $original = $lancamento->getOriginal();
             $valorAntigo = $original['valor'];
