@@ -111,4 +111,9 @@ class Lancamento extends Model
     {
         return $this->contaCredito()->saldo($this->data);
     }
+
+    public function anexos()
+    {
+        return $this->hasMany('App\Anexo');
+    }
 }

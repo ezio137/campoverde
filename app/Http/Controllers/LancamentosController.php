@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Anexo;
 use App\Conta;
 use App\Favorecido;
 use App\Lancamento;
@@ -69,7 +70,23 @@ class LancamentosController extends Controller
 
         $this->validate($request, Lancamento::$rules);
 
-        Lancamento::create($request->all());
+        $arquivo = $request->file('anexo');
+
+        $nomeArquivo = $arquivo->getClientOriginalName();
+        $extensao = $arquivo->getClientOriginalExtension();
+        $tamanhoBytes = $arquivo->getClientSize();
+
+        $lancamento = Lancamento::create($request->all());
+
+        $anexo = Anexo::create([
+            'nome' => 'Anexo',
+            'extensao' => $extensao,
+            'nome_original' => $nomeArquivo,
+            'tamanho_bytes' => $tamanhoBytes,
+            'lancamento_id' => $lancamento->id
+        ]);
+
+        $arquivo->move(storage_path('anexos'), $anexo->id);
 
         return Redirect::route('contas.lancamentos', ['conta' => $conta->id]);
     }
@@ -129,7 +146,23 @@ class LancamentosController extends Controller
 
         $this->validate($request, Lancamento::$rules);
 
+        $arquivo = $request->file('anexo');
+
         $lancamento->update($request->all());
+
+        $nomeArquivo = $arquivo->getClientOriginalName();
+        $extensao = $arquivo->getClientOriginalExtension();
+        $tamanhoBytes = $arquivo->getClientSize();
+
+        $anexo = Anexo::create([
+            'nome' => 'Anexo',
+            'extensao' => $extensao,
+            'nome_original' => $nomeArquivo,
+            'tamanho_bytes' => $tamanhoBytes,
+            'lancamento_id' => $lancamento->id
+        ]);
+
+        $arquivo->move(storage_path('anexos'), $anexo->id);
 
         return Redirect::route('contas.lancamentos', ['conta' => $conta->id]);
     }
@@ -163,5 +196,10 @@ class LancamentosController extends Controller
         return view('contas.reconciliar', compact('lancamentos', 'conta', 'saldo'))
             ->with('modulo', 'Contábil')
             ->with('pageHeader', "Reconciliar - $conta->codigo_completo $conta->nome");
+    }
+
+    public function anexo(Anexo $anexo)
+    {
+        return response()->download(storage_path('anexos').'/'.$anexo->id, $anexo->nome_original);
     }
 }

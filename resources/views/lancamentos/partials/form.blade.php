@@ -12,7 +12,17 @@
     @endif
     @include('layouts.forms.text', ['atributo' => 'memorando', 'label' => 'Memorando', 'larguraAtributo' => 8, 'larguraLabel' => 2])
     @include('layouts.forms.text', ['atributo' => 'documento', 'label' => 'Documento', 'larguraAtributo' => 3, 'larguraLabel' => 2])
-    @include('layouts.forms.file', ['atributo' => 'anexo', 'label' => 'Anexo', 'larguraAtributo' => 3, 'larguraLabel' => 2])
+
+    <div class="form-group">
+        {!! Form::label('anexos', 'Anexos', ['class' => "col-sm-2 control-label"]) !!}
+        <div class="col-sm-8">
+            @foreach($lancamento->anexos as $anexo)
+                {!! link_to_route('anexo.download', $anexo->nome_original, ['id' => $anexo->id]) !!} <br/>
+            @endforeach
+        </div>
+    </div>
+
+    @include('layouts.forms.file', ['atributo' => 'anexo', 'label' => 'Novo Anexo', 'larguraAtributo' => 3, 'larguraLabel' => 2])
 </div>
 <div class="box-footer">
     <div class="form-group">

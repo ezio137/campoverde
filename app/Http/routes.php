@@ -19,6 +19,7 @@ Route::group(['middleware' => 'web'], function () {
 
 Route::group(['middleware' => ['web', 'auth']], function () {
 
+    Route::get('anexo/{anexo}', ['as' => 'anexo.download', 'uses' => 'LancamentosController@anexo']);
     Route::get('contas/importacao', 'ContasController@importacaoForm');
     Route::post('contas/importacao', 'ContasController@importacao');
     Route::get('contas/importacao_saldos', 'ContasController@importacaoSaldosForm');
