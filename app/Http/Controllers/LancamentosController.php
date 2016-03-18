@@ -70,23 +70,25 @@ class LancamentosController extends Controller
 
         $this->validate($request, Lancamento::$rules);
 
-        $arquivo = $request->file('anexo');
-
-        $nomeArquivo = $arquivo->getClientOriginalName();
-        $extensao = $arquivo->getClientOriginalExtension();
-        $tamanhoBytes = $arquivo->getClientSize();
-
         $lancamento = Lancamento::create($request->all());
 
-        $anexo = Anexo::create([
-            'nome' => 'Anexo',
-            'extensao' => $extensao,
-            'nome_original' => $nomeArquivo,
-            'tamanho_bytes' => $tamanhoBytes,
-            'lancamento_id' => $lancamento->id
-        ]);
+        $arquivo = $request->file('anexo');
 
-        $arquivo->move(storage_path('anexos'), $anexo->id);
+        if ($arquivo) {
+            $nomeArquivo = $arquivo->getClientOriginalName();
+            $extensao = $arquivo->getClientOriginalExtension();
+            $tamanhoBytes = $arquivo->getClientSize();
+
+            $anexo = Anexo::create([
+                'nome' => 'Anexo',
+                'extensao' => $extensao,
+                'nome_original' => $nomeArquivo,
+                'tamanho_bytes' => $tamanhoBytes,
+                'lancamento_id' => $lancamento->id
+            ]);
+
+            $arquivo->move(storage_path('anexos'), $anexo->id);
+        }
 
         return Redirect::route('contas.lancamentos', ['conta' => $conta->id]);
     }
@@ -146,23 +148,25 @@ class LancamentosController extends Controller
 
         $this->validate($request, Lancamento::$rules);
 
-        $arquivo = $request->file('anexo');
-
         $lancamento->update($request->all());
 
-        $nomeArquivo = $arquivo->getClientOriginalName();
-        $extensao = $arquivo->getClientOriginalExtension();
-        $tamanhoBytes = $arquivo->getClientSize();
+        $arquivo = $request->file('anexo');
 
-        $anexo = Anexo::create([
-            'nome' => 'Anexo',
-            'extensao' => $extensao,
-            'nome_original' => $nomeArquivo,
-            'tamanho_bytes' => $tamanhoBytes,
-            'lancamento_id' => $lancamento->id
-        ]);
+        if ($arquivo) {
+            $nomeArquivo = $arquivo->getClientOriginalName();
+            $extensao = $arquivo->getClientOriginalExtension();
+            $tamanhoBytes = $arquivo->getClientSize();
 
-        $arquivo->move(storage_path('anexos'), $anexo->id);
+            $anexo = Anexo::create([
+                'nome' => 'Anexo',
+                'extensao' => $extensao,
+                'nome_original' => $nomeArquivo,
+                'tamanho_bytes' => $tamanhoBytes,
+                'lancamento_id' => $lancamento->id
+            ]);
+
+            $arquivo->move(storage_path('anexos'), $anexo->id);
+        }
 
         return Redirect::route('contas.lancamentos', ['conta' => $conta->id]);
     }
