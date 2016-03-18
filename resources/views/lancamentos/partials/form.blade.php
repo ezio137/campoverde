@@ -45,7 +45,8 @@
             $('#favorecido_id').select2({
                 tags: true
             });
-            $('#conta_id').select2();
+            $('#conta_debito_id').select2();
+            $('#conta_credito_id').select2();
         });
     </script>
 @stop
