@@ -19,6 +19,7 @@
                 </tr>
                 </thead>
                 <tbody>
+                <?php $saldo = 0.0; ?>
                 @foreach($lancamentos as $lancamento)
                     <?php
                             if($lancamento->aumentaConta($conta->id)) {

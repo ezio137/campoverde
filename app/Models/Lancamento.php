@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Services\DateHelper;
+use App\Services\NumberHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -94,6 +95,11 @@ class Lancamento extends Model
     public function setDataAttribute($value)
     {
         $this->attributes['data'] = DateHelper::extrairData($value);
+    }
+
+    public function setValorAttribute($value)
+    {
+        $this->attributes['valor'] = NumberHelper::extrairDecimal($value);
     }
 
     public function aumentaConta($contaId)

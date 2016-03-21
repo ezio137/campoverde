@@ -9,6 +9,8 @@ class NumberHelper
 
     public static function exibirDecimal($valor, $casas = 2)
     {
+        if (gettype($valor) == 'string')
+            $valor = floatval($valor);
         return number_format($valor, $casas, ',', '.');
     }
 }
