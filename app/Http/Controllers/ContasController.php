@@ -6,6 +6,7 @@ use App\Conta;
 use App\Http\Requests;
 use App\Jobs\ImportarContas;
 use App\Jobs\ImportarSaldosContas;
+use App\Lancamento;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -115,6 +116,13 @@ class ContasController extends Controller
      */
     public function destroy($id)
     {
+        $existeLancamentoCredito = Lancamento::where('conta_credito_id', $id)->exists();
+        $existeLancamentoDebito = Lancamento::where('conta_debito_id', $id)->exists();
+        if ($existeLancamentoCredito || $existeLancamentoDebito) {
+            flash()->error('Não foi possível efetuar a exclusão! Existem lançamentos nesta conta.');
+            return Redirect::route('contas.index');
+        }
+
         Conta::destroy($id);
 
         return Redirect::route('contas.index');

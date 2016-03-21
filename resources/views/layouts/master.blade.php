@@ -82,6 +82,8 @@ desired effect
       </ol>
     </section>
 
+    @include('flash::message')
+
     <!-- Main content -->
     <section class="content">
 
