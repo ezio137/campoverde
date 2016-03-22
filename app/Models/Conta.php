@@ -2,9 +2,11 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Conta extends Model
 {
@@ -29,6 +31,32 @@ class Conta extends Model
             }, $listaCodigoCompleto);
             $conta->codigo_completo_ordenavel = implode('.', $listaCodigoCompleto);
         });
+
+        Conta::deleting(function($conta) {
+            $contasACorrigir = Conta::where('conta_pai_id', $conta->conta_pai_id)->where('codigo', '>', $conta->codigo)->get();
+            foreach ($contasACorrigir as $contaACorrigir) {
+                $contaACorrigir->codigo--;
+                $contaACorrigir->save();
+            }
+        });
+
+        Conta::updated(function($conta) {
+            Log::info('update conta => '.$conta->nome);
+            foreach ($conta->contasFilhas()->get() as $contaFilha) {
+                Log::info('update conta filha => '.$contaFilha->nome);
+                $contaFilha->updated_at = Carbon::now();
+                $contaFilha->save();
+            }
+        });
+    }
+
+    public function ehPaiDe($id)
+    {
+        foreach ($this->contasFilhas()->get() as $contaFilha) {
+            if ($contaFilha->id == $id || $contaFilha->ehPaiDe($id)) {
+                return true;
+            }
+        }
     }
 
     public static function contasOptions($contaAtualId = 0)
@@ -47,6 +75,11 @@ class Conta extends Model
     public function contaPai()
     {
         return $this->belongsTo('App\Conta', 'conta_pai_id');
+    }
+
+    public function contasFilhas()
+    {
+        return $this->hasMany('App\Conta', 'conta_pai_id');
     }
 
     public function nivel()

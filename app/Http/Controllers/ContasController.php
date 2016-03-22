@@ -103,6 +103,48 @@ class ContasController extends Controller
 
         $this->validate($request, Conta::$rules);
 
+        if ($conta->ehPaiDe($request->input('conta_pai_id'))) {
+            flash()->error('Não foi possível efetuar a atualização! Conta não pode ser movida para baixo de uma de suas filhas.');
+            return Redirect::route('contas.index');
+        }
+
+        if ($conta->conta_pai_id == $request->input('conta_pai_id')) {
+            if ($conta->codigo < $request->input('codigo')) {
+                $contasACorrigir = Conta::where('conta_pai_id', $conta->conta_pai_id)
+                    ->where('codigo', '>', $conta->codigo)
+                    ->where('codigo', '<=', $request->input('codigo'))
+                    ->get();
+                foreach ($contasACorrigir as $contaACorrigir) {
+                    $contaACorrigir->codigo--;
+                    $contaACorrigir->save();
+                }
+            } else {
+                $contasACorrigir = Conta::where('conta_pai_id', $conta->conta_pai_id)
+                    ->where('codigo', '<', $conta->codigo)
+                    ->where('codigo', '>=', $request->input('codigo'))
+                    ->get();
+                foreach ($contasACorrigir as $contaACorrigir) {
+                    $contaACorrigir->codigo++;
+                    $contaACorrigir->save();
+                }
+            }
+        } else {
+            $contasACorrigir = Conta::where('conta_pai_id', $request->input('conta_pai_id'))
+                ->where('codigo', '>=', $request->input('codigo'))
+                ->get();
+            foreach ($contasACorrigir as $contaACorrigir) {
+                $contaACorrigir->codigo++;
+                $contaACorrigir->save();
+            }
+            $contasACorrigir = Conta::where('conta_pai_id', $conta->conta_pai_id)
+                ->where('codigo', '>', $conta->codigo)
+                ->get();
+            foreach ($contasACorrigir as $contaACorrigir) {
+                $contaACorrigir->codigo--;
+                $contaACorrigir->save();
+            }
+        }
+
         $conta->update($request->all());
 
         return Redirect::route('contas.index');
