@@ -22,14 +22,16 @@
                     <tr class="contas">
                         <td style="padding-left: {{ $conta->nivel() * 10 }}px">{{ $conta->nome }} <i class="fa fa-close red hidden" data-id="{{ $conta->id }}"></i></td>
                         @foreach($meses as $mes)
-                            <td class="valor">{{ $numberHelper::exibirDecimal($resultado->where('conta_id', $conta->id)->where('data_id', $mes->id)->first()->saldo) }}</td>
+                            <?php $result = $resultado->where('conta_id', $conta->id)->where('data_id', $mes->id)->first() ?>
+                            <td class="valor">{{ $numberHelper::exibirDecimal(isset($result) ? $result->saldo : 0.0) }}</td>
                         @endforeach
                     </tr>
                 @endforeach
                 <tr>
                     <th>Total do Ativo</th>
                     @foreach($meses as $mes)
-                        <th class="valor">{{ $numberHelper::exibirDecimal($resultadoTotais->where('tipo_conta', '1')->where('data_id', $mes->id)->first()->saldo) }}</th>
+                        <?php $result = $resultadoTotais->where('tipo_conta', '1')->where('data_id', $mes->id)->first() ?>
+                        <th class="valor">{{ $numberHelper::exibirDecimal(isset($result) ? $result->saldo : 0.0) }}</th>
                     @endforeach
                 </tr>
                 </tbody>
@@ -59,14 +61,16 @@
                         <td style="padding-left: {{ $conta->nivel() * 10 }}px">{{ $conta->nome }} <i
                                     class="fa fa-close red hidden" data-id="{{ $conta->id }}"></i></td>
                         @foreach($meses as $mes)
-                            <td class="valor">{{ $numberHelper::exibirDecimal($resultado->where('conta_id', $conta->id)->where('data_id', $mes->id)->first()->saldo) }}</td>
+                            <?php $result = $resultado->where('conta_id', $conta->id)->where('data_id', $mes->id)->first() ?>
+                            <td class="valor">{{ $numberHelper::exibirDecimal(isset($result) ? $result->saldo : 0.0) }}</td>
                         @endforeach
                     </tr>
                 @endforeach
                 <tr>
                     <th>Total do Passivo</th>
                     @foreach($meses as $mes)
-                        <th class="valor">{{ $numberHelper::exibirDecimal($resultadoTotais->where('tipo_conta', '2')->where('data_id', $mes->id)->first()->saldo) }}</th>
+                        <?php $result = $resultadoTotais->where('tipo_conta', '2')->where('data_id', $mes->id)->first() ?>
+                        <th class="valor">{{ $numberHelper::exibirDecimal(isset($result) ? $result->saldo : 0.0) }}</th>
                     @endforeach
                 </tr>
                 <tr>
@@ -80,20 +84,26 @@
                         <td style="padding-left: {{ $conta->nivel() * 10 }}px">{{ $conta->nome }} <i
                                     class="fa fa-close red hidden" data-id="{{ $conta->id }}"></i></td>
                         @foreach($meses as $mes)
-                            <td class="valor">{{ $numberHelper::exibirDecimal($resultado->where('conta_id', $conta->id)->where('data_id', $mes->id)->first()->saldo) }}</td>
+                            <?php $result = $resultado->where('conta_id', $conta->id)->where('data_id', $mes->id)->first() ?>
+                            <td class="valor">{{ $numberHelper::exibirDecimal(isset($result) ? $result->saldo : 0.0) }}</td>
                         @endforeach
                     </tr>
                 @endforeach
                 <tr>
                     <td style="padding-left: 10px">Lucros/Preju&iacute;zos</td>
                     @foreach($meses as $mes)
-                        <td class="valor">{{ $numberHelper::exibirDecimal($resultadoTotais->where('tipo_conta', '1')->where('data_id', $mes->id)->first()->saldo - $resultadoTotais->where('tipo_conta', '2')->where('data_id', $mes->id)->first()->saldo - $resultadoTotais->where('tipo_conta', '3')->where('data_id', $mes->id)->first()->saldo) }}</td>
+                        <?php $resultAtivo = $resultadoTotais->where('tipo_conta', '1')->where('data_id', $mes->id)->first() ?>
+                        <?php $resultPassivo = $resultadoTotais->where('tipo_conta', '2')->where('data_id', $mes->id)->first() ?>
+                        <?php $resultPL = $resultadoTotais->where('tipo_conta', '3')->where('data_id', $mes->id)->first() ?>
+                        <td class="valor">{{ $numberHelper::exibirDecimal((isset($resultAtivo) ? $resultAtivo->saldo : 0.0) - (isset($resultPassivo) ? $resultPassivo->saldo : 0.0) - (isset($resultPL) ? $resultPL->saldo : 0.0)) }}</td>
                     @endforeach
                 </tr>
                 <tr>
                     <th>Total do PL</th>
                     @foreach($meses as $mes)
-                        <th class="valor">{{ $numberHelper::exibirDecimal($resultadoTotais->where('tipo_conta', '1')->where('data_id', $mes->id)->first()->saldo - $resultadoTotais->where('tipo_conta', '2')->where('data_id', $mes->id)->first()->saldo) }}</th>
+                        <?php $resultAtivo = $resultadoTotais->where('tipo_conta', '1')->where('data_id', $mes->id)->first() ?>
+                        <?php $resultPassivo = $resultadoTotais->where('tipo_conta', '2')->where('data_id', $mes->id)->first() ?>
+                        <th class="valor">{{ $numberHelper::exibirDecimal((isset($resultAtivo) ? $resultAtivo->saldo : 0.0) - (isset($resultPassivo) ? $resultPassivo->saldo : 0.0)) }}</th>
                     @endforeach
                 </tr>
                 <tr>
@@ -102,7 +112,8 @@
                 <tr>
                     <th>Total do Passivo + PL</th>
                     @foreach($meses as $mes)
-                        <th class="valor">{{ $numberHelper::exibirDecimal($resultadoTotais->where('tipo_conta', '1')->where('data_id', $mes->id)->first()->saldo) }}</th>
+                        <?php $result = $resultadoTotais->where('tipo_conta', '1')->where('data_id', $mes->id)->first() ?>
+                        <th class="valor">{{ $numberHelper::exibirDecimal(isset($result) ? $result->saldo : 0.0) }}</th>
                     @endforeach
                 </tr>
                 </tbody>
