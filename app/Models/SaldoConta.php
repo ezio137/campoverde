@@ -11,5 +11,5 @@ class SaldoConta extends Model
 
     public $rules = [];
     protected $table = 'saldos_conta';
-    protected $fillable = ['conta_id', 'data_id', 'saldo'];
+    protected $fillable = ['conta_id', 'data_id', 'saldo', 'hora_calculo'];
 }

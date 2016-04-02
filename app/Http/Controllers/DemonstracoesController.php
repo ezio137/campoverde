@@ -6,38 +6,24 @@ use App\Conta;
 use App\Data;
 use App\FavoritoBalancoPatrimonial;
 use App\Http\Requests;
+use App\Jobs\AtualizarSaldosMesesJob;
 use App\Lancamento;
 use App\SaldoConta;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Services\DemonstracoesService;
 
 class DemonstracoesController extends Controller
 {
-    public function balancoPatrimonial(Request $request)
+    public function balancoPatrimonial()
     {
         // Preparando a tabela de datas
-        DB::table('datas')->delete();
-        $resultDatas = DB::table('lancamentos')->select(DB::raw("date_format(last_day(data), '%Y-%m-%d') data"))->distinct()->pluck('data');
-        $arrayDatas = array_map(function($data){
-            return ['data' => $data];
-        }, $resultDatas);
-        Data::insert($arrayDatas);
+        DemonstracoesService::atualizarDatas();
 
         // Preparando a tabela de saldos
-        DB::table('saldos_conta')->delete();
-        $contas = Conta::all();
-        $datas = Data::all();
-        foreach ($datas as $data) {
-            foreach ($contas as $conta) {
-                $saldoCreditos = Lancamento::where('conta_credito_id', $conta->id)->where('data', '<=', $data->data)->sum('valor');
-                $saldoDebitos = Lancamento::where('conta_debito_id', $conta->id)->where('data', '<=', $data->data)->sum('valor');
-                $conta->aumentaComCredito
-                    ? $saldo = $saldoCreditos - $saldoDebitos
-                    : $saldo = $saldoDebitos - $saldoCreditos;
-                SaldoConta::create(['conta_id' => $conta->id, 'data_id' => $data->id, 'saldo' => $saldo]);
-            }
-        }
+        $this->dispatch(new AtualizarSaldosMesesJob());
 
         $contasOptions = Conta::contasOptions();
         $mesesOptions = Data::mesesOptions();
@@ -55,6 +41,8 @@ class DemonstracoesController extends Controller
 
     public function atualizarBalancoPatrimonial(Request $request)
     {
+        $horaCalculo = SaldoConta::min('hora_calculo');
+
         if ($request->has('conta')) {
             $contaId = $request->input('conta');
             $request->session()->push('contas', $contaId);
@@ -95,8 +83,14 @@ class DemonstracoesController extends Controller
             ->whereNull('cc_filtro.deleted_at')
             ->whereNull('cc.deleted_at')
             ->whereNull('scc.deleted_at')
+            ->where('scc.hora_calculo', $horaCalculo)
             ->groupBy('cc_filtro.id', 'scc.data_id')
             ->get();
+        $resultado = array_map(function($r){
+            $r->conta_id = intval($r->conta_id);
+            $r->data_id = intval($r->data_id);
+            return $r;
+        }, $resultado);
         $resultado = collect($resultado);
 
         $resultadoTotais = DB::table('contas as cc')
@@ -105,8 +99,13 @@ class DemonstracoesController extends Controller
             ->whereIn('scc.data_id', $mesesIds)
             ->whereNull('cc.deleted_at')
             ->whereNull('scc.deleted_at')
+            ->where('scc.hora_calculo', $horaCalculo)
             ->groupBy(DB::raw('substr(cc.codigo_completo, 1, 1)'), 'scc.data_id')
             ->get();
+        $resultadoTotais = array_map(function($r){
+            $r->data_id = intval($r->data_id);
+            return $r;
+        }, $resultadoTotais);
         $resultadoTotais = collect($resultadoTotais);
 
         return view('demonstracoes.atualizar_balanco_patrimonial', compact(

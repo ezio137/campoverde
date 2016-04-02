@@ -21,15 +21,13 @@
             <li class="header">CONT&Aacute;BIL</li>
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="/contas"><i class="fa fa-book"></i> <span>Contas</span></a></li>
-            <li class="active"><a href="/contas_a_pagar"><i class="fa fa-calendar-check-o"></i> <span>Contas a Pagar</span></a></li>
-            <li><a href="/classificacoes_contas"><i class="fa fa-bookmark"></i> <span>Classifica&ccedil;&otilde;es</span></a></li>
+            <li><a href="/contas_a_pagar"><i class="fa fa-calendar-check-o"></i> <span>Contas a Pagar</span></a></li>
             <li><a href="/favorecidos"><i class="fa fa-user"></i> <span>Favorecidos</span></a></li>
             <li><a href="/lancamentos"><i class="fa fa-check"></i> <span>Lan&ccedil;amentos</span></a></li>
             <li class="treeview">
-                <a href="#"><i class="fa fa-pie-chart"></i> <span>Balan&ccedil;o Patrimonial</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <a href="#"><i class="fa fa-pie-chart"></i> <span>Relatórios</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="/balanco_patrimonial">Balan&ccedil;o Patrimonial (Contas)</a></li>
-                    <li><a href="/balanco_patrimonial_classificacoes">Balan&ccedil;o Patrimonial (Classif.)</a></li>
                 </ul>
             </li>
             <li class="header">PAGAMENTO</li>
