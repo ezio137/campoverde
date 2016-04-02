@@ -12,9 +12,9 @@
                     <th>Data</th>
                     <th>Favorecido</th>
                     <th>Conta</th>
-                    <th>Aumento</th>
-                    <th>Redu&ccedil;&atilde;o</th>
-                    <th>Saldo</th>
+                    <th class="valor">Aumento</th>
+                    <th class="valor">Redu&ccedil;&atilde;o</th>
+                    <th class="valor">Saldo</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -32,9 +32,9 @@
                         <td>{!! link_to_route('contas.lancamentos.edit', $lancamento->data, ['conta' => $conta->id, 'lancamento' => $lancamento->id]) !!}</td>
                         <td>{!! link_to_route('contas.lancamentos.edit', $lancamento->favorecido->nome, ['conta' => $conta->id, 'lancamento' => $lancamento->id]) !!}</td>
                         <td>{!! link_to_route('contas.lancamentos', $conta->id == $lancamento->conta_credito_id ? $lancamento->contaDebito->codigoNome : $lancamento->contaCredito->codigoNome, ['conta' => $conta->id == $lancamento->conta_credito_id ? $lancamento->conta_debito_id : $lancamento->conta_credito_id]) !!}</td>
-                        <td>@if($lancamento->aumentaConta($conta->id)) {!! link_to_route('contas.lancamentos.edit', $numberHelper::exibirDecimal($lancamento->valor), ['conta' => $conta->id, 'lancamento' => $lancamento->id]) !!} @endif</td>
-                        <td>@if(!$lancamento->aumentaConta($conta->id)) {!! link_to_route('contas.lancamentos.edit', $numberHelper::exibirDecimal($lancamento->valor), ['conta' => $conta->id, 'lancamento' => $lancamento->id]) !!} @endif</td>
-                        <td>{{ $numberHelper::exibirDecimal($saldo) }}</td>
+                        <td class="valor">@if($lancamento->aumentaConta($conta->id)) {!! link_to_route('contas.lancamentos.edit', $lancamento->valorFormatado, ['conta' => $conta->id, 'lancamento' => $lancamento->id]) !!} @endif</td>
+                        <td class="valor">@if(!$lancamento->aumentaConta($conta->id)) {!! link_to_route('contas.lancamentos.edit', $lancamento->valorFormatado, ['conta' => $conta->id, 'lancamento' => $lancamento->id]) !!} @endif</td>
+                        <td class="valor">{{ $numberHelper::exibirDecimal($saldo) }}</td>
                         <td>
                             {!! Form::open(['route' => ['lancamentos.destroy', $lancamento->id], 'method' => 'DELETE', 'id' => "delete-form-$lancamento->id"]) !!}
                             {!! Form::hidden('contaId', $conta->id) !!}

@@ -13,7 +13,7 @@ class Lancamento extends Model
     use SoftDeletes;
 
     public static $rules = [];
-    protected $fillable = ['favorecido_id', 'documento', 'valor', 'data', 'memorando', 'conta_credito_id', 'conta_debito_id', 'reconciliado'];
+    protected $fillable = ['favorecido_id', 'documento', 'valor', 'data', 'memorando', 'conta_credito_id', 'conta_debito_id', 'reconciliado', 'valor_formatado'];
     protected $dates = ['deleted_at', 'data'];
 
     public static function boot()
@@ -97,7 +97,12 @@ class Lancamento extends Model
         $this->attributes['data'] = DateHelper::extrairData($value);
     }
 
-    public function setValorAttribute($value)
+    public function getValorFormatadoAttribute()
+    {
+        return number_format($this->attributes['valor'], 2, ',', '.');
+    }
+
+    public function setValorFormatadoAttribute($value)
     {
         $this->attributes['valor'] = NumberHelper::extrairDecimal($value);
     }

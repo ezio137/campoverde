@@ -1,6 +1,6 @@
 <div class="box-body">
     @include('layouts.forms.text', ['atributo' => 'data', 'label' => 'Data', 'larguraAtributo' => 3, 'larguraLabel' => 2])
-    @include('layouts.forms.text', ['atributo' => 'valor', 'label' => 'Valor', 'larguraAtributo' => 3, 'larguraLabel' => 2])
+    @include('layouts.forms.text', ['atributo' => 'valor_formatado', 'label' => 'Valor', 'larguraAtributo' => 3, 'larguraLabel' => 2])
     @include('layouts.forms.select', ['atributo' => 'favorecido_id', 'label' => 'Favorecido', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $favorecidosOptions])
     @if($tipo == 'credito')
         @include('layouts.forms.select', ['atributo' => 'conta_debito_id', 'label' => 'Conta', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $contasOptions])

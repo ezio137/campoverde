@@ -30,9 +30,6 @@ class DemonstracoesController extends Controller
         $datas = Data::all();
         foreach ($datas as $data) {
             foreach ($contas as $conta) {
-//                if ($conta->codigo_completo == '1.1.1.2.1')
-//                    dd(new Carbon($conta->lancamentosDebito->first()->getAttributes()['data']));
-//                    dd($conta->lancamentosDebito->where('data', '<=', $data->data));
                 $saldoCreditos = Lancamento::where('conta_credito_id', $conta->id)->where('data', '<=', $data->data)->sum('valor');
                 $saldoDebitos = Lancamento::where('conta_debito_id', $conta->id)->where('data', '<=', $data->data)->sum('valor');
                 $conta->aumentaComCredito

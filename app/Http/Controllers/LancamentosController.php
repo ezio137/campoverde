@@ -145,7 +145,6 @@ class LancamentosController extends Controller
      */
     public function update(Request $request, Conta $conta, Lancamento $lancamento)
     {
-
         $this->validate($request, Lancamento::$rules);
 
         $lancamento->update($request->all());
