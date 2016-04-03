@@ -28,7 +28,9 @@ class FavoritosBalancoPatrimonialController extends Controller
     public function create(Request $request)
     {
         $contas = Conta::whereIn('id', $request->session()->get('contas'))->get();
-        return view('favoritos_balanco_patrimonial.create', compact('contas'));
+        return view('favoritos_balanco_patrimonial.create', compact('contas'))
+            ->with('modulo', 'Contábil')
+            ->with('pageHeader', "Favorito");
     }
 
     /**
