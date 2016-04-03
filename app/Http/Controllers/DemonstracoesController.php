@@ -25,7 +25,7 @@ class DemonstracoesController extends Controller
         // Preparando a tabela de saldos
         $this->dispatch(new AtualizarSaldosMesesJob());
 
-        $contasOptions = Conta::contasOptions();
+        $contasOptions = Conta::contasOptions(0, [1, 2, 3]);
         $mesesOptions = Data::mesesOptions();
 
         $contasFavoritasOptions = collect([0 => 'Nenhum'])->all() + FavoritoBalancoPatrimonial::lists('nome', 'id')->all();

@@ -59,9 +59,13 @@ class Conta extends Model
         }
     }
 
-    public static function contasOptions($contaAtualId = 0)
+    public static function contasOptions($contaAtualId = 0, $tiposConta = [1, 2, 3, 4, 5, 6])
     {
-        $contas = self::select('id', DB::raw('concat(codigo_completo, " ", nome) as nome'))->where('id', '<>', $contaAtualId)->orderBy('codigo_completo_ordenavel')->pluck('nome', 'id');
+        $contas = self::select('id', DB::raw('concat(codigo_completo, " ", nome) as nome'))
+            ->where('id', '<>', $contaAtualId)
+            ->whereIn(DB::raw('substr(codigo_completo, 1, 1)'), $tiposConta)
+            ->orderBy('codigo_completo_ordenavel')
+            ->pluck('nome', 'id');
         return $contas->all();
     }
 
