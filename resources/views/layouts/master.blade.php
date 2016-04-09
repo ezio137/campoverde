@@ -69,7 +69,7 @@ desired effect
   @endif
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div @if(Auth::check()) class="content-wrapper" @endif>
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>

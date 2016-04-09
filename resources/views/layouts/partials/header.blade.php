@@ -151,7 +151,7 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                                {{--<a href="#" class="btn btn-default btn-flat">Trocar Senha</a>--}}
                             </div>
                             <div class="pull-right">
                                 <a href="/logout" class="btn btn-default btn-flat">Sair</a>
