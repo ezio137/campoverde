@@ -24,3 +24,7 @@ td.valor, th.valor {
 .content {
     padding-bottom: 40px;
 }
+
+.table-relatorio {
+    font-size: 90%;
+}

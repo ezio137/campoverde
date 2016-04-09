@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Jobs\AtualizarSaldosMesesJob;
 use App\Lancamento;
 use App\SaldoConta;
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,12 +27,12 @@ class DemonstracoesController extends Controller
         $this->dispatch(new AtualizarSaldosMesesJob());
 
         $contasOptions = Conta::contasOptions(0, [1, 2, 3]);
-        $mesesOptions = Data::mesesOptions();
+        $mesesOptions = Data::mesesOptionsSelecione();
 
         $contasFavoritasOptions = collect([0 => 'Nenhum'])->all() + FavoritoBalancoPatrimonial::lists('nome', 'id')->all();
         $mesesFavoritosOptions = [];
 
-        return view('demonstracoes.balanco_patrimonial', compact(
+        return view('demonstracoes.balanco_patrimonial.index', compact(
             'contasOptions',
             'mesesOptions',
             'contasFavoritasOptions',
@@ -39,10 +40,80 @@ class DemonstracoesController extends Controller
         ));
     }
 
-    public function atualizarBalancoPatrimonial(Request $request)
+    public function dadosBalancoPatrimonial(Request $request)
     {
         $horaCalculo = SaldoConta::min('hora_calculo');
 
+        $this->atualizarDadosSession($request);
+
+        $contasIds = $request->session()->get('contas');
+        $mesesIds = $request->session()->get('meses');
+
+        $meses = Data::whereIn('id', $mesesIds)->orderBy('data')->get()->keyBy('id');
+
+        $contasAtivo = $this->contas('1', $contasIds);
+        $contasPassivo = $this->contas('2', $contasIds);
+        $contasPL = $this->contas('3', $contasIds);
+
+        $resultado = DemonstracoesService::balancoPatrimonialContas($contasIds, $mesesIds, $horaCalculo);
+        $resultadoTotais = DemonstracoesService::balancoPatrimonialTotais($mesesIds, $horaCalculo);
+
+        $media = 'screen';
+        return view('demonstracoes.balanco_patrimonial.partials.dados', compact(
+            'meses',
+            'contasAtivo',
+            'contasPassivo',
+            'contasPL',
+            'resultado',
+            'resultadoTotais',
+            'media'
+        ));
+    }
+
+    public function relatorioBalancoPatrimonial(Request $request)
+    {
+        $horaCalculo = SaldoConta::min('hora_calculo');
+
+        $contasIds = $request->session()->get('contas');
+        $mesesIds = $request->session()->get('meses');
+
+        $meses = Data::whereIn('id', $mesesIds)->orderBy('data')->get()->keyBy('id');
+
+        $contasAtivo = $this->contas('1', $contasIds);
+        $contasPassivo = $this->contas('2', $contasIds);
+        $contasPL = $this->contas('3', $contasIds);
+
+        $resultado = DemonstracoesService::balancoPatrimonialContas($contasIds, $mesesIds, $horaCalculo);
+        $resultadoTotais = DemonstracoesService::balancoPatrimonialTotais($mesesIds, $horaCalculo);
+
+        $media = 'print';
+        $pdf = PDF::loadView('demonstracoes.balanco_patrimonial.relatorio', compact(
+            'meses',
+            'contasAtivo',
+            'contasPassivo',
+            'contasPL',
+            'resultado',
+            'resultadoTotais',
+            'media'
+        ));
+        return $pdf->setOrientation('landscape')->inline('balanco_patrimonial.pdf');
+    }
+
+    private function contas($pattern, $contasIds)
+    {
+        return Conta::whereIn('id', $contasIds)
+            ->orderBy('codigo_completo_ordenavel')
+            ->where('codigo_completo', 'like', $pattern . '%')
+            ->get()
+            ->keyBy('id');
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function atualizarDadosSession(Request $request)
+    {
         if ($request->has('conta')) {
             $contaId = $request->input('conta');
             $request->session()->push('contas', $contaId);
@@ -55,8 +126,9 @@ class DemonstracoesController extends Controller
             $codigos = FavoritoBalancoPatrimonial::find($request->input('contas_favoritas'))->itens()->lists('conta_codigo_completo');
             $contasIds = Conta::whereIn('codigo_completo', $codigos)->lists('id')->all();
             $request->session()->put('contas', $contasIds);
+            return $contasIds;
         }
-        $contasIds = $request->session()->get('contas');
+
 
         if ($request->has('mes')) {
             $mesId = $request->input('mes');
@@ -66,64 +138,5 @@ class DemonstracoesController extends Controller
             $mesId = $request->input('remove-mes');
             $request->session()->put('meses', array_diff($request->session()->get('meses'), [$mesId]));
         }
-        $mesesIds = $request->session()->get('meses');
-
-        $meses = Data::whereIn('id', $mesesIds)->orderBy('data')->get()->keyBy('id');
-
-        $contasAtivo = $this->contas('1', $contasIds);
-        $contasPassivo = $this->contas('2', $contasIds);
-        $contasPL = $this->contas('3', $contasIds);
-
-        $resultado = DB::table('contas as cc_filtro')
-            ->select('cc_filtro.id as conta_id', 'scc.data_id', DB::raw('sum(scc.saldo) as saldo'))
-            ->join('contas as cc', 'cc.codigo_completo', 'like', DB::raw("concat(cc_filtro.codigo_completo, '%')"))
-            ->join('saldos_conta as scc', 'cc.id', '=', 'scc.conta_id')
-            ->whereIn('cc_filtro.id', $contasIds)
-            ->whereIn('scc.data_id', $mesesIds)
-            ->whereNull('cc_filtro.deleted_at')
-            ->whereNull('cc.deleted_at')
-            ->whereNull('scc.deleted_at')
-            ->where('scc.hora_calculo', $horaCalculo)
-            ->groupBy('cc_filtro.id', 'scc.data_id')
-            ->get();
-        $resultado = array_map(function($r){
-            $r->conta_id = intval($r->conta_id);
-            $r->data_id = intval($r->data_id);
-            return $r;
-        }, $resultado);
-        $resultado = collect($resultado);
-
-        $resultadoTotais = DB::table('contas as cc')
-            ->select(DB::raw('substr(cc.codigo_completo, 1, 1) as tipo_conta'), 'scc.data_id', DB::raw('sum(scc.saldo) as saldo'))
-            ->join('saldos_conta as scc', 'cc.id', '=', 'scc.conta_id')
-            ->whereIn('scc.data_id', $mesesIds)
-            ->whereNull('cc.deleted_at')
-            ->whereNull('scc.deleted_at')
-            ->where('scc.hora_calculo', $horaCalculo)
-            ->groupBy(DB::raw('substr(cc.codigo_completo, 1, 1)'), 'scc.data_id')
-            ->get();
-        $resultadoTotais = array_map(function($r){
-            $r->data_id = intval($r->data_id);
-            return $r;
-        }, $resultadoTotais);
-        $resultadoTotais = collect($resultadoTotais);
-
-        return view('demonstracoes.atualizar_balanco_patrimonial', compact(
-            'meses',
-            'contasAtivo',
-            'contasPassivo',
-            'contasPL',
-            'resultado',
-            'resultadoTotais'
-        ));
-    }
-
-    private function contas($pattern, $contasIds)
-    {
-        return Conta::whereIn('id', $contasIds)
-            ->orderBy('codigo_completo_ordenavel')
-            ->where('codigo_completo', 'like', $pattern . '%')
-            ->get()
-            ->keyBy('id');
     }
 }

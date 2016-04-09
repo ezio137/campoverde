@@ -65,22 +65,22 @@
             $('#contas_favoritas').select2();
             $('#meses_favoritos').select2();
 
-            $('#conteudo-demonstracao').load('/atualizar_balanco_patrimonial');
+            $('#conteudo-demonstracao').load('/balanco_patrimonial/dados');
 
             $('#conta').change(function () {
-                $('#conteudo-demonstracao').load('/atualizar_balanco_patrimonial', {
+                $('#conteudo-demonstracao').load('/balanco_patrimonial/dados', {
                     'conta': $('#conta').val(),
                     '_token': $('[name=_token]').val()
                 })
             });
             $('#mes').change(function () {
-                $('#conteudo-demonstracao').load('/atualizar_balanco_patrimonial', {
+                $('#conteudo-demonstracao').load('/balanco_patrimonial/dados', {
                     'mes': $('#mes').val(),
                     '_token': $('[name=_token]').val()
                 })
             });
             $('#contas_favoritas').change(function () {
-                $('#conteudo-demonstracao').load('/atualizar_balanco_patrimonial', {
+                $('#conteudo-demonstracao').load('/balanco_patrimonial/dados', {
                     'contas_favoritas': $('#contas_favoritas').val(),
                     '_token': $('[name=_token]').val()
                 })
@@ -91,18 +91,22 @@
             });
 
             $('#conteudo-demonstracao').on('click', 'tr.contas i', function () {
-                $('#conteudo-demonstracao').load('/atualizar_balanco_patrimonial', {
+                $('#conteudo-demonstracao').load('/balanco_patrimonial/dados', {
                     'remove-conta': $(this).data('id'),
                     '_token': $('[name=_token]').val()
                 })
             });
 
             $('#conteudo-demonstracao').on('click', 'tr.meses i', function () {
-                $('#conteudo-demonstracao').load('/atualizar_balanco_patrimonial', {
+                $('#conteudo-demonstracao').load('/balanco_patrimonial/dados', {
                     'remove-mes': $(this).data('id'),
                     '_token': $('[name=_token]').val()
                 })
             });
         });
     </script>
+@stop
+
+@section('botoes-footer')
+    <a href="/relatorio_balanco_patrimonial" class="btn btn-success"><i class="fa fa-file-text-o"></i> Imprimir</a>
 @stop

@@ -22,4 +22,11 @@ class Data extends Model
             return DateHelper::exibirDataMes($mes);
         }, $mesesOptions);
     }
+
+    public static function mesesOptionsSelecione()
+    {
+        $mesInicial = [0 => 'Selecione'];
+        $meses = self::mesesOptions();
+        return $mesInicial + $meses;
+    }
 }
