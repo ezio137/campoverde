@@ -37,7 +37,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::get('balanco_patrimonial', 'DemonstracoesController@balancoPatrimonial');
     Route::any('balanco_patrimonial/dados', 'DemonstracoesController@dadosBalancoPatrimonial');
-    Route::any('relatorio_balanco_patrimonial', 'DemonstracoesController@relatorioBalancoPatrimonial');
+    Route::any('balanco_patrimonial/pdf', 'DemonstracoesController@relatorioBalancoPatrimonial');
 
     Route::resource('favoritos_balanco_patrimonial', 'FavoritosBalancoPatrimonialController');
     Route::resource('classificacoes_contas', 'ClassificacoesContasController');

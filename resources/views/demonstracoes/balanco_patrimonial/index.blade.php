@@ -108,5 +108,5 @@
 @stop
 
 @section('botoes-footer')
-    <a href="/relatorio_balanco_patrimonial" class="btn btn-success"><i class="fa fa-file-text-o"></i> Imprimir</a>
+    <a href="/balanco_patrimonial/pdf" class="btn btn-success"><i class="fa fa-file-text-o"></i> Imprimir</a>
 @stop
