@@ -39,6 +39,11 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::any('balanco_patrimonial/dados', 'DemonstracoesController@dadosBalancoPatrimonial');
     Route::any('balanco_patrimonial/pdf', 'DemonstracoesController@relatorioBalancoPatrimonial');
 
+    Route::get('resultado', 'DemonstracoesController@resultado');
+    Route::any('resultado/dados', 'DemonstracoesController@dadosResultado');
+    Route::any('resultado/pdf', 'DemonstracoesController@relatorioResultado');
+
     Route::resource('favoritos_balanco_patrimonial', 'FavoritosBalancoPatrimonialController');
+    Route::resource('favoritos_resultado', 'FavoritosResultadoController');
     Route::resource('classificacoes_contas', 'ClassificacoesContasController');
 });

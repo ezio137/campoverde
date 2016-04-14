@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Conta;
 use App\Data;
 use App\FavoritoBalancoPatrimonial;
+use App\FavoritoResultado;
 use App\Http\Requests;
+use App\Jobs\AtualizarResultadosMesesJob;
 use App\Jobs\AtualizarSaldosMesesJob;
 use App\Lancamento;
+use App\ResultadoConta;
 use App\SaldoConta;
 use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
 use Carbon\Carbon;
@@ -97,6 +100,83 @@ class DemonstracoesController extends Controller
             'media'
         ));
         return $pdf->setOrientation('landscape')->inline('balanco_patrimonial.pdf');
+    }
+
+    public function resultado()
+    {
+        // Preparando a tabela de datas
+        DemonstracoesService::atualizarDatas();
+
+        // Preparando a tabela de saldos
+        $this->dispatch(new AtualizarResultadosMesesJob());
+
+        $contasOptions = Conta::contasOptions(0, [4, 5]);
+        $mesesOptions = Data::mesesOptionsSelecione();
+
+        $contasFavoritasOptions = collect([0 => 'Nenhum'])->all() + FavoritoResultado::lists('nome', 'id')->all();
+        $mesesFavoritosOptions = [];
+
+        return view('demonstracoes.resultado.index', compact(
+            'contasOptions',
+            'mesesOptions',
+            'contasFavoritasOptions',
+            'mesesFavoritosOptions'
+        ));
+    }
+
+    public function dadosResultado(Request $request)
+    {
+        $horaCalculo = ResultadoConta::min('hora_calculo');
+
+        $this->atualizarDadosSession($request);
+
+        $contasIds = $request->session()->get('contas');
+        $mesesIds = $request->session()->get('meses');
+
+        $meses = Data::whereIn('id', $mesesIds)->orderBy('data')->get()->keyBy('id');
+
+        $contasReceita = $this->contas('4', $contasIds);
+        $contasDespesa = $this->contas('5', $contasIds);
+
+        $resultado = DemonstracoesService::resultadoContas($contasIds, $mesesIds, $horaCalculo);
+        $resultadoTotais = DemonstracoesService::resultadoTotais($mesesIds, $horaCalculo);
+
+        $media = 'screen';
+        return view('demonstracoes.resultado.partials.dados', compact(
+            'meses',
+            'contasReceita',
+            'contasDespesa',
+            'resultado',
+            'resultadoTotais',
+            'media'
+        ));
+    }
+
+    public function relatorioResultado(Request $request)
+    {
+        $horaCalculo = ResultadoConta::min('hora_calculo');
+
+        $contasIds = $request->session()->get('contas');
+        $mesesIds = $request->session()->get('meses');
+
+        $meses = Data::whereIn('id', $mesesIds)->orderBy('data')->get()->keyBy('id');
+
+        $contasReceita = $this->contas('4', $contasIds);
+        $contasDespesa = $this->contas('5', $contasIds);
+
+        $resultado = DemonstracoesService::resultadoContas($contasIds, $mesesIds, $horaCalculo);
+        $resultadoTotais = DemonstracoesService::resultadoTotais($mesesIds, $horaCalculo);
+
+        $media = 'print';
+        $pdf = PDF::loadView('demonstracoes.resultado.relatorio', compact(
+            'meses',
+            'contasReceita',
+            'contasDespesa',
+            'resultado',
+            'resultadoTotais',
+            'media'
+        ));
+        return $pdf->setOrientation('landscape')->inline('resultado.pdf');
     }
 
     private function contas($pattern, $contasIds)
