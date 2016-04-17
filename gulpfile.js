@@ -16,24 +16,24 @@ elixir(function (mix) {
 
     
     // jQuery
-    mix.copy('resources/assets/vendor/bower_components/jquery/dist/jquery.js', 'public/vendor/jquery');
+    mix.copy('node_modules/jquery/dist/jquery.js', 'public/vendor/jquery');
 
     // Bootstrap
-    mix.copy('resources/assets/vendor/bower_components/bootstrap/dist/css/bootstrap.css', 'public/vendor/bootstrap');
-    mix.copy('resources/assets/vendor/bower_components/bootstrap/dist/js/bootstrap.js', 'public/vendor/bootstrap');
+    mix.copy('node_modules/bootstrap/dist/css/bootstrap.css', 'public/vendor/bootstrap');
+    mix.copy('node_modules/bootstrap/dist/js/bootstrap.js', 'public/vendor/bootstrap');
 
     // Select2
-    mix.copy('resources/assets/vendor/bower_components/select2/dist/css/select2.css', 'public/vendor/select2');
-    mix.copy('resources/assets/vendor/bower_components/select2/dist/js/select2.js', 'public/vendor/select2');
+    mix.copy('node_modules/select2/dist/css/select2.css', 'public/vendor/select2');
+    mix.copy('node_modules/select2/dist/js/select2.js', 'public/vendor/select2');
 
     // Bootstrap Datepicker
-    mix.copy('resources/assets/vendor/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css', 'public/vendor/bootstrap-datepicker');
-    mix.copy('resources/assets/vendor/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js', 'public/vendor/bootstrap-datepicker');
+    mix.copy('node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css', 'public/vendor/bootstrap-datepicker');
+    mix.copy('node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js', 'public/vendor/bootstrap-datepicker');
 
     // AdminLTE
-    mix.copy('resources/assets/vendor/bower_components/AdminLTE/dist/css/AdminLTE.css', 'public/vendor/admin-lte');
-    mix.copy('resources/assets/vendor/bower_components/AdminLTE/dist/js/app.js', 'public/vendor/admin-lte');
-    mix.copy('resources/assets/vendor/bower_components/AdminLTE/dist/css/skins/*.css', 'public/vendor/admin-lte/skins');
+    mix.copy('node_modules/admin-lte/dist/css/AdminLTE.css', 'public/vendor/admin-lte');
+    mix.copy('node_modules/admin-lte/dist/js/app.js', 'public/vendor/admin-lte');
+    mix.copy('node_modules/admin-lte/dist/css/skins/*.css', 'public/vendor/admin-lte/skins');
 
     mix.copy('resources/assets/css/styles.css', 'public/css');
     mix.copy('resources/assets/css/style_v1.css', 'public/css');
