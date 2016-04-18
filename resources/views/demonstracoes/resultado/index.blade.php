@@ -33,7 +33,8 @@
                             @include('layouts.forms.select', ['atributo' => 'conta', 'label' => 'Conta', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $contasOptions])
                         </div>
                         <div class="row">
-                            @include('layouts.forms.select', ['atributo' => 'mes', 'label' => 'Mês', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $mesesOptions])
+                            @include('layouts.forms.select', ['atributo' => 'mes_inicio', 'label' => 'Período', 'larguraAtributo' => 4, 'larguraLabel' => 2, 'options' => $mesesOptions, 'inline' => true])
+                            @include('layouts.forms.select', ['atributo' => 'mes_fim', 'label' => 'a', 'larguraAtributo' => 4, 'larguraLabel' => 1, 'options' => $mesesOptions, 'inline' => true])
                         </div>
                     </fieldset>
                 </div>
@@ -61,7 +62,8 @@
     <script type="application/javascript">
         $(function () {
             $('#conta').select2();
-            $('#mes').select2();
+            $('#mes_inicio').select2();
+            $('#mes_fim').select2();
             $('#contas_favoritas').select2();
             $('#meses_favoritos').select2();
 
@@ -69,19 +71,20 @@
 
             $('#conta').change(function () {
                 $('#conteudo-demonstracao').load('/resultado/dados', {
-                    'conta': $('#conta').val(),
+                    'conta_resultado': $('#conta').val(),
                     '_token': $('[name=_token]').val()
                 })
             });
-            $('#mes').change(function () {
+            $('#mes_fim').change(function () {
                 $('#conteudo-demonstracao').load('/resultado/dados', {
-                    'mes': $('#mes').val(),
+                    'mes_inicio': $('#mes_inicio').val(),
+                    'mes_fim': $('#mes_fim').val(),
                     '_token': $('[name=_token]').val()
                 })
             });
             $('#contas_favoritas').change(function () {
                 $('#conteudo-demonstracao').load('/resultado/dados', {
-                    'contas_favoritas': $('#contas_favoritas').val(),
+                    'contas_favoritas_resultado': $('#contas_favoritas').val(),
                     '_token': $('[name=_token]').val()
                 })
             });
@@ -92,14 +95,14 @@
 
             $('#conteudo-demonstracao').on('click', 'tr.contas i', function () {
                 $('#conteudo-demonstracao').load('/resultado/dados', {
-                    'remove-conta': $(this).data('id'),
+                    'remove-conta-resultado': $(this).data('id'),
                     '_token': $('[name=_token]').val()
                 })
             });
 
             $('#conteudo-demonstracao').on('click', 'tr.meses i', function () {
                 $('#conteudo-demonstracao').load('/resultado/dados', {
-                    'remove-mes': $(this).data('id'),
+                    'remove-periodo': $(this).data('id'),
                     '_token': $('[name=_token]').val()
                 })
             });

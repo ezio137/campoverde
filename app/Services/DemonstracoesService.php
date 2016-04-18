@@ -101,43 +101,60 @@ class DemonstracoesService
         return collect($resultadoTotais);
     }
 
-    public static function resultadoContas($contasIds, $mesesIds, $horaCalculo)
+    public static function resultadoContas($contasIds, $periodos, $horaCalculo)
     {
-        $resultado = DB::table('contas as cc_filtro')
-            ->select('cc_filtro.id as conta_id', 'rcc.data_id', DB::raw('sum(rcc.resultado) as resultado'))
-            ->join('contas as cc', 'cc.codigo_completo', 'like', DB::raw("concat(cc_filtro.codigo_completo, '%')"))
-            ->join('resultados_conta as rcc', 'cc.id', '=', 'rcc.conta_id')
-            ->whereIn('cc_filtro.id', $contasIds)
-            ->whereIn('rcc.data_id', $mesesIds)
-            ->whereNull('cc_filtro.deleted_at')
-            ->whereNull('cc.deleted_at')
-            ->whereNull('rcc.deleted_at')
-            ->where('rcc.hora_calculo', $horaCalculo)
-            ->groupBy('cc_filtro.id', 'rcc.data_id')
-            ->get();
-        $resultado = array_map(function($r){
-            $r->conta_id = intval($r->conta_id);
-            $r->data_id = intval($r->data_id);
-            return $r;
-        }, $resultado);
-        return collect($resultado);
+        $resultado = collect();
+        foreach ($periodos as $periodo) {
+            $mesInicioId = $periodo['inicio'];
+            $mesFimId = $periodo['fim'];
+            $periodoId = $mesInicioId . "_" . $mesFimId;
+            $mesInicioData = Data::find($mesInicioId)->data;
+            $mesFimData = Data::find($mesFimId)->data;
+            $resultadoParcial = DB::table('contas as cc_filtro')
+                ->select('cc_filtro.id as conta_id', DB::raw("'" . $periodoId ."' as periodo_id"), DB::raw('sum(rcc.resultado) as resultado'))
+                ->join('contas as cc', 'cc.codigo_completo', 'like', DB::raw("concat(cc_filtro.codigo_completo, '%')"))
+                ->join('resultados_conta as rcc', 'cc.id', '=', 'rcc.conta_id')
+                ->join('datas as d', 'rcc.data_id', '=', 'd.id')
+                ->whereIn('cc_filtro.id', $contasIds)
+                ->where('d.data', '>=', $mesInicioData)
+                ->where('d.data', '<=', $mesFimData)
+                ->whereNull('cc_filtro.deleted_at')
+                ->whereNull('cc.deleted_at')
+                ->whereNull('rcc.deleted_at')
+                ->where('rcc.hora_calculo', $horaCalculo)
+                ->groupBy('cc_filtro.id')
+                ->get();
+            $resultadoParcial = array_map(function($r){
+                $r->conta_id = intval($r->conta_id);
+                return $r;
+            }, $resultadoParcial);
+            $resultado = $resultado->merge($resultadoParcial);
+        }
+        return $resultado;
     }
 
-    public static function resultadoTotais($mesesIds, $horaCalculo)
+    public static function resultadoTotais($periodos, $horaCalculo)
     {
-        $resultadoTotais = DB::table('contas as cc')
-            ->select(DB::raw('substr(cc.codigo_completo, 1, 1) as tipo_conta'), 'rcc.data_id', DB::raw('sum(rcc.resultado) as resultado'))
-            ->join('resultados_conta as rcc', 'cc.id', '=', 'rcc.conta_id')
-            ->whereIn('rcc.data_id', $mesesIds)
-            ->whereNull('cc.deleted_at')
-            ->whereNull('rcc.deleted_at')
-            ->where('rcc.hora_calculo', $horaCalculo)
-            ->groupBy(DB::raw('substr(cc.codigo_completo, 1, 1)'), 'rcc.data_id')
-            ->get();
-        $resultadoTotais = array_map(function($r){
-            $r->data_id = intval($r->data_id);
-            return $r;
-        }, $resultadoTotais);
-        return collect($resultadoTotais);
+        $resultadoTotais = collect();
+        foreach ($periodos as $periodo) {
+            $mesInicioId = $periodo['inicio'];
+            $mesFimId = $periodo['fim'];
+            $periodoId = $mesInicioId . "_" . $mesFimId;
+            $mesInicioData = Data::find($mesInicioId)->data;
+            $mesFimData = Data::find($mesFimId)->data;
+            $resultadoTotaisParcial = DB::table('contas as cc')
+                ->select(DB::raw('substr(cc.codigo_completo, 1, 1) as tipo_conta'), DB::raw("'" . $periodoId ."' as periodo_id"), DB::raw('sum(rcc.resultado) as resultado'))
+                ->join('resultados_conta as rcc', 'cc.id', '=', 'rcc.conta_id')
+                ->join('datas as d', 'rcc.data_id', '=', 'd.id')
+                ->where('d.data', '>=', $mesInicioData)
+                ->where('d.data', '<=', $mesFimData)
+                ->whereNull('cc.deleted_at')
+                ->whereNull('rcc.deleted_at')
+                ->where('rcc.hora_calculo', $horaCalculo)
+                ->groupBy(DB::raw('substr(cc.codigo_completo, 1, 1)'))
+                ->get();
+            $resultadoTotais = $resultadoTotais->merge($resultadoTotaisParcial);
+        }
+        return $resultadoTotais;
     }
 }
