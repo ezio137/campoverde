@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddHoraCalculoToSaldoconta extends Migration
 {
@@ -14,7 +15,7 @@ class AddHoraCalculoToSaldoconta extends Migration
     {
         DB::table('saldos_conta')->delete();
         Schema::table('saldos_conta', function(Blueprint $table){
-            $table->timestamp('hora_calculo');
+            $table->timestamp('hora_calculo')->default(Carbon::now());
         });
     }
 
