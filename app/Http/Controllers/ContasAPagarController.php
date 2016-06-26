@@ -25,16 +25,20 @@ class ContasAPagarController extends Controller
 
         return view('contas_a_pagar.index', compact('contasAPagar'))
             ->with('modulo', 'Contábil')
-            ->with('pageHeader', 'Contas a Pagar');
+            ->with('pageHeader', 'Configuração de Contas a Pagar');
     }
 
     public function create()
     {
+        $contaAPagar = new ContaAPagar();
+        $contaAPagar->parcela_atual = 1;
+        $contaAPagar->parcela_total = 1;
+
         $favorecidosOptions = Favorecido::orderBy('nome')->pluck('nome', 'id');
         $contasOptions = Conta::contasOptions();
         $periodicidadesOptions = Periodicidade::periodicidadesOptions();
 
-        return view('contas_a_pagar.create', compact('favorecidosOptions', 'contasOptions', 'periodicidadesOptions'))
+        return view('contas_a_pagar.create', compact('contaAPagar', 'favorecidosOptions', 'contasOptions', 'periodicidadesOptions'))
             ->with('modulo', 'Contábil')
             ->with('pageHeader', 'Contas a Pagar');
     }

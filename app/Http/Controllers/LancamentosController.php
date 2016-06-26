@@ -5,12 +5,9 @@ namespace App\Http\Controllers;
 use App\Anexo;
 use App\Conta;
 use App\Favorecido;
-use App\Lancamento;
 use App\Http\Requests;
-use App\Services\TextHelper;
-use Carbon\Carbon;
+use App\Lancamento;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class LancamentosController extends Controller
@@ -41,7 +38,7 @@ class LancamentosController extends Controller
      */
     public function create(Conta $conta, $tipo)
     {
-        $favorecidosOptions = Favorecido::orderBy('nome')->pluck('nome', 'id');
+        $favorecidosOptions = Favorecido::favorecidosOptions();
         $contasOptions = Conta::contasOptions($conta->id);
 
         if (($tipo == 'credito' && $conta->aumentaComCredito) || ($tipo == 'debito' && $conta->aumentaComDebito)) {
@@ -84,13 +81,19 @@ class LancamentosController extends Controller
                 'extensao' => $extensao,
                 'nome_original' => $nomeArquivo,
                 'tamanho_bytes' => $tamanhoBytes,
-                'lancamento_id' => $lancamento->id
+                'anexavel_id' => $lancamento->id,
+                'anexavel_type' => 'App\Lancamento',
             ]);
 
             $arquivo->move(storage_path('anexos'), $anexo->id);
         }
 
         return Redirect::route('contas.lancamentos', ['conta' => $conta->id]);
+    }
+
+    private function isInteger($value)
+    {
+        return (string)(int)$value == $value;
     }
 
     /**
@@ -116,7 +119,7 @@ class LancamentosController extends Controller
      */
     public function edit(Conta $conta, Lancamento $lancamento)
     {
-        $favorecidosOptions = Favorecido::orderBy('nome')->pluck('nome', 'id');
+        $favorecidosOptions = Favorecido::favorecidosOptions();
         $contasOptions = Conta::contasOptions($conta->id);
 
         if ($lancamento->conta_credito_id == $conta->id) {
@@ -161,7 +164,8 @@ class LancamentosController extends Controller
                 'extensao' => $extensao,
                 'nome_original' => $nomeArquivo,
                 'tamanho_bytes' => $tamanhoBytes,
-                'lancamento_id' => $lancamento->id
+                'anexavel_id' => $lancamento->id,
+                'anexavel_type' => 'App\Lancamento',
             ]);
 
             $arquivo->move(storage_path('anexos'), $anexo->id);
@@ -183,11 +187,6 @@ class LancamentosController extends Controller
 
         $contaId = $request->input('contaId');
         return Redirect::route('contas.lancamentos', ['conta' => $contaId]);
-    }
-
-    private function isInteger($value)
-    {
-        return (string)(int)$value == $value;
     }
 
     public function getReconciliar(Conta $conta)

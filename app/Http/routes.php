@@ -35,6 +35,10 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('favorecidos', 'FavorecidosController');
     Route::resource('lancamentos', 'LancamentosController');
 
+    Route::get('lancamentos_futuros/{lancamentoFuturo}/preparar', 'LancamentosFuturosController@preparar');
+    Route::post('lancamentos_futuros/{lancamentoFuturo}/registrar', ['as' => 'lancamentos_futuros.registrar', 'uses' => 'LancamentosFuturosController@registrar']);
+    Route::resource('lancamentos_futuros', 'LancamentosFuturosController');
+
     Route::resource('contas_a_pagar', 'ContasAPagarController');
 
     Route::get('balanco_patrimonial', 'DemonstracoesController@balancoPatrimonial');

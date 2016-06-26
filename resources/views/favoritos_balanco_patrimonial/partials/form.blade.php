@@ -13,7 +13,7 @@
     <div class="box-footer">
         <div class="form-group">
             <div class="col-sm-8 col-sm-offset-2">
-                {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Salvar</button>
             </div>
         </div>
     </div>

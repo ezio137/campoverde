@@ -15,8 +15,10 @@ class CreatePeriodicidadesTable extends Migration
         Schema::create('periodicidades', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nome');
-            $table->unsignedInteger('numero_dias');
+            $table->unsignedInteger('intervalo_quantidade');
+            $table->string('intervalo_unidade');
             $table->tinyInteger('ind_mesmo_dia');
+            $table->unsignedInteger('ordem');
             $table->timestamps();
             $table->softDeletes();
         });

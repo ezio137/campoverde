@@ -10,8 +10,8 @@
 <div class="box-footer">
     <div class="form-group">
         <div class="col-sm-8 col-sm-offset-3">
-            {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
-            {!! link_to_route('contas.index', 'Cancelar', [], ['class' => 'btn btn-danger']) !!}
+            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Salvar</button>
+            <a href="/contas" class="btn btn-danger"><i class="fa fa-reply"></i> Cancelar</a>
         </div>
     </div>
 </div>

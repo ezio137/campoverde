@@ -41,6 +41,6 @@ class CreateContasAPagarTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('contas_a_pagar');
     }
 }

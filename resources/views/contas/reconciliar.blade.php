@@ -38,7 +38,7 @@
                     ?>
                     <tr>
                         <td>{!! Form::checkbox('lancamentos') !!}</td>
-                        <td>{!! link_to_route('contas.lancamentos.edit', $lancamento->data, ['conta' => $conta->id, 'lancamento' => $lancamento->id]) !!}</td>
+                        <td>{!! link_to_route('contas.lancamentos.edit', $lancamento->data_formatada, ['conta' => $conta->id, 'lancamento' => $lancamento->id]) !!}</td>
                         <td>{!! link_to_route('contas.lancamentos.edit', $lancamento->favorecido->nome, ['conta' => $conta->id, 'lancamento' => $lancamento->id]) !!}</td>
                         <td>{!! link_to_route('contas.lancamentos', $conta->id == $lancamento->conta_credito_id ? $lancamento->contaDebito->codigoNome : $lancamento->contaCredito->codigoNome, ['conta' => $conta->id == $lancamento->conta_credito_id ? $lancamento->conta_debito_id : $lancamento->conta_credito_id]) !!}</td>
                         <td>@if($lancamento->aumentaConta($conta->id)) {!! link_to_route('contas.lancamentos.edit', $numberHelper::exibirDecimal($lancamento->valor), ['conta' => $conta->id, 'lancamento' => $lancamento->id]) !!} @endif</td>

@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 
 class Favorecido extends Model
 {
@@ -12,4 +11,9 @@ class Favorecido extends Model
 
     public static $rules = [];
     protected $fillable = ['nome'];
+
+    public static function favorecidosOptions()
+    {
+        return static::orderBy('nome')->pluck('nome', 'id');
+    }
 }

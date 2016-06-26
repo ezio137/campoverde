@@ -5,6 +5,7 @@ namespace App;
 use App\Services\DateHelper;
 use App\Services\NumberHelper;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class ContaAPagar extends Model
 {
@@ -32,11 +33,17 @@ class ContaAPagar extends Model
         parent::boot();
 
         ContaAPagar::created(function ($contaAPagar) {
-            $lancamentoFuturo = new LancamentoFuturo();
-            $lancamentoFuturo->fill(array_only($contaAPagar->toArray(),
-                ['favorecido_id', 'conta_credito_id', 'conta_debito_id', 'data', 'documento', 'valor']
-            ));
-            $lancamentoFuturo->save();
+            $contaAPagar->atualizarLancamentosFuturos();
+        });
+
+        ContaAPagar::updated(function ($contaAPagar) {
+            $contaAPagar->atualizarLancamentosFuturos();
+        });
+
+        ContaAPagar::deleting(function ($contaAPagar) {
+            DB::table('lancamentos_futuros')
+                ->where('conta_a_pagar_id', $contaAPagar->id)
+                ->delete();
         });
     }
 
@@ -53,6 +60,16 @@ class ContaAPagar extends Model
     public function favorecido()
     {
         return $this->belongsTo('App\Favorecido');
+    }
+
+    public function periodicidade()
+    {
+        return $this->belongsTo('App\Periodicidade');
+    }
+
+    public function lancamentosFuturos()
+    {
+        return $this->hasMany('App\LancamentoFuturo');
     }
 
     public function aumentaConta($contaId)
@@ -84,5 +101,39 @@ class ContaAPagar extends Model
     public function setDataProximaFormatadaAttribute($value)
     {
         $this->attributes['data_proxima'] = DateHelper::extrairData($value);
+    }
+
+    public function getParcelaFormatadaAttribute()
+    {
+        return sprintf('%02d', $this->parcela_atual) . '/' . sprintf('%02d', $this->parcela_total);
+    }
+
+    public function atualizarLancamentosFuturos()
+    {
+        DB::table('lancamentos_futuros')
+            ->where('conta_a_pagar_id', $this->id)
+            ->delete();
+
+        $numeroParcelas = $this->parcela_total - $this->parcela_atual + 1;
+
+        for ($i = 0; $i < $numeroParcelas; $i++) {
+            $metodo = 'add' . $this->periodicidade->intervalo_unidade;
+            $data = $this->data_proxima->copy()->$metodo($i * $this->periodicidade->intervalo_quantidade);
+
+            $lancamentoFuturo = new LancamentoFuturo();
+            $lancamentoFuturo->fill([
+                'favorecido_id' => $this->favorecido_id,
+                'conta_credito_id' => $this->conta_credito_id,
+                'conta_debito_id' => $this->conta_debito_id,
+                'documento' => $this->documento,
+                'memorando' => $this->memorando,
+                'valor' => $this->valor,
+                'data' => $data,
+                'conta_a_pagar_id' => $this->id,
+                'parcela_atual' => $this->parcela_atual + $i,
+                'parcela_total' => $this->parcela_total,
+            ]);
+            $lancamentoFuturo->save();
+        }
     }
 }

@@ -16,12 +16,16 @@ if (!isset($inline) || $inline = false) {
     $formGroup = '';
 }
 $larguraMensagemErro = 12 - $larguraLabel;
+
+if (!isset($default)) {
+    $default = null;
+}
 ?>
 
 <div class="{{ $formGroup }} {{ $errors->has($atributo) ? 'has-error' : '' }}">
     {!! Form::label($atributo, $label, ['class' => "col-sm-$larguraLabel control-label $required"]) !!}
     <div class="col-sm-{{ $larguraAtributo }}">
-        {!! Form::text($atributo, null, ['class' => 'form-control']) !!}
+        {!! Form::text($atributo, $default, ['class' => 'form-control']) !!}
     </div>
     {!! $errors->first($atributo, "<small class=\"help-block col-sm-offset-$larguraLabel col-sm-$larguraMensagemErro\" style=\"\">:message</small>") !!}
 </div>

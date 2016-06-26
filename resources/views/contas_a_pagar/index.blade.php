@@ -11,10 +11,11 @@
                 <tr>
                     <th>Favorecido</th>
                     <th>Data Próxima</th>
+                    <th>Parcela Próxima</th>
                     <th>Conta Origem</th>
                     <th>Conta Destino</th>
                     <th class="valor">Aumento</th>
-                    <th class="valor">Redu&ccedil;&atilde;o</th>
+                    <th class="valor">Redução</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -24,6 +25,7 @@
                     <tr>
                         <td>{!! link_to_route('contas_a_pagar.edit', $contaAPagar->favorecido->nome, ['contaAPagar' => $contaAPagar->id]) !!}</td>
                         <td>{!! link_to_route('contas_a_pagar.edit', $contaAPagar->data_proxima_formatada, ['contaAPagar' => $contaAPagar->id]) !!}</td>
+                        <td>{!! link_to_route('contas_a_pagar.edit', $contaAPagar->parcela_formatada, ['contaAPagar' => $contaAPagar->id]) !!}</td>
                         <td>{!! link_to_route('contas.lancamentos', $contaAPagar->contaCredito->codigoNome, ['conta' => $contaAPagar->conta_credito_id]) !!}</td>
                         <td>{!! link_to_route('contas.lancamentos', $contaAPagar->contaDebito->codigoNome, ['conta' => $contaAPagar->conta_debito_id]) !!}</td>
                         <td class="valor">@if($contaAPagar->aumentaConta($contaAPagar->conta_credito_id)) {!! link_to_route('contas_a_pagar.edit', $contaAPagar->valorFormatado, ['contaAPagar' => $contaAPagar->id]) !!} @endif</td>
@@ -43,5 +45,7 @@
 @stop
 
 @section('botoes-footer')
-    <a href="/contas_a_pagar/create" class="btn btn-success"><i class="fa fa-plus"></i> Nova conta a pagar</a>
+    <a href="/contas_a_pagar/create" class="btn btn-success"><i class="fa fa-plus"></i> Nova Conta a Pagar</a>
+    <a href="/lancamentos_futuros" class="btn btn-success"><i class="fa fa-calendar-check-o"></i> Próximas Contas a
+        Pagar</a>
 @stop

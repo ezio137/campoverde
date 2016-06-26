@@ -29,7 +29,7 @@ class DateHelper
     public static function exibirData($value)
     {
         if ($value instanceof Carbon) {
-            return $value;
+            return $value->format('d/m/Y');
         } elseif ($value <> '') {
             $value = preg_replace('/\s.*/', '', $value);  // removendo informacoes de hora caso existam
             return Carbon::createFromFormat('Y-m-d', $value)->format('d/m/Y');

@@ -21,7 +21,9 @@ class Lancamento extends Model
         'conta_credito_id',
         'conta_debito_id',
         'reconciliado',
-        'valor_formatado'
+        'valor_formatado',
+        'parcela_atual',
+        'parcela_total',
     ];
     protected $dates = ['deleted_at', 'data'];
 
@@ -91,12 +93,12 @@ class Lancamento extends Model
         return $this->belongsTo('App\Favorecido');
     }
 
-    public function getDataAttribute($value)
+    public function getDataFormatadaAttribute()
     {
-        return DateHelper::exibirData($value);
+        return DateHelper::exibirData($this->data);
     }
 
-    public function setDataAttribute($value)
+    public function setDataFormatadaAttribute($value)
     {
         $this->attributes['data'] = DateHelper::extrairData($value);
     }
@@ -134,6 +136,6 @@ class Lancamento extends Model
 
     public function anexos()
     {
-        return $this->hasMany('App\Anexo');
+        return $this->morphMany('App\Anexo', 'anexavel');
     }
 }
