@@ -150,6 +150,11 @@ class LancamentosController extends Controller
     {
         $this->validate($request, Lancamento::$rules);
 
+        if (!$this->isInteger($request->input('favorecido_id'))) {
+            $favorecido = Favorecido::create(['nome' => $request->input('favorecido_id')]);
+            $request->merge(['favorecido_id' => $favorecido->id]);
+        }
+
         $lancamento->update($request->all());
 
         $arquivo = $request->file('anexo');
