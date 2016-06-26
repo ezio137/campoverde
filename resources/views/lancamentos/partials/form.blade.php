@@ -42,7 +42,7 @@
 @section('custom_scripts')
     <script type="application/javascript">
         $(function(){
-            $('#data').datepicker({
+            $('#data_formatada').datepicker({
                 format: "dd/mm/yyyy",
                 autoclose: true
             });

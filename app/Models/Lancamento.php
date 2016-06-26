@@ -17,6 +17,7 @@ class Lancamento extends Model
         'documento',
         'valor',
         'data',
+        'data_formatada',
         'memorando',
         'conta_credito_id',
         'conta_debito_id',
