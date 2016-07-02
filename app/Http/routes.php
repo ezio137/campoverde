@@ -52,4 +52,6 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('favoritos_balanco_patrimonial', 'FavoritosBalancoPatrimonialController');
     Route::resource('favoritos_resultado', 'FavoritosResultadoController');
     Route::resource('classificacoes_contas', 'ClassificacoesContasController');
+
+    Route::get('pesquisa', 'PesquisaController@index');
 });

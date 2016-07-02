@@ -5,7 +5,7 @@
     <section class="sidebar">
 
         <!-- search form (Optional) -->
-        <form action="#" method="get" class="sidebar-form">
+        <form action="/pesquisa" method="get" class="sidebar-form">
             <div class="input-group">
                 <input type="text" name="q" class="form-control" placeholder="Busca...">
                 <span class="input-group-btn">
