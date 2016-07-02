@@ -63,10 +63,22 @@
                     <fieldset>
                         <legend>Favoritos</legend>
                         {{ csrf_field() }}
-                        <div class="row form-group-inline">
-                            @include('layouts.forms.select', ['atributo' => 'contas_favoritas', 'label' => 'Favoritos', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $contasFavoritasOptions, 'inline' => 'true'])
-                            <a href="/favoritos_resultado/create" class="btn btn-primary btn-sm"><i
-                                        class="fa fa-save"></i> Salvar favorito</a>
+                        <div class="row">
+                            <div class="">
+                                <a href="/favoritos_resultado/create" class="btn btn-primary btn-sm"><i
+                                            class="fa fa-save"></i> Salvar relatório atual como favorito</a>
+                            </div>
+                        </div>
+                        <div class="row"><label></label></div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-sm-7">
+                                    @foreach($contasFavoritasOptions as $id => $favorito)
+                                        <a href="#" class="contas-favoritas" data-id="{{ $id }}">{{ $favorito }}</a>
+                                        <br/>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
                     </fieldset>
                 </div>
@@ -100,11 +112,14 @@
                     '_token': $('[name=_token]').val()
                 })
             });
-            $('#contas_favoritas').change(function () {
+
+            $('.contas-favoritas').click(function () {
+                var element = $(this);
                 $('#conteudo-demonstracao').load('/resultado/dados', {
-                    'contas_favoritas_resultado': $('#contas_favoritas').val(),
+                    'contas_favoritas_resultado': element.data('id'),
                     '_token': $('[name=_token]').val()
-                })
+                });
+                return false;
             });
 
             $('#conteudo-demonstracao').on('mouseenter mouseleave', 'th,td', function () {

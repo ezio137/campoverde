@@ -28,7 +28,7 @@ class DemonstracoesController extends Controller
         $contasOptions = Conta::contasOptions(0, [1, 2, 3]);
         $mesesOptions = Data::mesesOptionsSelecione();
 
-        $contasFavoritasOptions = collect([0 => 'Nenhum'])->all() + FavoritoBalancoPatrimonial::lists('nome', 'id')->all();
+        $contasFavoritasOptions = FavoritoBalancoPatrimonial::lists('nome', 'id')->all();
         $mesesFavoritosOptions = [];
 
         return view('demonstracoes.balanco_patrimonial.index', compact(
@@ -191,7 +191,7 @@ class DemonstracoesController extends Controller
         $contasOptions = Conta::contasOptions(0, [4, 5]);
         $mesesOptions = Data::mesesOptionsSelecione();
 
-        $contasFavoritasOptions = collect([0 => 'Nenhum'])->all() + FavoritoResultado::lists('nome', 'id')->all();
+        $contasFavoritasOptions = FavoritoResultado::lists('nome', 'id')->all();
         $mesesFavoritosOptions = [];
 
         return view('demonstracoes.resultado.index', compact(
