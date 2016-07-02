@@ -9,15 +9,11 @@ use App\FavoritoResultado;
 use App\Http\Requests;
 use App\Jobs\AtualizarResultadosMesesJob;
 use App\Jobs\AtualizarSaldosMesesJob;
-use App\Lancamento;
 use App\ResultadoConta;
 use App\SaldoConta;
-use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use App\Services\DemonstracoesService;
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
+use Illuminate\Http\Request;
 
 class DemonstracoesController extends Controller
 {
@@ -71,6 +67,88 @@ class DemonstracoesController extends Controller
             'resultadoTotais',
             'media'
         ));
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function atualizarDadosSession(Request $request)
+    {
+        session()->has('contas') ? null : session()->put('contas', collect());
+        if ($request->has('conta')) {
+            $contaId = $request->input('conta');
+            session()->get('contas')->push($contaId);
+        }
+        if ($request->has('remove-conta')) {
+            $contaId = $request->input('remove-conta');
+            session()->put('contas', session()->get('contas')->reject(function ($value) use ($contaId) {
+                return $value == $contaId;
+            }));
+        }
+        if ($request->has('contas_favoritas')) {
+            $codigos = FavoritoBalancoPatrimonial::find($request->input('contas_favoritas'))->itens()->lists('conta_codigo_completo');
+            $contasIds = Conta::whereIn('codigo_completo', $codigos)->pluck('id');
+            session()->put('contas', $contasIds);
+            return $contasIds;
+        }
+
+        session()->has('meses') ? null : session()->put('meses', collect());
+        if ($request->has('mes')) {
+            $mesId = $request->input('mes');
+            session()->get('meses')->push($mesId);
+        }
+        if ($request->has('remove-mes')) {
+            $mesId = $request->input('remove-mes');
+            session()->put('meses', session()->get('meses')->reject(function ($value) use ($mesId) {
+                return $value == $mesId;
+            }));
+        }
+
+
+        session()->has('contas_resultado') ? null : session()->put('contas_resultado', collect());
+        if ($request->has('conta_resultado')) {
+            $contaId = $request->input('conta_resultado');
+            if (!session()->get('contas_resultado')->has($contaId)) {
+                session()->get('contas_resultado')->push($contaId);
+            }
+        }
+        if ($request->has('contas_favoritas_resultado')) {
+            $codigos = FavoritoResultado::find($request->input('contas_favoritas_resultado'))->itens()->lists('conta_codigo_completo');
+            $contasIds = Conta::whereIn('codigo_completo', $codigos)->pluck('id');
+            session()->put('contas_resultado', $contasIds);
+            return $contasIds;
+        }
+        if ($request->has('remove-conta-resultado')) {
+            $contaId = $request->input('remove-conta-resultado');
+            session()->put('contas_resultado', session()->get('contas_resultado')->reject(function ($value) use ($contaId) {
+                return $value == $contaId;
+            }));
+        }
+        session()->has('periodos') ? null : session()->put('periodos', collect());
+        if ($request->has('mes_inicio') && $request->has('mes_fim')) {
+            $mesInicioId = $request->input('mes_inicio');
+            $mesFimId = $request->input('mes_fim');
+            if (session()->get('periodos')->search(['inicio' => $mesInicioId, 'fim' => $mesFimId]) === false) {
+                session()->get('periodos')->push(['inicio' => $mesInicioId, 'fim' => $mesFimId]);
+            }
+        }
+        if ($request->has('remove-periodo')) {
+            $periodoId = $request->input('remove-periodo');
+            session()->put('periodos', collect(session()->get('periodos'))->reject(function ($value) use ($periodoId) {
+                list($mesInicioId, $mesFimId) = explode('_', $periodoId);
+                return $value['inicio'] == $mesInicioId && $value['fim'] == $mesFimId;
+            }));
+        }
+    }
+
+    private function contas($pattern, $contasIds)
+    {
+        return Conta::whereIn('id', $contasIds)
+            ->orderBy('codigo_completo_ordenavel')
+            ->where('codigo_completo', 'like', $pattern . '%')
+            ->get()
+            ->keyBy('id');
     }
 
     public function relatorioBalancoPatrimonial(Request $request)
@@ -169,7 +247,7 @@ class DemonstracoesController extends Controller
         $periodos = [];
         foreach ($periodosIds as $periodoId) {
             $periodos[] = [
-                'id' => $periodoId['inicio'].'_'.$periodoId['fim'],
+                'id' => $periodoId['inicio'] . '_' . $periodoId['fim'],
                 'inicio' => Data::find($periodoId['inicio']),
                 'fim' => Data::find($periodoId['fim'])
             ];
@@ -191,81 +269,5 @@ class DemonstracoesController extends Controller
             'media'
         ));
         return $pdf->setOrientation('landscape')->inline('resultado.pdf');
-    }
-
-    private function contas($pattern, $contasIds)
-    {
-        return Conta::whereIn('id', $contasIds)
-            ->orderBy('codigo_completo_ordenavel')
-            ->where('codigo_completo', 'like', $pattern . '%')
-            ->get()
-            ->keyBy('id');
-    }
-
-    /**
-     * @param Request $request
-     * @return mixed
-     */
-    public function atualizarDadosSession(Request $request)
-    {
-        session()->has('contas') ? null : session()->put('contas', collect());
-        if ($request->has('conta')) {
-            $contaId = $request->input('conta');
-            session()->get('contas')->push($contaId);
-        }
-        if ($request->has('contas_favoritas')) {
-            $codigos = FavoritoBalancoPatrimonial::find($request->input('contas_favoritas'))->itens()->lists('conta_codigo_completo');
-            $contasIds = Conta::whereIn('codigo_completo', $codigos)->pluck('id');
-            session()->put('contas', $contasIds);
-            return $contasIds;
-        }
-
-        session()->has('meses') ? null : session()->put('meses', collect());
-        if ($request->has('mes')) {
-            $mesId = $request->input('mes');
-            session()->get('meses')->push($mesId);
-        }
-        if ($request->has('remove-mes')) {
-            $mesId = $request->input('remove-mes');
-            session()->put('meses', session()->get('meses')->reject(function($value) use ($mesId) {
-                return $value == $mesId;
-            }));
-        }
-
-
-        session()->has('contas_resultado') ? null : session()->put('contas_resultado', collect());
-        if ($request->has('conta_resultado')) {
-            $contaId = $request->input('conta_resultado');
-            if (!session()->get('contas_resultado')->has($contaId)) {
-                session()->get('contas_resultado')->push($contaId);
-            }
-        }
-        if ($request->has('contas_favoritas_resultado')) {
-            $codigos = FavoritoResultado::find($request->input('contas_favoritas_resultado'))->itens()->lists('conta_codigo_completo');
-            $contasIds = Conta::whereIn('codigo_completo', $codigos)->pluck('id');
-            session()->put('contas_resultado', $contasIds);
-            return $contasIds;
-        }
-        if ($request->has('remove-conta-resultado')) {
-            $contaId = $request->input('remove-conta-resultado');
-            session()->put('contas_resultado', session()->get('contas_resultado')->reject(function($value) use ($contaId) {
-                return $value == $contaId;
-            }));
-        }
-        session()->has('periodos') ? null : session()->put('periodos', collect());
-        if ($request->has('mes_inicio') && $request->has('mes_fim')) {
-            $mesInicioId = $request->input('mes_inicio');
-            $mesFimId = $request->input('mes_fim');
-            if (session()->get('periodos')->search(['inicio' => $mesInicioId, 'fim' => $mesFimId]) === false) {
-                session()->get('periodos')->push(['inicio' => $mesInicioId, 'fim' => $mesFimId]);
-            }
-        }
-        if ($request->has('remove-periodo')) {
-            $periodoId = $request->input('remove-periodo');
-            session()->put('periodos', collect(session()->get('periodos'))->reject(function($value) use ($periodoId) {
-                list($mesInicioId, $mesFimId) = explode('_', $periodoId);
-                return $value['inicio'] == $mesInicioId && $value['fim'] == $mesFimId;
-            }));
-        }
     }
 }
