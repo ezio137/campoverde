@@ -34,11 +34,18 @@
                                 @include('layouts.forms.select', ['atributo' => 'conta', 'label' => 'Conta', 'larguraAtributo' => 7, 'larguraLabel' => 2, 'options' => $contasOptions])
                             </div>
                             <div class="row">
+                                <div class="col-sm-offset-3">
+                                    <a href="#" id="adicionar-conta-relatorio" class="btn btn-primary btn-sm"><i
+                                                class="fa fa-plus"></i> Adicionar ao relatório</a>
+                                </div>
+                            </div>
+                            <div class="row"><label></label></div>
+                            <div class="row">
                                 @include('layouts.forms.select', ['atributo' => 'mes', 'label' => 'Mês', 'larguraAtributo' => 7, 'larguraLabel' => 2, 'options' => $mesesOptions])
                             </div>
                             <div class="row">
                                 <div class="col-sm-offset-3">
-                                    <a href="#" id="adicionar-relatorio" class="btn btn-primary btn-sm"><i
+                                    <a href="#" id="adicionar-mes-relatorio" class="btn btn-primary btn-sm"><i
                                                 class="fa fa-plus"></i> Adicionar ao relatório</a>
                                 </div>
                             </div>
@@ -75,14 +82,22 @@
 
             $('#conteudo-demonstracao').load('/balanco_patrimonial/dados');
 
-            $('#adicionar-relatorio').click(function () {
+            $('#adicionar-conta-relatorio').click(function () {
                 $('#conteudo-demonstracao').load('/balanco_patrimonial/dados', {
                     'conta': $('#conta').val(),
+                    '_token': $('[name=_token]').val()
+                });
+                return false;
+            });
+
+            $('#adicionar-mes-relatorio').click(function () {
+                $('#conteudo-demonstracao').load('/balanco_patrimonial/dados', {
                     'mes': $('#mes').val(),
                     '_token': $('[name=_token]').val()
                 });
                 return false;
             });
+
             $('#contas_favoritas').change(function () {
                 $('#conteudo-demonstracao').load('/balanco_patrimonial/dados', {
                     'contas_favoritas': $('#contas_favoritas').val(),

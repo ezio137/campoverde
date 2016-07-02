@@ -26,17 +26,34 @@
         <div class="col-xs-12 col-sm-6">
             <div class="box box-success">
                 <div class="box-body">
-                    <fieldset>
-                        <legend>Incluir</legend>
-                        {{ csrf_field() }}
-                        <div class="row">
-                            @include('layouts.forms.select', ['atributo' => 'conta', 'label' => 'Conta', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $contasOptions])
-                        </div>
-                        <div class="row">
-                            @include('layouts.forms.select', ['atributo' => 'mes_inicio', 'label' => 'Período', 'larguraAtributo' => 4, 'larguraLabel' => 2, 'options' => $mesesOptions, 'inline' => true])
-                            @include('layouts.forms.select', ['atributo' => 'mes_fim', 'label' => 'a', 'larguraAtributo' => 4, 'larguraLabel' => 1, 'options' => $mesesOptions, 'inline' => true])
-                        </div>
-                    </fieldset>
+                    <form class="">
+                        <fieldset>
+                            <legend>Incluir</legend>
+                            {{ csrf_field() }}
+                            <div class="row">
+                                @include('layouts.forms.select', ['atributo' => 'conta', 'label' => 'Conta', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $contasOptions])
+                            </div>
+                            <div class="row"><label></label></div>
+                            <div class="row">
+                                <div class="col-sm-offset-3">
+                                    <a href="#" id="adicionar-conta-relatorio" class="btn btn-primary btn-sm"><i
+                                                class="fa fa-plus"></i> Adicionar ao relatório</a>
+                                </div>
+                            </div>
+                            <div class="row"><label></label></div>
+                            <div class="row">
+                                @include('layouts.forms.select', ['atributo' => 'mes_inicio', 'label' => 'Período', 'larguraAtributo' => 4, 'larguraLabel' => 2, 'options' => $mesesOptions, 'inline' => true])
+                                @include('layouts.forms.select', ['atributo' => 'mes_fim', 'label' => 'a', 'larguraAtributo' => 4, 'larguraLabel' => 1, 'options' => $mesesOptions, 'inline' => true])
+                            </div>
+                            <div class="row"><label></label></div>
+                            <div class="row">
+                                <div class="col-sm-offset-3">
+                                    <a href="#" id="adicionar-periodo-relatorio" class="btn btn-primary btn-sm"><i
+                                                class="fa fa-plus"></i> Adicionar ao relatório</a>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
                 </div>
             </div>
         </div>
@@ -69,13 +86,14 @@
 
             $('#conteudo-demonstracao').load('/resultado/dados');
 
-            $('#conta').change(function () {
+            $('#adicionar-conta-relatorio').click(function () {
                 $('#conteudo-demonstracao').load('/resultado/dados', {
                     'conta_resultado': $('#conta').val(),
                     '_token': $('[name=_token]').val()
-                })
+                });
+                return false;
             });
-            $('#mes_fim').change(function () {
+            $('#adicionar-periodo-relatorio').click(function () {
                 $('#conteudo-demonstracao').load('/resultado/dados', {
                     'mes_inicio': $('#mes_inicio').val(),
                     'mes_fim': $('#mes_fim').val(),
