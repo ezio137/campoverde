@@ -41,6 +41,7 @@ class LancamentosController extends Controller
         $favorecidosOptions = Favorecido::favorecidosOptions();
         $contasOptions = Conta::contasOptions($conta->id);
         $lancamentoNovo = new Lancamento();
+        $lancamentoNovo->valor = 0.0;
 
         if (($tipo == 'credito' && $conta->aumentaComCredito) || ($tipo == 'debito' && $conta->aumentaComDebito)) {
             $exibirTipo = 'Aumento';
