@@ -26,6 +26,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::post('contas/importacao_saldos', 'ContasController@importacaoSaldos');
     Route::get('contas/{conta}/lancamentos', ['as' => 'contas.lancamentos', 'uses' => 'LancamentosController@index']);
     Route::get('contas/{conta}/lancamentos/create/{tipo}', ['as' => 'contas.lancamentos.create', 'uses' => 'LancamentosController@create']);
+    Route::get('contas/{conta}/lancamentos/duplicate/{tipo}/{lancamento}', ['as' => 'contas.lancamentos.duplicate', 'uses' => 'LancamentosController@duplicate']);
     Route::post('contas/{conta}/lancamentos/create', ['as' => 'contas.lancamentos.store', 'uses' => 'LancamentosController@store']);
     Route::get('contas/{conta}/lancamentos/{lancamento}', ['as' => 'contas.lancamentos.edit', 'uses' => 'LancamentosController@edit']);
     Route::put('contas/{conta}/lancamentos/{lancamento}', ['as' => 'contas.lancamentos.update', 'uses' => 'LancamentosController@update']);

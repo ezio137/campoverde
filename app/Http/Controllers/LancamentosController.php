@@ -40,6 +40,7 @@ class LancamentosController extends Controller
     {
         $favorecidosOptions = Favorecido::favorecidosOptions();
         $contasOptions = Conta::contasOptions($conta->id);
+        $lancamentoNovo = new Lancamento();
 
         if (($tipo == 'credito' && $conta->aumentaComCredito) || ($tipo == 'debito' && $conta->aumentaComDebito)) {
             $exibirTipo = 'Aumento';
@@ -47,7 +48,7 @@ class LancamentosController extends Controller
             $exibirTipo = 'Redução';
         }
 
-        return view('lancamentos.create', compact('conta', 'tipo', 'favorecidosOptions', 'contasOptions'))
+        return view('lancamentos.create', compact('conta', 'tipo', 'favorecidosOptions', 'contasOptions', 'lancamentoNovo'))
             ->with('modulo', 'Contábil')
             ->with('pageHeader', "$exibirTipo em $conta->codigo_nome");
     }
@@ -208,5 +209,23 @@ class LancamentosController extends Controller
     public function anexo(Anexo $anexo)
     {
         return response()->download(storage_path('anexos').'/'.$anexo->id, $anexo->nome_original);
+    }
+
+    public function duplicate(Conta $conta, $tipo, Lancamento $lancamento)
+    {
+        $favorecidosOptions = Favorecido::favorecidosOptions();
+        $contasOptions = Conta::contasOptions($conta->id);
+        $lancamentoNovo = new Lancamento();
+        $lancamentoNovo->fill($lancamento->getAttributes());
+
+        if (($tipo == 'credito' && $conta->aumentaComCredito) || ($tipo == 'debito' && $conta->aumentaComDebito)) {
+            $exibirTipo = 'Aumento';
+        } else {
+            $exibirTipo = 'Redução';
+        }
+
+        return view('lancamentos.create', compact('conta', 'tipo', 'favorecidosOptions', 'contasOptions', 'lancamentoNovo'))
+            ->with('modulo', 'Contábil')
+            ->with('pageHeader', "Duplicar $exibirTipo em $conta->codigo_nome");
     }
 }

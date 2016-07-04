@@ -40,6 +40,9 @@
                             {!! Form::hidden('contaId', $conta->id) !!}
                             <button type="button" class="btn-link btn-delete-confirmation"
                                     data-delete-item-id="{{ $lancamento->id }}"><i class="fa fa-trash-o"></i></button>
+                            <a href="/contas/{{ $conta->id }}/lancamentos/duplicate/{{ $conta->id == $lancamento->conta_credito_id ? 'credito' : 'debito' }}/{{ $lancamento->id }}"
+                               title="Duplicar"><i
+                                        class="fa fa-copy"></i></a>
                             {!! Form::close() !!}
                         </td>
                     </tr>
