@@ -123,10 +123,12 @@ desired effect
 <script src="/vendor/admin-lte/app.js"></script>
 
 <script type="application/javascript">
-  $('.btn-delete-confirmation').click(function () {
-    if (confirm("Deseja realmente excluir?")) {
-      $('#delete-form-' + $(this).data('delete-item-id')).submit();
-    }
+  $(function () {
+    $('.btn-delete-confirmation').click(function () {
+      if (confirm("Deseja realmente excluir?")) {
+        $('#delete-form-' + $(this).data('delete-item-id')).submit();
+      }
+    });
   });
 </script>
 
