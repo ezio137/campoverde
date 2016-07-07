@@ -29,7 +29,10 @@
                             }
                     ?>
                     <tr>
-                        <td>{!! link_to_route('contas.lancamentos.edit', $lancamento->data_formatada, ['conta' => $conta->id, 'lancamento' => $lancamento->id]) !!}</td>
+                        <td>
+                            <a class="anchor" id="lancamento-{{ $lancamento->id }}"></a>
+                            {!! link_to_route('contas.lancamentos.edit', $lancamento->data_formatada, ['conta' => $conta->id, 'lancamento' => $lancamento->id]) !!}
+                        </td>
                         <td>{!! link_to_route('contas.lancamentos.edit', $lancamento->favorecido->nome, ['conta' => $conta->id, 'lancamento' => $lancamento->id]) !!}</td>
                         <td>{!! link_to_route('contas.lancamentos', $conta->id == $lancamento->conta_credito_id ? $lancamento->contaDebito->codigoNome : $lancamento->contaCredito->codigoNome, ['conta' => $conta->id == $lancamento->conta_credito_id ? $lancamento->conta_debito_id : $lancamento->conta_credito_id]) !!}</td>
                         <td class="valor">@if($lancamento->aumentaConta($conta->id)) {!! link_to_route('contas.lancamentos.edit', $lancamento->valorFormatado, ['conta' => $conta->id, 'lancamento' => $lancamento->id]) !!} @endif</td>

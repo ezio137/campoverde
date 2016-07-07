@@ -90,7 +90,7 @@ class LancamentosController extends Controller
             $arquivo->move(storage_path('anexos'), $anexo->id);
         }
 
-        return Redirect::route('contas.lancamentos', ['conta' => $conta->id]);
+        return redirect("/contas/$conta->id/lancamentos#lancamento-$lancamento->id");
     }
 
     private function isInteger($value)
@@ -178,7 +178,7 @@ class LancamentosController extends Controller
             $arquivo->move(storage_path('anexos'), $anexo->id);
         }
 
-        return Redirect::route('contas.lancamentos', ['conta' => $conta->id]);
+        return redirect("/contas/$conta->id/lancamentos#lancamento-$lancamento->id");
     }
 
     /**
