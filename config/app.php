@@ -3,8 +3,8 @@ setlocale(LC_TIME, 'pt_BR.UTF-8');
 
 return [
 
-    'version_number' => '0.8.0',
-    'version_date' => '03/07/2016',
+    'version_number' => '0.9.0',
+    'version_date' => '06/07/2016',
 
     'env' => env('APP_ENV', 'production'),
 
