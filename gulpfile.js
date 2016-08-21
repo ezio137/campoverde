@@ -35,6 +35,9 @@ elixir(function (mix) {
     mix.copy('node_modules/admin-lte/dist/js/app.js', 'public/vendor/admin-lte');
     mix.copy('node_modules/admin-lte/dist/css/skins/*.css', 'public/vendor/admin-lte/skins');
 
+    // Vue
+    mix.copy('node_modules/vue/dist/vue.js', 'public/vendor/vue');
+
     mix.copy('resources/assets/css/styles.css', 'public/css');
     mix.copy('resources/assets/css/style_v1.css', 'public/css');
     mix.copy('resources/assets/js/devoops.js', 'public/js');
