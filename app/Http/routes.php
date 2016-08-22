@@ -59,4 +59,5 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     // AGRO
     Route::resource('frutas', 'FrutasController');
+    Route::resource('variedades_fruta', 'VariedadesFrutaController');
 });

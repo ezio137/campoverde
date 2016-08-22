@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Fruta;
 use App\Http\Requests;
+use App\VariedadeFruta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
-class FrutasController extends Controller
+class VariedadesFrutaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,11 +17,11 @@ class FrutasController extends Controller
      */
     public function index()
     {
-        $frutas = Fruta::orderBy('nome')->get();
+        $variedadesFruta = VariedadeFruta::orderBy('nome')->get();
 
-        return view('frutas.index', compact('frutas'))
+        return view('variedades_fruta.index', compact('variedadesFruta'))
             ->with('modulo', 'Agro')
-            ->with('pageHeader', 'Frutas');
+            ->with('pageHeader', 'Variedades Fruta');
     }
 
     /**
@@ -30,9 +31,11 @@ class FrutasController extends Controller
      */
     public function create()
     {
-        return view('frutas.create', compact('fruta'))
+        $frutasOptions = Fruta::all()->pluck('nome', 'id');
+
+        return view('variedades_fruta.create', compact('variedade_fruta', 'frutasOptions'))
             ->with('modulo', 'Agro')
-            ->with('pageHeader', 'Frutas');
+            ->with('pageHeader', 'Variedades Fruta');
     }
 
     /**
@@ -43,11 +46,11 @@ class FrutasController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, Fruta::$rules);
+        $this->validate($request, VariedadeFruta::$rules);
 
-        Fruta::create($request->all());
+        VariedadeFruta::create($request->all());
 
-        return Redirect::route('frutas.index');
+        return Redirect::route('variedades_fruta.index');
     }
 
     /**
@@ -58,11 +61,11 @@ class FrutasController extends Controller
      */
     public function show($id)
     {
-        $fruta = Fruta::findOrFail($id);
+        $variedadeFruta = VariedadeFruta::findOrFail($id);
 
-        return view('frutas.edit', compact('fruta'))
+        return view('variedades_fruta.edit', compact('variedadeFruta'))
             ->with('modulo', 'Agro')
-            ->with('pageHeader', 'Frutas');
+            ->with('pageHeader', 'Variedades Fruta');
     }
 
     /**
@@ -73,11 +76,12 @@ class FrutasController extends Controller
      */
     public function edit($id)
     {
-        $fruta = Fruta::findOrFail($id);
+        $variedadeFruta = VariedadeFruta::findOrFail($id);
+        $frutasOptions = Fruta::all()->pluck('nome', 'id');
 
-        return view('frutas.edit', compact('fruta'))
+        return view('variedades_fruta.edit', compact('variedadeFruta', 'frutasOptions'))
             ->with('modulo', 'Agro')
-            ->with('pageHeader', 'Frutas');
+            ->with('pageHeader', 'Variedades Fruta');
     }
 
     /**
@@ -89,13 +93,13 @@ class FrutasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $fruta = Fruta::findOrFail($id);
+        $variedadeFruta = VariedadeFruta::findOrFail($id);
 
-        $this->validate($request, Fruta::$rules);
+        $this->validate($request, VariedadeFruta::$rules);
 
-        $fruta->update($request->all());
+        $variedadeFruta->update($request->all());
 
-        return Redirect::route('frutas.index');
+        return Redirect::route('variedades_fruta.index');
     }
 
     /**
@@ -106,8 +110,8 @@ class FrutasController extends Controller
      */
     public function destroy($id)
     {
-        Fruta::destroy($id);
+        VariedadeFruta::destroy($id);
 
-        return Redirect::route('frutas.index');
+        return Redirect::route('variedades_fruta.index');
     }
 }

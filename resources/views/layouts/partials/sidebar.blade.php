@@ -36,6 +36,8 @@
             <li class="header">AGRO</li>
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="/frutas"><i class="fa fa-apple"></i> <span>Frutas</span></a></li>
+            <li class="active"><a href="/variedades_fruta"><i class="fa fa-apple"></i> <span>Variedades Fruta</span></a>
+            </li>
         </ul>
         <!-- /.sidebar-menu -->
     </section>
