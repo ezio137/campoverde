@@ -19,6 +19,7 @@ Route::group(['middleware' => 'web'], function () {
 
 Route::group(['middleware' => ['web', 'auth']], function () {
 
+    // CONTABIL
     Route::get('anexo/{anexo}', ['as' => 'anexo.download', 'uses' => 'LancamentosController@anexo']);
     Route::get('contas/importacao', 'ContasController@importacaoForm');
     Route::post('contas/importacao', 'ContasController@importacao');
@@ -55,4 +56,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('classificacoes_contas', 'ClassificacoesContasController');
 
     Route::get('pesquisa', 'PesquisaController@index');
+
+    // AGRO
+    Route::resource('frutas', 'FrutasController');
 });
