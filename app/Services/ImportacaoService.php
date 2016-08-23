@@ -6,6 +6,7 @@ use App\Data;
 use App\LegadoTipoEmbalagem;
 use App\MaterialEmbalagem;
 use App\SaldoConta;
+use App\TipoEmbalagem;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
@@ -133,9 +134,9 @@ class ImportacaoService
         $tipos = LegadoTipoEmbalagem::distinct()->pluck('tipo_fruta');
         foreach ($tipos as $tipo) {
             if ($tipo) {
-                $jaExiste = ClassificacaoFruta::where('nome', $tipo)->first();
+                $classificacaoExistente = ClassificacaoFruta::where('nome', $tipo)->first();
                 Log::info('criando classificacao ' . $tipo);
-                if ($jaExiste) {
+                if ($classificacaoExistente) {
                     Log::info('ja existe...');
                 } else {
                     ClassificacaoFruta::create([
@@ -145,19 +146,44 @@ class ImportacaoService
             }
         }
 
-        // embalagem
+        // material embalagem
         $materiais = LegadoTipoEmbalagem::distinct()->pluck('embalagem');
         foreach ($materiais as $material) {
             if ($material) {
-                $jaExiste = MaterialEmbalagem::where('nome', $material)->first();
+                $materialExistente = MaterialEmbalagem::where('nome', $material)->first();
                 Log::info('criando material ' . $material);
-                if ($jaExiste) {
+                if ($materialExistente) {
                     Log::info('ja existe...');
+                    $materialExistente->update(['descricao' => $material]);
                 } else {
                     MaterialEmbalagem::create([
                         'nome' => $material,
                         'descricao' => $material,
                     ]);
+                }
+            }
+        }
+
+        // tipos
+        $tipos = LegadoTipoEmbalagem::all();
+        foreach ($tipos as $tipo) {
+            if ($tipo) {
+                $tipoExistente = TipoEmbalagem::where('codigo_legado', $tipo->id)->first();
+                Log::info('criando tipo ' . $tipo);
+                $material = MaterialEmbalagem::where('nome', $tipo->embalagem)->first();
+                $classificacao = ClassificacaoFruta::where('nome', $tipo->tipo_fruta)->first();
+                $atributos = [
+                    'nome' => $tipo->nome,
+                    'peso' => $tipo->peso,
+                    'codigo_legado' => $tipo->id,
+                    'material_embalagem_id' => $material ? $material->id : null,
+                    'classificacao_fruta_id' => $classificacao ? $classificacao->id : null,
+                ];
+                if ($tipoExistente) {
+                    Log::info('ja existe...');
+                    $tipoExistente->update($atributos);
+                } else {
+                    TipoEmbalagem::create($atributos);
                 }
             }
         }
