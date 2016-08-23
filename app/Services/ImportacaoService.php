@@ -4,6 +4,7 @@ use App\ClassificacaoFruta;
 use App\Conta;
 use App\Data;
 use App\LegadoTipoEmbalagem;
+use App\MaterialEmbalagem;
 use App\SaldoConta;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -128,17 +129,34 @@ class ImportacaoService
 
     public static function importarTiposEmbalagem()
     {
+        // tipo_fruta
         $tipos = LegadoTipoEmbalagem::distinct()->pluck('tipo_fruta');
-
         foreach ($tipos as $tipo) {
             if ($tipo) {
-                $classificacaoExistente = ClassificacaoFruta::where('nome', $tipo)->first();
+                $jaExiste = ClassificacaoFruta::where('nome', $tipo)->first();
                 Log::info('criando classificacao ' . $tipo);
-                if ($classificacaoExistente) {
+                if ($jaExiste) {
                     Log::info('ja existe...');
                 } else {
                     ClassificacaoFruta::create([
                         'nome' => $tipo,
+                    ]);
+                }
+            }
+        }
+
+        // embalagem
+        $materiais = LegadoTipoEmbalagem::distinct()->pluck('embalagem');
+        foreach ($materiais as $material) {
+            if ($material) {
+                $jaExiste = MaterialEmbalagem::where('nome', $material)->first();
+                Log::info('criando material ' . $material);
+                if ($jaExiste) {
+                    Log::info('ja existe...');
+                } else {
+                    MaterialEmbalagem::create([
+                        'nome' => $material,
+                        'descricao' => $material,
                     ]);
                 }
             }
