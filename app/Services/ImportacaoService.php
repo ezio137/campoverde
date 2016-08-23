@@ -1,7 +1,9 @@
 <?php namespace App\Services;
 
+use App\ClassificacaoFruta;
 use App\Conta;
 use App\Data;
+use App\LegadoTipoEmbalagem;
 use App\SaldoConta;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -119,6 +121,25 @@ class ImportacaoService
                     }
                 } else {
                     Log::info('conta nao encontrada: ' . $codigoCompleto);
+                }
+            }
+        }
+    }
+
+    public static function importarTiposEmbalagem()
+    {
+        $tipos = LegadoTipoEmbalagem::distinct()->pluck('tipo_fruta');
+
+        foreach ($tipos as $tipo) {
+            if ($tipo) {
+                $classificacaoExistente = ClassificacaoFruta::where('nome', $tipo)->first();
+                Log::info('criando classificacao ' . $tipo);
+                if ($classificacaoExistente) {
+                    Log::info('ja existe...');
+                } else {
+                    ClassificacaoFruta::create([
+                        'nome' => $tipo,
+                    ]);
                 }
             }
         }
