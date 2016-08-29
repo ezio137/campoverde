@@ -1,12 +1,18 @@
 <?php namespace App\Services;
 
 use App\ClassificacaoFruta;
+use App\Cliente;
 use App\Conta;
 use App\Data;
+use App\Fruta;
+use App\ItemVenda;
 use App\LegadoTipoEmbalagem;
+use App\LegadoVenda;
 use App\MaterialEmbalagem;
 use App\SaldoConta;
 use App\TipoEmbalagem;
+use App\VariedadeFruta;
+use App\Venda;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
@@ -187,5 +193,97 @@ class ImportacaoService
                 }
             }
         }
+    }
+
+    public static function importarVendas()
+    {
+        // clientes
+        $clientes = LegadoVenda::distinct()->pluck('cliente');
+        foreach ($clientes as $cliente) {
+            if ($cliente) {
+                $clienteExistente = Cliente::where('nome', $cliente)->first();
+                Log::info('criando cliente ' . $cliente);
+                if ($clienteExistente) {
+                    Log::info('ja existe...');
+                } else {
+                    Cliente::create(['nome' => $cliente]);
+                }
+            }
+        }
+        // frutas
+        $frutas = LegadoVenda::distinct()->pluck('produto');
+        foreach ($frutas as $fruta) {
+            if ($fruta) {
+                $frutaExistente = Fruta::where('nome', $fruta)->first();
+                $variedadeExistente = VariedadeFruta::where('nome', $fruta)->first();
+                Log::info('criando fruta ' . $fruta);
+                if ($frutaExistente) {
+                    Log::info('ja existe...');
+                } else {
+                    $frutaExistente = Fruta::create(['nome' => $fruta]);
+                }
+                if ($variedadeExistente) {
+                    Log::info('ja existe...');
+                } else {
+                    VariedadeFruta::create(['nome' => $fruta, 'fruta_id' => $frutaExistente->id]);
+                }
+            }
+        }
+
+        // vendas
+        $vendas = LegadoVenda::distinct()->select('cliente', 'data_venda', 'periodo', 'ind_quitado', 'data_vencimento')->get();
+        foreach ($vendas as $venda) {
+            if ($venda) {
+                $cliente = Cliente::where('nome', $venda->cliente)->first();
+                $vendaExistente = Venda::where('cliente_id', $cliente->id)->where('data_venda', $venda->data_venda)->first();
+                Log::info('criando venda ' . $venda->cliente . ' ' . $venda->data_venda);
+                $atributos = [
+                    'cliente_id' => $cliente->id,
+                    'data_venda' => $venda->data_venda,
+                    'periodo' => $venda->periodo,
+                    'ind_quitado' => $venda->ind_quitado,
+                    'data_vencimento' => $venda->data_vencimento,
+                ];
+                if ($vendaExistente) {
+                    Log::info('ja existe...');
+                    $vendaExistente->update($atributos);
+                } else {
+                    Venda::create($atributos);
+                }
+            }
+        }
+
+        // itens venda
+        $legadolegadoVendas = LegadoVenda::all();
+        foreach ($legadolegadoVendas as $legadoVenda) {
+            if ($legadoVenda) {
+                $cliente = Cliente::where('nome', $legadoVenda->cliente)->first();
+                $venda = Venda::where('cliente_id', $cliente->id)->where('data_venda', $legadoVenda->data_venda)->first();
+                $variedade = VariedadeFruta::where('nome', $legadoVenda->produto)->first();
+                $embalagem = TipoEmbalagem::where('nome', $legadoVenda->codigo_tipo)->first();
+                if ($variedade && $embalagem) {
+                    $itemVendaExistente = ItemVenda::where('venda_id', $venda->id)
+                        ->where('variedade_fruta_id', $variedade->id)
+                        ->where('tipo_embalagem_id', $embalagem->id)
+                        ->where('quantidade', $legadoVenda->quantidade)
+                        ->first();
+                    Log::info('criando item venda ' . $legadoVenda->cliente->nome . ' ' . $legadoVenda->data_venda);
+                    $atributos = [
+                        'venda_id' => $venda->id,
+                        'variedade_fruta_id' => $variedade ? $variedade->id : null,
+                        'tipo_embalagem_id' => $embalagem ? $embalagem->id : null,
+                        'quantidade' => $legadoVenda->quantidade,
+                        'preco' => $legadoVenda->preco,
+                    ];
+                    if ($itemVendaExistente) {
+                        Log::info('ja existe...');
+                        $itemVendaExistente->update($atributos);
+                    } else {
+                        ItemVenda::create($atributos);
+                    }
+                }
+            }
+        }
+
     }
 }

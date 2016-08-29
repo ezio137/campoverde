@@ -33,6 +33,12 @@
             </li>
             <li class="header">PAGAMENTO</li>
             <li class="header">VENDAS</li>
+            <!-- Optionally, you can add icons to the links -->
+            <li class="active"><a href="/vendas"><i class="fa fa-dollar"></i> <span>Vendas</span></a></li>
+            <li class="active"><a href="/tipos_embalagem"><i class="fa fa-archive"></i> <span>Tipos Embalagem</span></a>
+            </li>
+            <li class="active"><a href="/materiais_embalagem"><i class="fa fa-square"></i>
+                    <span>Materiais Embalagem</span></a></li>
             <li class="header">AGRO</li>
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="/frutas"><i class="fa fa-apple"></i> <span>Frutas</span></a></li>

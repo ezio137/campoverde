@@ -57,6 +57,11 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::get('pesquisa', 'PesquisaController@index');
 
+    // VENDAS
+    Route::resource('vendas', 'VendasController');
+    Route::resource('tipos_embalagem', 'TiposEmbalagemController');
+    Route::resource('materiais_embalagem', 'MateriaisEmbalagemController');
+
     // AGRO
     Route::resource('frutas', 'FrutasController');
     Route::resource('variedades_fruta', 'VariedadesFrutaController');
