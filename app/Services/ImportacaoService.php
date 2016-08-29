@@ -195,9 +195,27 @@ class ImportacaoService
         }
     }
 
-    public static function importarVendas()
+    public static function importarVendasComRelacionamentos()
     {
         // clientes
+        self::importarClientes();
+
+        // frutas
+        self::importarFrutas();
+
+        // vendas
+        self::importarVendas();
+
+        // itens venda
+        self::importarItensVenda();
+
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function importarClientes()
+    {
         $clientes = LegadoVenda::distinct()->pluck('cliente');
         foreach ($clientes as $cliente) {
             if ($cliente) {
@@ -210,7 +228,11 @@ class ImportacaoService
                 }
             }
         }
-        // frutas
+        return $cliente;
+    }
+
+    public static function importarFrutas()
+    {
         $frutas = LegadoVenda::distinct()->pluck('produto');
         foreach ($frutas as $fruta) {
             if ($fruta) {
@@ -229,8 +251,13 @@ class ImportacaoService
                 }
             }
         }
+    }
 
-        // vendas
+    /**
+     * @return array
+     */
+    public static function importarVendas()
+    {
         $vendas = LegadoVenda::distinct()->select('cliente', 'data_venda', 'periodo', 'ind_quitado', 'data_vencimento')->get();
         foreach ($vendas as $venda) {
             if ($venda) {
@@ -252,28 +279,30 @@ class ImportacaoService
                 }
             }
         }
+    }
 
-        // itens venda
-        $legadolegadoVendas = LegadoVenda::all();
-        foreach ($legadolegadoVendas as $legadoVenda) {
+    public static function importarItensVenda()
+    {
+        $legadoVendas = LegadoVenda::all();
+        foreach ($legadoVendas as $legadoVenda) {
             if ($legadoVenda) {
                 $cliente = Cliente::where('nome', $legadoVenda->cliente)->first();
                 $venda = Venda::where('cliente_id', $cliente->id)->where('data_venda', $legadoVenda->data_venda)->first();
                 $variedade = VariedadeFruta::where('nome', $legadoVenda->produto)->first();
-                $embalagem = TipoEmbalagem::where('nome', $legadoVenda->codigo_tipo)->first();
+                $embalagem = TipoEmbalagem::where('codigo_legado', $legadoVenda->codigo_tipo)->first();
                 if ($variedade && $embalagem) {
                     $itemVendaExistente = ItemVenda::where('venda_id', $venda->id)
                         ->where('variedade_fruta_id', $variedade->id)
                         ->where('tipo_embalagem_id', $embalagem->id)
                         ->where('quantidade', $legadoVenda->quantidade)
                         ->first();
-                    Log::info('criando item venda ' . $legadoVenda->cliente->nome . ' ' . $legadoVenda->data_venda);
+                    Log::info('criando item venda ' . $cliente->nome . ' ' . $legadoVenda->data_venda);
                     $atributos = [
                         'venda_id' => $venda->id,
                         'variedade_fruta_id' => $variedade ? $variedade->id : null,
                         'tipo_embalagem_id' => $embalagem ? $embalagem->id : null,
                         'quantidade' => $legadoVenda->quantidade,
-                        'preco' => $legadoVenda->preco,
+                        'preco' => $legadoVenda->preco ?: 0.0,
                     ];
                     if ($itemVendaExistente) {
                         Log::info('ja existe...');
@@ -284,6 +313,5 @@ class ImportacaoService
                 }
             }
         }
-
     }
 }
