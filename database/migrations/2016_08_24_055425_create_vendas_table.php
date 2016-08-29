@@ -16,9 +16,9 @@ class CreateVendasTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('cliente_id');
             $table->date('data_venda');
-            $table->string('periodo');
+            $table->string('periodo')->nullable();
             $table->boolean('ind_quitado');
-            $table->date('data_vencimento');
+            $table->date('data_vencimento')->nullable();
             $table->timestamps();
 
             $table->foreign('cliente_id')->references('id')->on('clientes');
