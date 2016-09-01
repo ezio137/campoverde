@@ -1,16 +1,21 @@
 {
   "private": true,
-  "devDependencies": {
-    "gulp": "^3.8.8"
+  "scripts": {
+    "prod": "gulp --production",
+    "dev": "gulp watch"
   },
-  "dependencies": {
-    "laravel-elixir": "^3.0.0",
-    "bootstrap-sass": "^3.0.0",
-    "bootstrap": "~3.3.6",
-    "jquery": "~2.2.3",
+  "devDependencies": {
+    "bootstrap-sass": "^3.3.7",
+    "gulp": "^3.9.1",
+    "jquery": "^3.1.0",
+    "laravel-elixir": "^6.0.0-9",
+    "laravel-elixir-vue": "^0.1.4",
+    "laravel-elixir-webpack-official": "^1.0.2",
+    "lodash": "^4.14.0",
+    "vue": "^1.0.26",
+    "vue-resource": "^0.9.3",
     "bootstrap-datepicker": "~1.6.0",
     "select2": "~4.0.2",
-    "admin-lte": "~2.3.3",
-    "vue": "~1.0.26"
+    "admin-lte": "~2.3.3"
   }
 }
