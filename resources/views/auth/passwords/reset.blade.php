@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -9,7 +9,7 @@
 
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/reset') }}">
-                        {!! csrf_field() !!}
+                        {{ csrf_field() }}
 
                         <input type="hidden" name="token" value="{{ $token }}">
 
@@ -31,7 +31,7 @@
                             <label class="col-md-4 control-label">Senha</label>
 
                             <div class="col-md-6">
-                                <input type="password" class="form-control" name="password">
+                                <input id="password" type="password" class="form-control" name="password">
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -44,7 +44,7 @@
                         <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">Confirme a Senha</label>
                             <div class="col-md-6">
-                                <input type="password" class="form-control" name="password_confirmation">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
 
                                 @if ($errors->has('password_confirmation'))
                                     <span class="help-block">

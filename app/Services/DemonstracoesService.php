@@ -74,7 +74,8 @@ class DemonstracoesService
             ->whereNull('scc.deleted_at')
             ->where('scc.hora_calculo', $horaCalculo)
             ->groupBy('cc_filtro.id', 'scc.data_id')
-            ->get();
+            ->get()
+            ->all();
         $resultado = array_map(function($r){
             $r->conta_id = intval($r->conta_id);
             $r->data_id = intval($r->data_id);
@@ -93,7 +94,8 @@ class DemonstracoesService
             ->whereNull('scc.deleted_at')
             ->where('scc.hora_calculo', $horaCalculo)
             ->groupBy(DB::raw('substr(cc.codigo_completo, 1, 1)'), 'scc.data_id')
-            ->get();
+            ->get()
+            ->all();
         $resultadoTotais = array_map(function($r){
             $r->data_id = intval($r->data_id);
             return $r;
@@ -123,7 +125,8 @@ class DemonstracoesService
                 ->whereNull('rcc.deleted_at')
                 ->where('rcc.hora_calculo', $horaCalculo)
                 ->groupBy('cc_filtro.id')
-                ->get();
+                ->get()
+                ->all();
             $resultadoParcial = array_map(function($r){
                 $r->conta_id = intval($r->conta_id);
                 return $r;
@@ -152,7 +155,8 @@ class DemonstracoesService
                 ->whereNull('rcc.deleted_at')
                 ->where('rcc.hora_calculo', $horaCalculo)
                 ->groupBy(DB::raw('substr(cc.codigo_completo, 1, 1)'))
-                ->get();
+                ->get()
+                ->all();
             $resultadoTotais = $resultadoTotais->merge($resultadoTotaisParcial);
         }
         return $resultadoTotais;

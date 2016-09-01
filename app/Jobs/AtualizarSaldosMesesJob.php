@@ -4,13 +4,14 @@ namespace App\Jobs;
 
 use App\Jobs\Job;
 use App\Services\DemonstracoesService;
+use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class AtualizarSaldosMesesJob extends Job implements ShouldQueue
+class AtualizarSaldosMesesJob implements ShouldQueue
 {
-    use InteractsWithQueue, SerializesModels;
+    use InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.

@@ -3,14 +3,15 @@
 namespace App\Jobs;
 
 use App\Services\ImportacaoService;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ImportarContas extends Job implements SelfHandling, ShouldQueue
+class ImportarContas implements ShouldQueue
 {
-    use InteractsWithQueue, SerializesModels;
+    use InteractsWithQueue, Queueable, SerializesModels;
 
     private $path;
 

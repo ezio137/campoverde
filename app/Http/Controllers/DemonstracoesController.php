@@ -28,7 +28,7 @@ class DemonstracoesController extends Controller
         $contasOptions = Conta::contasOptions(0, [1, 2, 3]);
         $mesesOptions = Data::mesesOptionsSelecione();
 
-        $contasFavoritasOptions = FavoritoBalancoPatrimonial::lists('nome', 'id')->all();
+        $contasFavoritasOptions = FavoritoBalancoPatrimonial::pluck('nome', 'id')->all();
         $mesesFavoritosOptions = [];
 
         return view('demonstracoes.balanco_patrimonial.index', compact(
@@ -87,7 +87,7 @@ class DemonstracoesController extends Controller
             }));
         }
         if ($request->has('contas_favoritas')) {
-            $codigos = FavoritoBalancoPatrimonial::find($request->input('contas_favoritas'))->itens()->lists('conta_codigo_completo');
+            $codigos = FavoritoBalancoPatrimonial::find($request->input('contas_favoritas'))->itens()->pluck('conta_codigo_completo');
             $contasIds = Conta::whereIn('codigo_completo', $codigos)->pluck('id');
             session()->put('contas', $contasIds);
             return $contasIds;
@@ -114,7 +114,7 @@ class DemonstracoesController extends Controller
             }
         }
         if ($request->has('contas_favoritas_resultado')) {
-            $codigos = FavoritoResultado::find($request->input('contas_favoritas_resultado'))->itens()->lists('conta_codigo_completo');
+            $codigos = FavoritoResultado::find($request->input('contas_favoritas_resultado'))->itens()->pluck('conta_codigo_completo');
             $contasIds = Conta::whereIn('codigo_completo', $codigos)->pluck('id');
             session()->put('contas_resultado', $contasIds);
             return $contasIds;
@@ -191,7 +191,7 @@ class DemonstracoesController extends Controller
         $contasOptions = Conta::contasOptions(0, [4, 5]);
         $mesesOptions = Data::mesesOptionsSelecione();
 
-        $contasFavoritasOptions = FavoritoResultado::lists('nome', 'id')->all();
+        $contasFavoritasOptions = FavoritoResultado::pluck('nome', 'id')->all();
         $mesesFavoritosOptions = [];
 
         return view('demonstracoes.resultado.index', compact(

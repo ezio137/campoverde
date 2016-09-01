@@ -17,7 +17,7 @@ class Data extends Model
 
     public static function mesesOptions()
     {
-        $mesesOptions = Data::orderBy('data')->lists('data', 'id')->all();
+        $mesesOptions = Data::orderBy('data')->pluck('data', 'id')->all();
         return array_map(function ($mes) {
             return DateHelper::exibirDataMes($mes);
         }, $mesesOptions);

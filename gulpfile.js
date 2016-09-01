@@ -14,35 +14,34 @@ require('laravel-elixir-vue');
  */
 
 elixir(mix => {
-    mix.sass('app.scss')
-       .webpack('app.js');
+    mix.sass('app.scss');
 
 
-// jQuery
-mix.copy('node_modules/jquery/dist/jquery.js', 'public/vendor/jquery');
+        // jQuery
+        mix.copy('node_modules/jquery/dist/jquery.js', 'public/vendor/jquery');
 
-// Bootstrap
-mix.copy('node_modules/bootstrap/dist/css/bootstrap.css', 'public/vendor/bootstrap');
-mix.copy('node_modules/bootstrap/dist/js/bootstrap.js', 'public/vendor/bootstrap');
+        // Bootstrap
+        mix.copy('node_modules/bootstrap/dist/css/bootstrap.css', 'public/vendor/bootstrap');
+        mix.copy('node_modules/bootstrap/dist/js/bootstrap.js', 'public/vendor/bootstrap');
 
-// Select2
-mix.copy('node_modules/select2/dist/css/select2.css', 'public/vendor/select2');
-mix.copy('node_modules/select2/dist/js/select2.js', 'public/vendor/select2');
+        // Select2
+        mix.copy('node_modules/select2/dist/css/select2.css', 'public/vendor/select2');
+        mix.copy('node_modules/select2/dist/js/select2.js', 'public/vendor/select2');
 
-// Bootstrap Datepicker
-mix.copy('node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css', 'public/vendor/bootstrap-datepicker');
-mix.copy('node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js', 'public/vendor/bootstrap-datepicker');
+        // Bootstrap Datepicker
+        mix.copy('node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css', 'public/vendor/bootstrap-datepicker');
+        mix.copy('node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js', 'public/vendor/bootstrap-datepicker');
 
-// AdminLTE
-mix.copy('node_modules/admin-lte/dist/css/AdminLTE.css', 'public/vendor/admin-lte');
-mix.copy('node_modules/admin-lte/dist/js/app.js', 'public/vendor/admin-lte');
-mix.copy('node_modules/admin-lte/dist/css/skins/*.css', 'public/vendor/admin-lte/skins');
+        // AdminLTE
+        mix.copy('node_modules/admin-lte/dist/css/AdminLTE.css', 'public/vendor/admin-lte');
+        mix.copy('node_modules/admin-lte/dist/js/app.js', 'public/vendor/admin-lte');
+        mix.copy('node_modules/admin-lte/dist/css/skins/*.css', 'public/vendor/admin-lte/skins');
 
-// Vue
-mix.copy('node_modules/vue/dist/vue.js', 'public/vendor/vue');
+        // Vue
+        mix.copy('node_modules/vue/dist/vue.js', 'public/vendor/vue');
 
-mix.copy('resources/assets/css/styles.css', 'public/css');
-mix.copy('resources/assets/css/style_v1.css', 'public/css');
-mix.copy('resources/assets/js/devoops.js', 'public/js');
-mix.copy('resources/assets/img', 'public/img');
+        mix.copy('resources/assets/css/styles.css', 'public/css');
+        mix.copy('resources/assets/css/style_v1.css', 'public/css');
+        mix.copy('resources/assets/js/devoops.js', 'public/js');
+        mix.copy('resources/assets/img', 'public/img');
 });

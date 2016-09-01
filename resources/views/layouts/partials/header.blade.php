@@ -154,7 +154,16 @@
                                 {{--<a href="#" class="btn btn-default btn-flat">Trocar Senha</a>--}}
                             </div>
                             <div class="pull-right">
-                                <a href="/logout" class="btn btn-default btn-flat">Sair</a>
+                                <a href="{{ url('/logout') }}"
+                                   class="btn btn-default btn-flat"
+                                   onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                    Sair
+                                </a>
+
+                                <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
                             </div>
                         </li>
                     </ul>
