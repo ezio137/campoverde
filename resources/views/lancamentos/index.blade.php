@@ -11,7 +11,7 @@
                 <tr>
                     <th>Data</th>
                     <th>Favorecido</th>
-                    <th>Conta</th>
+                    <th>Conta Relacionada</th>
                     <th class="valor">Aumento</th>
                     <th class="valor">Redu&ccedil;&atilde;o</th>
                     <th class="valor">Saldo</th>

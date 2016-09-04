@@ -81,7 +81,7 @@
         new Vue({
             el: '#itens-venda',
             data: {
-                itens: {!! $venda->itens->toJson() !!},
+                itens: {!! isset($venda) ? $venda->itens->toJson() : collect()->toJson() !!},
                 variedadesOptions: {!! $variedadesOptions->toJson() !!},
                 embalagensOptions: {!! $embalagensOptions->toJson() !!}
             },

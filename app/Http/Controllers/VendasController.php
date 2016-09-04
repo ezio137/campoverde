@@ -131,4 +131,19 @@ class VendasController extends Controller
 
         return Redirect::route('vendas.index');
     }
+
+    public function duplicate(Venda $venda)
+    {
+        $clientesOptions = Cliente::options();
+        $variedadesOptions = VariedadeFruta::options();
+        $embalagensOptions = TipoEmbalagem::options();
+
+        $vendaNova = $venda->load('itens')->replicate();
+
+        $venda = $vendaNova;
+
+        return view('vendas.create', compact('venda', 'clientesOptions', 'variedadesOptions', 'embalagensOptions'))
+            ->with('modulo', 'Vendas')
+            ->with('pageHeader', "Duplicar venda");
+    }
 }

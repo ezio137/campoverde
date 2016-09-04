@@ -57,6 +57,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('pesquisa', 'PesquisaController@index');
 
     // VENDAS
+    Route::get('vendas/duplicate/{venda}', ['as' => 'vendas.duplicate', 'uses' => 'VendasController@duplicate']);
     Route::resource('vendas', 'VendasController');
     Route::resource('tipos_embalagem', 'TiposEmbalagemController');
     // Route::resource('materiais_embalagem', 'MateriaisEmbalagemController');

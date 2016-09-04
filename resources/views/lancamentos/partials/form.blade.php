@@ -3,11 +3,11 @@
     @include('layouts.forms.text', ['atributo' => 'valor_formatado', 'label' => 'Valor', 'larguraAtributo' => 3, 'larguraLabel' => 2])
     @include('layouts.forms.select', ['atributo' => 'favorecido_id', 'label' => 'Favorecido', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $favorecidosOptions])
     @if($tipo == 'credito')
-        @include('layouts.forms.select', ['atributo' => 'conta_debito_id', 'label' => 'Conta', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $contasOptions])
+        @include('layouts.forms.select', ['atributo' => 'conta_debito_id', 'label' => 'Conta Relacionada', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $contasOptions])
         <input type="hidden" name="conta_credito_id" value="{{ $conta->id }}">
     @endif
     @if($tipo == 'debito')
-        @include('layouts.forms.select', ['atributo' => 'conta_credito_id', 'label' => 'Conta', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $contasOptions])
+        @include('layouts.forms.select', ['atributo' => 'conta_credito_id', 'label' => 'Conta Relacionada', 'larguraAtributo' => 5, 'larguraLabel' => 2, 'options' => $contasOptions])
         <input type="hidden" name="conta_debito_id" value="{{ $conta->id }}">
     @endif
     @include('layouts.forms.text', ['atributo' => 'memorando', 'label' => 'Memorando', 'larguraAtributo' => 8, 'larguraLabel' => 2])

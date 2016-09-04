@@ -29,6 +29,9 @@
                             {!! Form::open(['route' => ['vendas.destroy', $venda->id], 'method' => 'DELETE', 'id' => "delete-form-$venda->id"]) !!}
                             <button type="button" class="btn-link btn-delete-confirmation"
                                     data-delete-item-id="{{ $venda->id }}"><i class="fa fa-trash-o"></i></button>
+                            <a href="/vendas/duplicate/{{ $venda->id }}"
+                               title="Duplicar"><i
+                                        class="fa fa-copy"></i></a>
                             {!! Form::close() !!}
                         </td>
                     </tr>
