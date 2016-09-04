@@ -4,6 +4,31 @@
     @include('layouts.forms.text', ['atributo' => 'periodo', 'label' => 'Período', 'larguraAtributo' => 5, 'larguraLabel' => 2])
     @include('layouts.forms.checkbox', ['atributo' => 'ind_quitado', 'label' => 'Quitado', 'larguraAtributo' => 5, 'larguraLabel' => 2])
     @include('layouts.forms.text', ['atributo' => 'data_vencimento_formatada', 'label' => 'Data Vencimento', 'larguraAtributo' => 5, 'larguraLabel' => 2])
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Variedade</th>
+                <th>Embalagem</th>
+                <th class="text-right">Quantidade</th>
+                <th class="text-right">Preco</th>
+                <th class="text-right">Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($venda->itens as $item)
+                <tr>
+                    <td>{{ $item->variedadeFruta->nome }}</td>
+                    <td>{{ $item->tipoEmbalagem->nome }}</td>
+                    <td class="text-right">{{ $item->quantidadeFormatada }}</td>
+                    <td class="text-right">{{ $item->precoFormatado }}</td>
+                    <td class="text-right">{{ $item->valorTotalFormatado }}</td>
+                    <td></td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
 <div class="box-footer">
     <div class="form-group">

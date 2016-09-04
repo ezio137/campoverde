@@ -31,9 +31,10 @@ class VendasController extends Controller
      */
     public function create()
     {
+        $venda = new Venda();
         $clientesOptions = Cliente::options();
 
-        return view('vendas.create', compact('clientesOptions'))
+        return view('vendas.create', compact('venda', 'clientesOptions'))
             ->with('modulo', 'Vendas')
             ->with('pageHeader', 'Vendas');
     }

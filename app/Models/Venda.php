@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Services\DateHelper;
+use App\Services\NumberHelper;
 use Illuminate\Database\Eloquent\Model;
 
 class Venda extends Model
@@ -44,8 +45,25 @@ class Venda extends Model
         $this->attributes['data_vencimento'] = DateHelper::extrairData($value);
     }
 
+    public function getValorTotalAttribute()
+    {
+        return $this->itens->sum(function($item) {
+            return $item->valorTotal;
+        });
+    }
+
+    public function getValorTotalFormatadoAttribute()
+    {
+        return NumberHelper::exibirDecimal($this->valorTotal);
+    }
+
     public function cliente()
     {
         return $this->belongsTo('App\Cliente');
+    }
+
+    public function itens()
+    {
+        return $this->hasMany('App\ItemVenda');
     }
 }

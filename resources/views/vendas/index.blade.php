@@ -15,6 +15,7 @@
                 <tr>
                     <th>Data</th>
                     <th>Cliente</th>
+                    <th>Total</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -23,6 +24,7 @@
                     <tr>
                         <td>{!! link_to_route('vendas.edit', $venda->dataVendaFormatada, ['id' => $venda->id]) !!}</td>
                         <td>{!! link_to_route('vendas.edit', $venda->cliente->nome, ['id' => $venda->id]) !!}</td>
+                        <td>{!! link_to_route('vendas.edit', $venda->valorTotalFormatado, ['id' => $venda->id]) !!}</td>
                         <td>
                             {!! Form::open(['route' => ['vendas.destroy', $venda->id], 'method' => 'DELETE', 'id' => "delete-form-$venda->id"]) !!}
                             <button type="button" class="btn-link btn-delete-confirmation"
