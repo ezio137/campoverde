@@ -38,7 +38,7 @@ INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_f
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (40,"BA 4,0 B LICH",4.0000,"BL","B");
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (41,"SC 24,0 LAR",24.0000,"SC",NULL);
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (42,"SC 20,0 LAR",20.0000,"SC",NULL);
-INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (43,"CX peso",40.8000,"NA",NULL);
+INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (43,"CX PESO",40.8000,"NA",NULL);
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (45,"CX MINI MAN",10.0000,"MA RET",NULL);
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (46,"CX MERC LIM",28.0000,"MA RET",NULL);
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (47,"CX MINI LIM",14.0000,"MA RET",NULL);
@@ -135,6 +135,11 @@ INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_f
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (183,"PA EZ MQ 3,0/1523",3.0000,"PA","1523");
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (184,"PA EZ MQ 1,0/2426",1.0000,"PA","2426");
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (185,"PA BR MQ 1,0/2426",1.0000,"PA","2426");
+INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (186,NULL,0.0000,NULL,NULL);
+INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (187,"PA EZ MQ 3,0/2426",3.0000,"PA","2426");
+INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (188,"PA EZ MQ 3,0/2730",3.0000,"PA","2730");
+INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (189,"PA EZ MN 3,0/1030",3.0000,"PA","1030");
+INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (190,"PA BR MN 3,0/1030",3.0000,"PA","1030");
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (82,"PL 25,0 / < 24",25.0000,"PL","< 24");
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (81,"PL 8,0 / < 24",8.0000,"PL RET","< 24");
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (78,"PA 3,0 / < 24",3.0000,"PA","< 24");
@@ -158,7 +163,7 @@ INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_f
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (120,"PA EZ MQ 2,0/25-27",2.0000,"PA","25-27");
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (136,"PA BR MQ 3,0/15-24",3.0000,"PA","15-24");
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (122,"PA EZ MQ 3,0/14-24",3.0000,"PA","14-24");
-INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (123,"PA EZ MQ 3,0/25-27",2.0000,"PA","25-27");
+INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (123,"PA EZ MQ 3,0/25-27",3.0000,"PA","25-27");
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (115,"PA EZ MQ 1,0/>27",1.0000,"PA","> 27");
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (117,"PA EZ MQ 2,0/<14",2.0000,"PA","< 14");
 INSERT INTO `legado_tipos_embalagem` (`id`, `nome`, `peso`, `embalagem`, `tipo_fruta`) VALUES (121,"PA EZ MQ 3,0/<14",3.0000,"PA","< 14");
