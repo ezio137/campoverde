@@ -58,7 +58,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
     // VENDAS
     Route::resource('vendas', 'VendasController');
-    // Route::resource('tipos_embalagem', 'TiposEmbalagemController');
+    Route::resource('tipos_embalagem', 'TiposEmbalagemController');
     // Route::resource('materiais_embalagem', 'MateriaisEmbalagemController');
 
     // AGRO
