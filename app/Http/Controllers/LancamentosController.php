@@ -42,6 +42,8 @@ class LancamentosController extends Controller
         $contasOptions = Conta::contasOptions($conta->id);
         $lancamentoNovo = new Lancamento();
         $lancamentoNovo->valor = 0.0;
+        $lancamentoNovo->parcela_atual = 0;
+        $lancamentoNovo->parcela_total = 0;
 
         if (($tipo == 'credito' && $conta->aumentaComCredito) || ($tipo == 'debito' && $conta->aumentaComDebito)) {
             $exibirTipo = 'Aumento';
