@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Cliente;
 use App\Http\Requests;
+use App\ItemVenda;
+use App\TipoEmbalagem;
+use App\VariedadeFruta;
 use App\Venda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -33,8 +36,10 @@ class VendasController extends Controller
     {
         $venda = new Venda();
         $clientesOptions = Cliente::options();
+        $variedadesOptions = VariedadeFruta::options();
+        $embalagensOptions = TipoEmbalagem::options();
 
-        return view('vendas.create', compact('venda', 'clientesOptions'))
+        return view('vendas.create', compact('venda', 'clientesOptions', 'variedadesOptions', 'embalagensOptions'))
             ->with('modulo', 'Vendas')
             ->with('pageHeader', 'Vendas');
     }
@@ -49,7 +54,12 @@ class VendasController extends Controller
     {
         $this->validate($request, Venda::$rules);
 
-        Venda::create($request->all());
+        $venda = Venda::create($request->all());
+
+        $itens = collect($request->input('itens', []));
+        foreach ($itens as $item) {
+            ItemVenda::create(array_merge($item, ['venda_id' => $venda->id]));
+        }
 
         return Redirect::route('vendas.index');
     }
@@ -76,8 +86,10 @@ class VendasController extends Controller
         $venda = Venda::findOrFail($id);
 
         $clientesOptions = Cliente::options();
+        $variedadesOptions = VariedadeFruta::options();
+        $embalagensOptions = TipoEmbalagem::options();
 
-        return view('vendas.edit', compact('venda', 'clientesOptions'))
+        return view('vendas.edit', compact('venda', 'clientesOptions', 'variedadesOptions', 'embalagensOptions'))
             ->with('modulo', 'Vendas')
             ->with('pageHeader', 'Vendas');
     }
@@ -96,6 +108,13 @@ class VendasController extends Controller
         $this->validate($request, Venda::$rules);
 
         $venda->update($request->all());
+
+        ItemVenda::destroy($venda->itens->pluck('id')->all());
+
+        $itens = collect($request->input('itens', []));
+        foreach ($itens as $item) {
+            ItemVenda::create(array_merge($item, ['venda_id' => $venda->id]));
+        }
 
         return Redirect::route('vendas.index');
     }

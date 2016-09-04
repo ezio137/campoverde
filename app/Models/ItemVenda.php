@@ -14,7 +14,14 @@ class ItemVenda extends Model
         'variedade_fruta_id',
         'tipo_embalagem_id',
         'quantidade',
+        'quantidade_formatada',
         'preco',
+        'preco_formatado',
+    ];
+
+    protected $appends = [
+        'quantidade_formatada',
+        'preco_formatado',
     ];
 
     public function getValorTotalAttribute()
@@ -37,9 +44,19 @@ class ItemVenda extends Model
         return NumberHelper::exibirDecimal($this->quantidade);
     }
 
+    public function setQuantidadeFormatadaAttribute($value)
+    {
+        $this->attributes['quantidade'] = NumberHelper::extrairDecimal($value);
+    }
+
     public function getPrecoFormatadoAttribute()
     {
         return NumberHelper::exibirDecimal($this->preco);
+    }
+
+    public function setPrecoFormatadoAttribute($value)
+    {
+        $this->attributes['preco'] = NumberHelper::extrairDecimal($value);
     }
 
     public function getValorTotalFormatadoAttribute()

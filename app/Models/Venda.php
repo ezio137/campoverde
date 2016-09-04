@@ -57,6 +57,15 @@ class Venda extends Model
         return NumberHelper::exibirDecimal($this->valorTotal);
     }
 
+    public function setIndQuitadoAttribute($value)
+    {
+        if ($value) {
+            $this->attributes['ind_quitado'] = 1;
+        } else {
+            $this->attributes['ind_quitado'] = 0;
+        }
+    }
+
     public function cliente()
     {
         return $this->belongsTo('App\Cliente');
@@ -64,6 +73,6 @@ class Venda extends Model
 
     public function itens()
     {
-        return $this->hasMany('App\ItemVenda');
+        return $this->hasMany('App\ItemVenda')->with(['variedadeFruta', 'tipoEmbalagem']);
     }
 }

@@ -120,7 +120,7 @@ desired effect
 <!-- Bootstrap Datepicker -->
 <script src="/vendor/bootstrap-datepicker/bootstrap-datepicker.js"></script>
 <!-- Vue -->
-<script src="/vendor/vue/vue,js"></script>
+<script src="/vendor/vue/vue.js"></script>
 <!-- AdminLTE App -->
 <script src="/vendor/admin-lte/app.js"></script>
 

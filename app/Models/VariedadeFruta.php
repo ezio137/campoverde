@@ -14,4 +14,9 @@ class VariedadeFruta extends Model
     {
         return $this->belongsTo('App\Fruta');
     }
+
+    public static function options()
+    {
+        return static::orderBy('nome')->pluck('nome', 'id');
+    }
 }
