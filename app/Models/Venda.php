@@ -25,6 +25,17 @@ class Venda extends Model
         'data_vencimento',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        Venda::deleting(function($venda) {
+            $venda->itens->each(function($item) {
+                $item->delete();
+            });
+        });
+    }
+
     public function getDataVendaFormatadaAttribute()
     {
         return DateHelper::exibirData($this->data_venda);

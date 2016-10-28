@@ -62,6 +62,9 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('tipos_embalagem', 'TiposEmbalagemController');
     // Route::resource('materiais_embalagem', 'MateriaisEmbalagemController');
 
+    Route::get('relatorio_vendas', 'VendasController@relatorioVendas');
+    Route::any('relatorio_vendas/dados', 'VendasController@dadosRelatorioVendas');
+
     // AGRO
     Route::resource('frutas', 'FrutasController');
     Route::resource('variedades_fruta', 'VariedadesFrutaController');
