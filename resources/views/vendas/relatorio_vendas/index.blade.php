@@ -32,14 +32,16 @@
                             <legend>Filtros</legend>
                             {{ csrf_field() }}
                             <div>
-                                De {!! Form::text('dataInicialFormatada') !!} a {!! Form::text('dataFinalFormatada') !!}
+                                De {!! Form::text('dataInicialFormatada', $dataInicialFormatada) !!} a {!! Form::text('dataFinalFormatada') !!}
                             </div>
                             <div class="row">
-                                @foreach($frutasOptions as $id => $fruta)
-                                    <?php $options = $frutasSelecionadas->contains($id) ? ['checked' => 'checked'] : [] ?>
-                                    {!! Form::checkbox('frutas', $id, $options) !!}
-                                    <span>{{ $fruta }}</span><br>
-                                @endforeach
+                                <div class="col-sm-offset-1">
+                                    @foreach($frutasOptions as $id => $fruta)
+                                        <?php $options = $frutasSelecionadas->contains($id) ? ['checked' => 'checked'] : [] ?>
+                                        {!! Form::checkbox('frutas', $id, $options) !!}
+                                        <span>{{ $fruta }}</span><br>
+                                    @endforeach
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-offset-3">
@@ -59,8 +61,10 @@
                         <legend>Subtotais</legend>
                         {{ csrf_field() }}
                         <div class="row" id="subtotais">
-                            <a href="#" class="groupBy" data-group-by="cliente">Cliente</a><br>
-                            <a href="#" class="groupBy" data-group-by="tipoFruta">Tipo Fruta</a>
+                            <div class="col-sm-offset-1">
+                                <a href="#" class="groupBy" data-group-by="cliente">Cliente</a><br>
+                                <a href="#" class="groupBy" data-group-by="tipoFruta">Tipo Fruta</a>
+                            </div>
                         </div>
                     </fieldset>
                 </div>

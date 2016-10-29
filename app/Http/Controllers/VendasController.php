@@ -168,10 +168,14 @@ class VendasController extends Controller
 
         $frutasOptions = Fruta::frutasOptions();
         $frutasSelecionadas = collect($request->session()->get('frutas'));
+        $dataInicialFormatada = DateHelper::exibirData(session()->get('dataInicial'));
+        $dataFinalFormatada = DateHelper::exibirData(session()->get('dataFinal'));
 
         return view('vendas.relatorio_vendas.index', compact(
             'frutasOptions',
-            'frutasSelecionadas'
+            'frutasSelecionadas',
+            'dataInicialFormatada',
+            'dataFinalFormatada'
         ));
     }
 
@@ -217,17 +221,15 @@ class VendasController extends Controller
         if ($request->has('frutas')) {
             session()->put('frutas', $request->input('frutas'));
         }
-        
+
+        session()->has('dataInicial') ? null : session()->put('dataInicial', Carbon::create(1900, 1, 1));
         if ($request->has('dataInicialFormatada')) {
             session()->put('dataInicial', DateHelper::extrairData($request->input('dataInicialFormatada')));
-        } else {
-            session()->put('dataInicial', Carbon::create(1900, 1, 1));
         }
-        
+
+        session()->has('dataFinal') ? null : session()->put('dataFinal', Carbon::create(2100, 12, 31));
         if ($request->has('dataFinalFormatada')) {
             session()->put('dataFinal', DateHelper::extrairData($request->input('dataFinalFormatada')));
-        } else {
-            session()->put('dataFinal', Carbon::create(2100, 12, 31));
         }
 
         if ($request->has('groupBy')) {
