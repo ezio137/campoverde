@@ -21,7 +21,7 @@ class ContasAPagarController extends Controller
             ->orderBy('favorecidos.nome')
             ->orderBy('contas_a_pagar.data_proxima')
             ->get();
-        $contasAPagar = ContaAPagar::hydrate($contasAPagarRaw);
+        $contasAPagar = ContaAPagar::hydrate($contasAPagarRaw->all());
 
         return view('contas_a_pagar.index', compact('contasAPagar'))
             ->with('modulo', 'Contábil')
