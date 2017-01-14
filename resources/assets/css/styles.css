@@ -36,3 +36,7 @@ td.valor, th.valor {
     height: 285px;
     visibility: hidden;
 }
+
+a {
+    color: #005688;
+}

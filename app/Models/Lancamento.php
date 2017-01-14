@@ -139,4 +139,10 @@ class Lancamento extends Model
     {
         return $this->morphMany('App\Anexo', 'anexavel');
     }
+
+    public function getMemorandoAbreviadoAttribute()
+    {
+        $reticencias = strlen($this->memorando) > 30 ? '...' : '';
+        return substr($this->memorando, 0, 30) . $reticencias;
+    }
 }
