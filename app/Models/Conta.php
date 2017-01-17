@@ -98,7 +98,7 @@ class Conta extends Model
 
     public function getAumentaComDebitoAttribute()
     {
-        return starts_with($this->codigo_completo, '1') || starts_with($this->codigo_completo, '5');
+        return starts_with($this->codigo_completo, '1') || starts_with($this->codigo_completo, '5') || starts_with($this->codigo_completo, '6');
     }
 
     public function getAumentaComCreditoAttribute()
