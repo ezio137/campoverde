@@ -21,7 +21,11 @@
                 </tr>
                 @foreach($contasReceita as $conta)
                     <tr class="contas">
-                        <td style="padding-left: {{ $conta->nivel() * 10 }}px">{{ $conta->nome }} <i class="fa fa-close red hidden" data-id="{{ $conta->id }}"></i></td>
+                        <td style="padding-left: {{ $conta->nivel() * 10 }}px">
+                            {{ $conta->nome }}
+                            <i class="fa fa-caret-down text-green hidden expande-conta" data-id="{{ $conta->id }}"></i>
+                            <i class="fa fa-close red hidden remove-conta" data-id="{{ $conta->id }}"></i>
+                        </td>
                         @foreach($periodos as $periodo)
                             <?php $result = $resultado->where('conta_id', $conta->id)->where('periodo_id', $periodo['id'])->first() ?>
                             <td class="valor">{{ $numberHelper::exibirDecimal(isset($result) ? $result->resultado : 0.0) }}</td>
@@ -41,8 +45,11 @@
                 </tr>
                 @foreach($contasDespesa as $conta)
                     <tr class="contas">
-                        <td style="padding-left: {{ $conta->nivel() * 10 }}px">{{ $conta->nome }} <i
-                                    class="fa fa-close red hidden" data-id="{{ $conta->id }}"></i></td>
+                        <td style="padding-left: {{ $conta->nivel() * 10 }}px">
+                            {{ $conta->nome }}
+                            <i class="fa fa-caret-down text-green hidden expande-conta" data-id="{{ $conta->id }}"></i>
+                            <i class="fa fa-close red hidden remove-conta" data-id="{{ $conta->id }}"></i>
+                        </td>
                         @foreach($periodos as $periodo)
                             <?php $result = $resultado->where('conta_id', $conta->id)->where('periodo_id', $periodo['id'])->first() ?>
                             <td class="valor">{{ $numberHelper::exibirDecimal(isset($result) ? $result->resultado : 0.0) }}</td>

@@ -126,9 +126,16 @@
                 $(this).find('i').toggleClass('hidden');
             });
 
-            $('#conteudo-demonstracao').on('click', 'tr.contas i', function () {
+            $('#conteudo-demonstracao').on('click', 'tr.contas i.remove-conta', function () {
                 $('#conteudo-demonstracao').load('/resultado/dados', {
                     'remove-conta-resultado': $(this).data('id'),
+                    '_token': $('[name=_token]').val()
+                })
+            });
+
+            $('#conteudo-demonstracao').on('click', 'tr.contas i.expande-conta', function () {
+                $('#conteudo-demonstracao').load('/resultado/dados', {
+                    'expande-conta-resultado': $(this).data('id'),
                     '_token': $('[name=_token]').val()
                 })
             });

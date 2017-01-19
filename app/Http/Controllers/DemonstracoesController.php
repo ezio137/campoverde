@@ -131,6 +131,12 @@ class DemonstracoesController extends Controller
                 return $value == $contaId;
             }));
         }
+        if ($request->has('expande-conta-resultado')) {
+            $contaId = $request->input('expande-conta-resultado');
+            foreach (Conta::find($contaId)->contasFilhas as $conta) {
+                session()->get('contas_resultado')->push($conta->id);
+            }
+        }
         session()->has('periodos') ? null : session()->put('periodos', collect());
         if ($request->has('mes_inicio') && $request->has('mes_fim')) {
             $mesInicioId = $request->input('mes_inicio');
