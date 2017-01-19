@@ -68,19 +68,16 @@ desired effect
   @include('layouts.partials.sidebar')
   @endif
 
+<!-- Content Header (Page header) -->
+    <header class="content-header">
+        <h1>
+            {{ isset($pageHeader) ? $pageHeader : '' }}
+            <small>{{ isset($pageDescription) ? $pageDescription : '' }}</small>
+        </h1>
+    </header>
+
   <!-- Content Wrapper. Contains page content -->
   <div @if(Auth::check()) class="content-wrapper" @endif>
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        {{ isset($pageHeader) ? $pageHeader : '' }}
-        <small>{{ isset($pageDescription) ? $pageDescription : '' }}</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> {{ isset($modulo) ? $modulo : '' }}</a></li>
-        <li class="active">{{ isset($pageHeader) ? $pageHeader : '' }}</li>
-      </ol>
-    </section>
 
     @include('flash::message')
 

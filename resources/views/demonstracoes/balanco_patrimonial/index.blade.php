@@ -3,8 +3,8 @@
 @extends('layouts.master')
 
 @section('breadcrumb')
-    <li><a href="#">Cont&aacute;bil</a></li>
-    <li><a href="#">Balan&ccedil;o Patrimonial</a></li>
+    <li><a href="#">Contábil</a></li>
+    <li><a href="#">Balanço Patrimonial</a></li>
 @stop
 
 @section('content')

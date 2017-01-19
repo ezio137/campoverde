@@ -1,12 +1,6 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="row">
-        <div class="col-xs-12">
-            <a href="/vendas/create" class="btn btn-success"><i class="fa fa-plus"></i> Nova venda</a>
-        </div>
-    </div>
-
     <div class="box">
         <div class="box-body table-responsive no-padding">
             {!! $vendas->render() !!}
@@ -42,3 +36,7 @@
         </div>
     </div>
 @stop
+
+@section('botoes-footer')
+    <a href="/vendas/create" class="btn btn-success"><i class="fa fa-plus"></i> Nova venda</a>
+@endsection

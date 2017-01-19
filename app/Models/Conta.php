@@ -96,6 +96,11 @@ class Conta extends Model
         return "$this->codigo_completo $this->nome";
     }
 
+    public function getSaldoFormatadoAttribute()
+    {
+        return number_format($this->attributes['saldo'], 2, ',', '.');
+    }
+
     public function getAumentaComDebitoAttribute()
     {
         return starts_with($this->codigo_completo, '1') || starts_with($this->codigo_completo, '5') || starts_with($this->codigo_completo, '6');

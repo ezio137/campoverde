@@ -13,7 +13,11 @@ class DemonstracoesService
 {
     public static function atualizarDatas()
     {
-        $resultDatas = DB::table('lancamentos')->select(DB::raw("date_format(last_day(data), '%Y-%m-%d') data"))->distinct()->pluck('data');
+        $resultDatas = DB::table('lancamentos')
+            ->whereNull('deleted_at')
+            ->select(DB::raw("date_format(last_day(data), '%Y-%m-%d') data"))
+            ->distinct()
+            ->pluck('data');
         foreach ($resultDatas as $data) {
             if (!Data::where('data', $data)->exists()) {
                 Data::create(['data' => $data]);

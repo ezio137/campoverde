@@ -14,7 +14,7 @@
                     <th>Conta Relacionada</th>
                     <th>Memorando</th>
                     <th class="valor">Aumento</th>
-                    <th class="valor">Redu&ccedil;&atilde;o</th>
+                    <th class="valor">Redução</th>
                     <th class="valor">Saldo</th>
                     <th></th>
                 </tr>

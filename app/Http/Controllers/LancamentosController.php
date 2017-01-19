@@ -28,7 +28,7 @@ class LancamentosController extends Controller
 
         return view('lancamentos.index', compact('lancamentos', 'conta', 'operacaoAumento', 'operacaoReducao', 'saldo'))
             ->with('modulo', 'Contábil')
-            ->with('pageHeader', "Lançamentos - $conta->codigo_completo $conta->nome");
+            ->with('pageHeader', "Lançamentos - $conta->codigo_completo $conta->nome - R$ $conta->saldo_formatado");
     }
 
     /**
