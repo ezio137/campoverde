@@ -3,8 +3,8 @@ setlocale(LC_TIME, 'pt_BR.UTF-8');
 
 return [
 
-    'version_number' => '0.10.0',
-    'version_date' => '04/09/2016',
+    'version_number' => '0.11.0',
+    'version_date' => '18/01/2017',
 
     /*
     |--------------------------------------------------------------------------
