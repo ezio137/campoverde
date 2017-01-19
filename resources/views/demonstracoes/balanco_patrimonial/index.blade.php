@@ -16,6 +16,7 @@
                         <h2 class="text-center">Balanço Patrimonial</h2>
                     </div>
                     <div class="row" id="conteudo-demonstracao">
+
                     </div>
                 </div>
             </div>
@@ -123,9 +124,16 @@
                 $(this).find('i').toggleClass('hidden');
             });
 
-            $('#conteudo-demonstracao').on('click', 'tr.contas i', function () {
+            $('#conteudo-demonstracao').on('click', 'tr.contas i.remove-conta', function () {
                 $('#conteudo-demonstracao').load('/balanco_patrimonial/dados', {
                     'remove-conta': $(this).data('id'),
+                    '_token': $('[name=_token]').val()
+                })
+            });
+
+            $('#conteudo-demonstracao').on('click', 'tr.contas i.expande-conta', function () {
+                $('#conteudo-demonstracao').load('/balanco_patrimonial/dados', {
+                    'expande-conta': $(this).data('id'),
                     '_token': $('[name=_token]').val()
                 })
             });

@@ -86,6 +86,12 @@ class DemonstracoesController extends Controller
                 return $value == $contaId;
             }));
         }
+        if ($request->has('expande-conta')) {
+            $contaId = $request->input('expande-conta');
+            foreach (Conta::find($contaId)->contasFilhas as $conta) {
+                session()->get('contas')->push($conta->id);
+            }
+        }
         if ($request->has('contas_favoritas')) {
             $codigos = FavoritoBalancoPatrimonial::find($request->input('contas_favoritas'))->itens()->pluck('conta_codigo_completo');
             $contasIds = Conta::whereIn('codigo_completo', $codigos)->pluck('id');
