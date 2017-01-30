@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-mdb-export -I mysql Vendas_JA_v2.mdb tblEmbalagens | sed -e 's/tblProdutos/legado_produtos/g' | sed -e 's/CodProduto/id/g' | sed -e 's/NomeProduto/nome/g'
-mdb-export -I mysql Vendas_JA_v2.mdb tblProdutos | sed -e 's/tblProdutos/legado_produtos/g' | sed -e 's/CodProduto/id/g' | sed -e 's/NomeProduto/nome/g'
+mdb-export -I mysql Vendas_JA_v2.mdb tblProdutos | sed -e 's/tblProdutos/legado_produtos/g' | sed -e 's/CodProduto/id/g' | sed -e 's/NomeProduto/nome/g' | sed -e 's/Setor/setor/g' > ~/Code/campoverde/database/dumps_legado/vendas_ja/produtos.sql
 mdb-export -I mysql Vendas_JA_v2.mdb tblTipos | sed -e 's/tblTipos/legado_tipos_embalagem/g' | sed -e 's/CodTipo/id/g' | sed -e 's/NomeTipo/nome/g' | sed -e 's/TipoFruta/tipo_fruta/g' | sed -e 's/Peso/peso/g' | sed -e 's/Embalagem/embalagem/g' > ~/Code/campoverde/database/dumps_legado/vendas_ja/tipos.sql
 mdb-export -I mysql -D "%F %T" Vendas_JA_v2.mdb tblVendas | sed -e 's/tblVendas/legado_vendas/g' | sed -e 's/NomeCliente/cliente/g' | sed -e 's/Data/data_venda/g' | sed -e 's/Produto/produto/g' | sed -e 's/Quant/quantidade/g' | sed -e 's/CodTipo/codigo_tipo/g' | sed -e 's/Preco/preco/g' | sed -e 's/Total/total/g' | sed -e 's/Periodo/periodo/g' | sed -e 's/Quitado/ind_quitado/g' | sed -e 's/Vencimento/data_vencimento/g' > ~/Code/campoverde/database/dumps_legado/vendas_ja/vendas.sql
