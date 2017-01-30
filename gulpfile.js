@@ -32,6 +32,10 @@ elixir(mix => {
         mix.copy('node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css', 'public/vendor/bootstrap-datepicker');
         mix.copy('node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js', 'public/vendor/bootstrap-datepicker');
 
+        // Slimscroll
+        mix.copy('node_modules/jquery-slimscroll/jquery.slimscroll.js', 'public/vendor/jquery-slimscroll');
+        // mix.webpack('vendor/slimscroll/slimscroll.js', 'public/vendor/slimscroll');
+
         // AdminLTE
         mix.copy('node_modules/admin-lte/dist/css/AdminLTE.css', 'public/vendor/admin-lte');
         mix.copy('node_modules/admin-lte/dist/js/app.js', 'public/vendor/admin-lte');
