@@ -29,6 +29,7 @@
                 <ul class="treeview-menu">
                     <li><a href="/balanco_patrimonial">Balanço Patrimonial</a></li>
                     <li><a href="/resultado">Resultado</a></li>
+                    <li><a href="/contas_a_pagar/relatorio">Contas a Pagar</a></li>
                 </ul>
             </li>
             <li class="header">PAGAMENTO</li>

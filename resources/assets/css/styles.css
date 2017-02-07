@@ -23,7 +23,6 @@ td.valor, th.valor {
 
 .content {
     padding-bottom: 40px;
-    padding-top: 50px;
 }
 
 .table-relatorio {
@@ -40,14 +39,4 @@ td.valor, th.valor {
 
 a {
     color: #005688;
-}
-
-.fixed .content-header {
-    position: fixed;
-    padding: 15px;
-    top: 50px;
-    left: 230px;
-    z-index: 1030;
-    width: 100%;
-    background: #f9fafc !important;
 }

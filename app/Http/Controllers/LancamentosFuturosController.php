@@ -7,6 +7,10 @@ use App\Favorecido;
 use App\Http\Requests;
 use App\Lancamento;
 use App\LancamentoFuturo;
+use App\Services\ContasAPagarService;
+use App\Services\DateHelper;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class LancamentosFuturosController extends Controller
 {
@@ -41,5 +45,65 @@ class LancamentosFuturosController extends Controller
         $lancamentoFuturo->delete();
 
         return redirect()->route('lancamentos_futuros.index');
+    }
+
+    public function getRelatorio(Request $request)
+    {
+        $contasOptions = Conta::contasOptions(0, [1, 2, 3]);
+        $contasSelecionadas = collect($request->session()->get('contas'));
+        $dataInicialFormatada = DateHelper::exibirData(session()->get('dataInicial'));
+        $dataFinalFormatada = DateHelper::exibirData(session()->get('dataFinal'));
+
+        return view('contas_a_pagar.relatorio.index', compact(
+            'contasOptions', 'contasSelecionadas', 'dataInicialFormatada', 'dataFinalFormatada'
+        ))
+            ->with('modulo', 'Contábil')
+            ->with('pageHeader', 'Contas a Pagar');
+    }
+
+    public function dadosRelatorio(Request $request)
+    {
+        $this->atualizarDadosSession($request);
+
+        $contasIds = $request->session()->get('contas');
+        $dataInicial = $request->session()->get('dataInicial');
+        $dataFinal = $request->session()->get('dataFinal');
+        $groupBy = $request->session()->get('groupBy');
+
+        $resultadoTotais = ContasAPagarService::totais($contasIds, $dataInicial, $dataFinal, $groupBy);
+
+        $media = 'screen';
+        $dataInicialFormatada = DateHelper::exibirData($dataInicial);
+        $dataFinalFormatada = DateHelper::exibirData($dataFinal);
+        return view('contas_a_pagar.relatorio.partials.dados', compact(
+            'resultadoTotais',
+            'dataInicialFormatada',
+            'dataFinalFormatada',
+            'media'
+        ));
+    }
+
+    public function atualizarDadosSession(Request $request)
+    {
+        if (!$request->session()->has('contas')) {
+            session()->put('contas', collect());
+        }
+        if ($request->has('contas')) {
+            session()->put('contas', $request->input('contas'));
+        }
+
+        session()->has('dataInicial') ? null : session()->put('dataInicial', Carbon::create(1900, 1, 1));
+        if ($request->has('dataInicialFormatada')) {
+            session()->put('dataInicial', DateHelper::extrairData($request->input('dataInicialFormatada')));
+        }
+
+        session()->has('dataFinal') ? null : session()->put('dataFinal', Carbon::create(2100, 12, 31));
+        if ($request->has('dataFinalFormatada')) {
+            session()->put('dataFinal', DateHelper::extrairData($request->input('dataFinalFormatada')));
+        }
+
+        if ($request->has('groupBy')) {
+            session()->put('groupBy', $request->input('groupBy'));
+        }
     }
 }

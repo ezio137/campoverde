@@ -68,6 +68,9 @@ desired effect
   @include('layouts.partials.sidebar')
   @endif
 
+  <!-- Content Wrapper. Contains page content -->
+  <div @if(Auth::check()) class="content-wrapper" @endif>
+
 <!-- Content Header (Page header) -->
     <header class="content-header">
         <h1>
@@ -75,9 +78,6 @@ desired effect
             <small>{{ isset($pageDescription) ? $pageDescription : '' }}</small>
         </h1>
     </header>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div @if(Auth::check()) class="content-wrapper" @endif>
 
     @include('flash::message')
 

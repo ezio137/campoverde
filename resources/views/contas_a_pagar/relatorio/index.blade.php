@@ -3,8 +3,8 @@
 @extends('layouts.master')
 
 @section('breadcrumb')
-    <li><a href="#">Cont&aacute;bil</a></li>
-    <li><a href="#">Balan&ccedil;o Patrimonial</a></li>
+    <li><a href="#">Contábil</a></li>
+    <li><a href="#">Contas a Pagar</a></li>
 @stop
 
 @section('content')
@@ -13,7 +13,7 @@
             <div class="box box-success">
                 <div class="box-body">
                     <div class="row">
-                        <h2 class="text-center">Vendas</h2>
+                        <h2 class="text-center">Contas a Pagar</h2>
                     </div>
 
                     <div class="row" id="conteudo-demonstracao">
@@ -36,10 +36,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-offset-1">
-                                    @foreach($frutasOptions as $id => $fruta)
-                                        <?php $options = $frutasSelecionadas->contains($id) ? ['checked' => 'checked'] : [] ?>
-                                        {!! Form::checkbox('frutas', $id, $options) !!}
-                                        <span>{{ $fruta }}</span><br>
+                                    @foreach($contasOptions as $id => $conta)
+                                        <?php $options = $contasSelecionadas->contains($id) ? ['checked' => 'checked'] : [] ?>
+                                        {!! Form::checkbox('contas', $id, $options) !!}
+                                        <span>{{ $conta }}</span><br>
                                     @endforeach
                                 </div>
                             </div>
@@ -56,8 +56,7 @@
                         {{ csrf_field() }}
                         <div class="row" id="subtotais">
                             <div class="col-sm-offset-1">
-                                <a href="#" class="groupBy" data-group-by="cliente">Cliente</a><br>
-                                <a href="#" class="groupBy" data-group-by="tipoFruta">Tipo Fruta</a>
+
                             </div>
                         </div>
                     </fieldset>
@@ -71,12 +70,12 @@
     <script>
         $(function () {
             function atualizarRelatorio() {
-                var frutas = [];
-                $('[name=frutas]:checked').each(function(){
-                    frutas.push($(this).val());
+                var contas = [];
+                $('[name=contas]:checked').each(function(){
+                    contas.push($(this).val());
                 });
-                $('#conteudo-demonstracao').load('/relatorio_vendas/dados', {
-                    'frutas': frutas,
+                $('#conteudo-demonstracao').load('/contas_a_pagar/relatorio/dados', {
+                    'contas': contas,
                     'dataInicialFormatada': $('[name=dataInicialFormatada]').val(),
                     'dataFinalFormatada': $('[name=dataFinalFormatada]').val(),
                     '_token': $('[name=_token]').val()
@@ -93,13 +92,13 @@
                 autoclose: true
             });
 
-            $('#conteudo-demonstracao').load('/relatorio_vendas/dados');
+            $('#conteudo-demonstracao').load('/contas_a_pagar/relatorio/dados');
 
-            $('#atualizar-frutas-relatorio').click(atualizarRelatorio);
+            $('#atualizar-contas-relatorio').click(atualizarRelatorio);
 
             $('.groupBy').click(function () {
                 var element = $(this);
-                $('#conteudo-demonstracao').load('/relatorio_vendas/dados', {
+                $('#conteudo-demonstracao').load('/contas_a_pagar/relatorio/dados', {
                     'groupBy': element.data('group-by'),
                     '_token': $('[name=_token]').val()
                 });
@@ -111,14 +110,14 @@
             });
 
             $('#conteudo-demonstracao').on('click', 'tr.contas i', function () {
-                $('#conteudo-demonstracao').load('/relatorio_vendas/dados', {
+                $('#conteudo-demonstracao').load('/contas_a_pagar/relatorio/dados', {
                     'remove-conta': $(this).data('id'),
                     '_token': $('[name=_token]').val()
                 })
             });
 
             $('#conteudo-demonstracao').on('click', 'tr.meses i', function () {
-                $('#conteudo-demonstracao').load('/relatorio_vendas/dados', {
+                $('#conteudo-demonstracao').load('/contas_a_pagar/relatorio/dados', {
                     'remove-mes': $(this).data('id'),
                     '_token': $('[name=_token]').val()
                 })
@@ -128,7 +127,6 @@
 @stop
 
 @section('botoes-footer')
-    <a href="#" id="atualizar-frutas-relatorio" class="btn btn-success"><i
+    <a href="#" id="atualizar-contas-relatorio" class="btn btn-success"><i
                 class="fa fa-refresh"></i> Atualizar relatório</a>
-    <a href="/balanco_patrimonial/pdf" class="btn btn-success"><i class="fa fa-file-text-o"></i> Imprimir</a>
 @stop
