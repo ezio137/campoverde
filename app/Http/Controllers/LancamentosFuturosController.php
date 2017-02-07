@@ -50,7 +50,7 @@ class LancamentosFuturosController extends Controller
     public function getRelatorio(Request $request)
     {
         $contasOptions = Conta::contasOptions(0, [1, 2, 3]);
-        $contasSelecionadas = collect($request->session()->get('contas'));
+        $contasSelecionadas = collect($request->session()->get('contas_relatorio_lancamentos_futuros'));
         $dataInicialFormatada = DateHelper::exibirData(session()->get('dataInicial'));
         $dataFinalFormatada = DateHelper::exibirData(session()->get('dataFinal'));
 
@@ -65,7 +65,7 @@ class LancamentosFuturosController extends Controller
     {
         $this->atualizarDadosSession($request);
 
-        $contasIds = $request->session()->get('contas');
+        $contasIds = $request->session()->get('contas_relatorio_lancamentos_futuros');
         $dataInicial = $request->session()->get('dataInicial');
         $dataFinal = $request->session()->get('dataFinal');
         $groupBy = $request->session()->get('groupBy');
@@ -85,11 +85,11 @@ class LancamentosFuturosController extends Controller
 
     public function atualizarDadosSession(Request $request)
     {
-        if (!$request->session()->has('contas')) {
-            session()->put('contas', collect());
+        if (!$request->session()->has('contas_relatorio_lancamentos_futuros')) {
+            session()->put('contas_relatorio_lancamentos_futuros', collect());
         }
-        if ($request->has('contas')) {
-            session()->put('contas', $request->input('contas'));
+        if ($request->has('contas_relatorio_lancamentos_futuros')) {
+            session()->put('contas_relatorio_lancamentos_futuros', $request->input('contas_relatorio_lancamentos_futuros'));
         }
 
         session()->has('dataInicial') ? null : session()->put('dataInicial', Carbon::create(1900, 1, 1));
@@ -100,10 +100,6 @@ class LancamentosFuturosController extends Controller
         session()->has('dataFinal') ? null : session()->put('dataFinal', Carbon::create(2100, 12, 31));
         if ($request->has('dataFinalFormatada')) {
             session()->put('dataFinal', DateHelper::extrairData($request->input('dataFinalFormatada')));
-        }
-
-        if ($request->has('groupBy')) {
-            session()->put('groupBy', $request->input('groupBy'));
         }
     }
 }
