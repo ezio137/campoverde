@@ -24,7 +24,9 @@ class VendasController extends Controller
      */
     public function index()
     {
-        $vendas = Venda::orderBy('data_venda', 'desc')->paginate(20);
+        $vendas = Venda::orderBy('data_venda', 'desc')
+            ->orderBy('id', 'desc')
+            ->paginate(20);
 
         return view('vendas.index', compact('vendas'))
             ->with('modulo', 'Vendas')
