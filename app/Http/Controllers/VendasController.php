@@ -58,6 +58,11 @@ class VendasController extends Controller
      */
     public function store(Request $request)
     {
+        if (!$this->isInteger($request->input('cliente_id'))) {
+            $cliente = Cliente::create(['nome' => $request->input('cliente_id')]);
+            $request->merge(['cliente_id' => $cliente->id]);
+        }
+
         $this->validate($request, Venda::$rules);
 
         $venda = Venda::create($request->all());
@@ -237,5 +242,10 @@ class VendasController extends Controller
         if ($request->has('groupBy')) {
             session()->put('groupBy', $request->input('groupBy'));
         }
+    }
+
+    private function isInteger($value)
+    {
+        return (string)(int)$value == $value;
     }
 }
